@@ -84,6 +84,15 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 .line-edit:focus{border-color:rgba(200,170,100,0.5);background:rgba(255,255,255,0.06)}
 .line-edit.tib-edit{font-family:'Noto Serif Tibetan',serif;font-size:18px;line-height:1.8}
 
+/* ── REPEAT EDITOR & ROUND DIVIDERS ── */
+.repeat-editor{display:inline-flex;align-items:center;gap:2px;margin-left:4px}
+.rep-btn{background:rgba(180,160,120,0.12);border:1px solid rgba(180,160,120,0.2);border-radius:4px;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(210,190,140,0.6);font-size:13px;font-family:system-ui,sans-serif;transition:all .2s;padding:0;line-height:1}
+.rep-btn:hover{background:rgba(180,160,120,0.25);color:rgba(210,190,140,0.9)}
+.rep-count{font-family:system-ui,sans-serif;font-size:12px;color:rgba(210,190,140,0.7);min-width:24px;text-align:center;letter-spacing:0}
+.round-divider{display:flex;align-items:center;gap:10px;margin:20px 0 8px 0;padding:0 12px}
+.round-divider::before,.round-divider::after{content:'';flex:1;height:1px;background:rgba(180,160,120,0.1)}
+.round-label{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(180,160,120,0.35);white-space:nowrap}
+
 /* ── MARKER LINES (meditate / silence) ── */
 .line-block.marker{opacity:.7;border-left:2px dashed rgba(180,160,120,0.25);padding-left:16px}
 .line-block.marker.current{opacity:1;border-left-color:rgba(200,170,100,0.5);background:rgba(180,160,120,0.04)}
@@ -132,6 +141,7 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
  </div>
  <div class="ctrl-row">
   <button class="pill off" id="togTs" onclick="toggleTimestamps()">○ ⏱ Timestamps</button>
+  <button class="pill on" id="togRepeats" onclick="toggleRepeats()">✓ Repeats</button>
   <span class="spacer"></span>
   <button class="action-btn" onclick="exportTimestamps()">↓ Timestamps</button>
   <button class="action-btn" onclick="exportSRT()">↓ SRT</button>
@@ -174,6 +184,7 @@ const SECTIONS = [
     "title": "Seven-Line Prayer",
     "titleRu": "Семистрочная молитва",
     "titleUk": "Семирядкова молитва",
+    "repeat": "×3",
     "lines": [
       {
         "tib": "ཧཱུྂཿཨོ་རྒྱན་ཡུལ་གྱི་ནུབ་བྱང་མཚམས།",
@@ -1084,38 +1095,44 @@ const LAYERS = ['tib','tr','en','ru','uk'];
 const LAYER_LABELS = {tib:'བོད',tr:'Translit',en:'English',ru:'Русский',uk:'Українська'};
 const STORAGE_KEY_TS = 'kusali_chod_timestamps';
 const STORAGE_KEY_TEXT = 'kusali_chod_text';
+const STORAGE_KEY_REPEATS = 'kusali_chod_repeats';
 
 let flatLines=[], current=0, timestamps=[], elapsed=0, timerRunning=false, timerInterval=null, editingTs=-1;
 let show={tib:true,tr:true,en:true,ru:false,uk:false};
 let showTs=false, mode='manual';
+let repeatsExpanded=true; // global toggle: show all repeat lines or collapse
+let sectionRepeats=[];    // per-section repeat count (loaded from storage or defaults)
 
 function init(){
-  // flatten
-  SECTIONS.forEach((sec,si)=>{
-    sec.lines.forEach((line,li)=>{
-      flatLines.push({...line, sectionIdx:si, lineIdx:li, sectionTitle:sec.title,
-        titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null});
-    });
+  // load saved repeat counts or use defaults from SECTIONS
+  const savedRepeats = loadJSON(STORAGE_KEY_REPEATS);
+  sectionRepeats = SECTIONS.map((sec, si) => {
+    if (savedRepeats && savedRepeats[si] != null) return savedRepeats[si];
+    // parse default: "×3" → 3, "×1, 3, 7, or 21" → 1, no repeat → 1
+    const m = (sec.repeat || '').match(/×(\d+)/);
+    return m ? parseInt(m[1]) : 1;
   });
+
+  rebuildFlatLines();
 
   // load saved text edits (may include marker lines → different length)
   const savedText = loadJSON(STORAGE_KEY_TEXT);
   if(savedText && Array.isArray(savedText)){
-    // check if saved data has markers (different length than base)
     const hasMarkers = savedText.some(t=>t._marker);
-    if(hasMarkers){
-      // rebuild flatLines from saved data entirely
+    if(hasMarkers || savedText.length !== flatLines.length){
+      // rebuild from saved data
       flatLines=[];
       savedText.forEach((t)=>{
         const si=t.sectionIdx!=null?t.sectionIdx:0;
         const sec=SECTIONS[si]||SECTIONS[0];
-        const obj={sectionIdx:si, lineIdx:-1, sectionTitle:sec.title,
-          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null};
+        const obj={sectionIdx:si, lineIdx:t.lineIdx||-1, sectionTitle:sec.title,
+          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null,
+          _repeatNum:t._repeatNum||1};
         LAYERS.forEach(l=>{obj[l]=t[l]||'';});
         if(t._marker) obj._marker=t._marker;
         flatLines.push(obj);
       });
-    } else if(savedText.length === flatLines.length){
+    } else {
       savedText.forEach((t,i)=>{ LAYERS.forEach(l=>{ if(t[l]!=null) flatLines[i][l]=t[l]; }); });
     }
   }
@@ -1131,22 +1148,82 @@ function init(){
   updateProgress();
 }
 
+// Build flatLines from SECTIONS + sectionRepeats
+function rebuildFlatLines(){
+  flatLines=[];
+  SECTIONS.forEach((sec,si)=>{
+    const reps = sectionRepeats[si] || 1;
+    for(let r=0; r<reps; r++){
+      sec.lines.forEach((line,li)=>{
+        flatLines.push({...line, sectionIdx:si, lineIdx:li, sectionTitle:sec.title,
+          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null,
+          _repeatNum: r+1 // which repetition (1-based)
+        });
+      });
+    }
+  });
+}
+
+// Change repeat count for a section and rebuild
+function setRepeatCount(si, count){
+  count = Math.max(1, Math.min(21, count));
+  sectionRepeats[si] = count;
+  persistRepeats();
+  // save current position's section+line to restore after rebuild
+  const curLine = flatLines[current];
+  const curSec = curLine ? curLine.sectionIdx : 0;
+
+  rebuildFlatLines();
+  timestamps = flatLines.map(()=>null); // reset timestamps on repeat change
+  persistTs();
+  persistText();
+
+  // restore position to same section
+  const newIdx = flatLines.findIndex(l=>l.sectionIdx===curSec);
+  current = newIdx>=0 ? newIdx : 0;
+
+  renderLyrics();
+  updateHighlight();
+  updateProgress();
+}
+
+function persistRepeats(){
+  try{localStorage.setItem(STORAGE_KEY_REPEATS,JSON.stringify(sectionRepeats));}catch(e){}
+}
+
 function renderLyrics(){
   const area=document.getElementById('lyricsArea');
   area.innerHTML='';
+  let prevSecIdx=-1, prevRepeatNum=-1;
+
   flatLines.forEach((line,i)=>{
-    if(i===0||line.sectionIdx!==flatLines[i-1].sectionIdx){
-      const secNum=line.sectionIdx+1;
+    const si=line.sectionIdx;
+    const repNum=line._repeatNum||1;
+    const totalReps=sectionRepeats[si]||1;
+    const isNewSection = si!==prevSecIdx;
+    const isNewRound = !isNewSection && repNum!==prevRepeatNum && !line._marker;
+
+    // ── SECTION HEADER (first occurrence of this section) ──
+    if(isNewSection){
+      const secNum=si+1;
       const hdr=document.createElement('div');
       hdr.className='section-hdr';
-      hdr.id='section-'+line.sectionIdx;
+      hdr.id='section-'+si;
       const numSpan=document.createElement('span');
       numSpan.className='hdr-num';numSpan.textContent=secNum;
       hdr.appendChild(numSpan);
       const nameSpan=document.createElement('span');
       nameSpan.textContent=line.sectionTitle;
       hdr.appendChild(nameSpan);
-      if(line.repeat){const b=document.createElement('span');b.className='repeat-badge';b.textContent=line.repeat;hdr.appendChild(b);}
+
+      // editable repeat count
+      const repWrap=document.createElement('span');
+      repWrap.className='repeat-editor';
+      repWrap.innerHTML=`<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps-1})">−</button>`+
+        `<span class="rep-count" id="repcount-${si}">×${totalReps}</span>`+
+        `<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps+1})">+</button>`;
+      hdr.appendChild(repWrap);
+
       const subtitles=[];
       if(show.ru && line.titleRu) subtitles.push(line.titleRu);
       if(show.uk && line.titleUk) subtitles.push(line.titleUk);
@@ -1155,9 +1232,32 @@ function renderLyrics(){
         hdr.appendChild(sub);
       }
       area.appendChild(hdr);
+      prevSecIdx=si;
+      prevRepeatNum=repNum;
     }
+
+    // ── ROUND DIVIDER (repeat 2, 3, etc.) ──
+    if(isNewRound && totalReps>1){
+      const roundDiv=document.createElement('div');
+      roundDiv.className='round-divider';
+      roundDiv.innerHTML=`<span class="round-label">round ${repNum} / ${totalReps}</span>`;
+      // collapse: hide repeat rounds > 1 when collapsed
+      if(!repeatsExpanded) roundDiv.style.display='none';
+      roundDiv.dataset.section=si;
+      roundDiv.dataset.repeatRound=repNum;
+      area.appendChild(roundDiv);
+      prevRepeatNum=repNum;
+    }
+
+    // ── COLLAPSE: hide lines from repeat rounds > 1 when collapsed ──
+    const isRepeatLine = totalReps>1 && repNum>1 && !line._marker;
+    const shouldHide = isRepeatLine && !repeatsExpanded;
+
     const block=document.createElement('div');
     block.id='line-'+i;
+    if(shouldHide) block.style.display='none';
+    block.dataset.section=si;
+    block.dataset.repeatRound=repNum;
     block.onclick=(e)=>{
       if(e.target.closest('.ts-edit-row')||e.target.closest('.ts-badge')||e.target.closest('.marker-remove')||e.target.tagName==='TEXTAREA') return;
       if(mode!=='edit') setCurrent(i);
@@ -1250,6 +1350,8 @@ function persistText(){
       const o={};LAYERS.forEach(k=>{o[k]=l[k];});
       if(l._marker) o._marker=l._marker;
       o.sectionIdx=l.sectionIdx;
+      o.lineIdx=l.lineIdx;
+      o._repeatNum=l._repeatNum||1;
       return o;
     });
     localStorage.setItem(STORAGE_KEY_TEXT,JSON.stringify(data));
