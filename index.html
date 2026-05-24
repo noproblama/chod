@@ -1,1 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nam Chö Kusali Chöd — Practice Follower</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+Tibetan:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#0a0a12 100%);color:#e0dcd0;font-family:'Crimson Pro','Noto Serif Tibetan',Georgia,serif;overflow-x:hidden}
 
+/* ── CONTROL BAR ── */
+.ctrl-bar{position:sticky;top:0;z-index:100;background:rgba(10,10,18,0.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(180,160,120,0.15);padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:11px;font-family:system-ui,sans-serif;letter-spacing:.4px;cursor:pointer;transition:all .2s;border:1px solid rgba(180,160,120,0.25);user-select:none;background:transparent;white-space:nowrap}
+.pill.on{background:rgba(180,160,120,0.2);color:#d4c8a0;border-color:rgba(180,160,120,0.5)}
+.pill.off{color:#666;border-color:rgba(100,100,100,0.25)}
+.pill:hover{border-color:rgba(180,160,120,0.6)}
+.mode-btn{padding:4px 12px;border-radius:20px;font-size:11px;font-family:system-ui,sans-serif;cursor:pointer;border:1px solid;transition:all .2s;background:transparent;white-space:nowrap}
+.mode-btn.active{background:rgba(120,90,40,0.35);border-color:rgba(200,170,100,0.5);color:#d4c8a0}
+.mode-btn.inactive{border-color:rgba(100,100,100,0.25);color:#666}
+.mode-btn:hover{border-color:rgba(180,160,120,0.6);color:#bbb}
+.action-btn{padding:4px 12px;border-radius:20px;font-size:11px;font-family:system-ui,sans-serif;cursor:pointer;border:1px solid rgba(100,150,180,0.3);background:rgba(100,150,180,0.1);color:#8ab4c8;transition:all .2s;white-space:nowrap}
+.action-btn:hover{background:rgba(100,150,180,0.2);border-color:rgba(100,150,180,0.5)}
+.action-btn.warn{border-color:rgba(200,120,80,0.3);background:rgba(200,120,80,0.1);color:#c8a070}
+.divider{width:1px;height:18px;background:rgba(255,255,255,0.08);margin:0 2px}
+.spacer{margin-left:auto}
+.timer-bar{display:flex;align-items:center;gap:6px;font-family:monospace;font-size:12px;color:#8ab4c8}
+.timer-btn{background:rgba(100,130,180,0.15);border:1px solid rgba(100,130,180,0.3);border-radius:14px;padding:3px 10px;font-size:11px;color:#8ab4c8;cursor:pointer;font-family:system-ui,sans-serif}
+.timer-btn:hover{background:rgba(100,130,180,0.25)}
+.tap-banner{display:none;position:sticky;top:80px;z-index:99;background:rgba(120,90,40,0.25);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,170,100,0.25);padding:6px 16px;font-family:system-ui,sans-serif;font-size:12px;color:#d4c8a0;text-align:center;gap:8px;align-items:center;justify-content:center}
+.tap-banner.visible{display:flex}
+.tap-banner kbd{display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:11px}
+
+/* ── EDIT MODE BANNER ── */
+.edit-banner{display:none;position:sticky;top:80px;z-index:99;background:rgba(80,130,100,0.2);backdrop-filter:blur(12px);border-bottom:1px solid rgba(100,180,130,0.25);padding:6px 16px;font-family:system-ui,sans-serif;font-size:12px;color:#a0d0b0;text-align:center;gap:8px;align-items:center;justify-content:center}
+.edit-banner.visible{display:flex}
+
+/* ── PROGRESS ── */
+.progress-track{position:fixed;right:6px;top:90px;bottom:40px;width:3px;background:rgba(180,160,120,0.08);border-radius:2px;z-index:50}
+.progress-fill{position:absolute;top:0;width:100%;background:rgba(200,170,100,0.4);border-radius:2px;transition:height .3s}
+.progress-dot{position:absolute;width:7px;height:7px;background:#c8a850;border-radius:50%;right:-2px;transition:top .3s;box-shadow:0 0 6px rgba(200,170,100,0.4)}
+
+/* ── LYRICS ── */
+.lyrics-area{padding:30vh 20px 40vh 20px;max-width:900px;margin:0 auto;cursor:pointer}
+.section-hdr{font-family:system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(210,190,140,0.85);margin:48px 0 6px 0;padding:10px 12px 8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-top:1px solid rgba(180,160,120,0.15);position:relative}
+.section-hdr .hdr-num{font-size:11px;font-weight:400;color:rgba(180,160,120,0.4);min-width:18px}
+.section-subtitle{font-size:11px;color:rgba(180,160,120,0.5);letter-spacing:.5px;font-weight:400;display:block;width:100%;margin-top:2px;text-transform:none}
+.repeat-badge{font-size:10px;background:rgba(180,160,120,0.18);padding:2px 10px;border-radius:10px;color:rgba(210,190,140,0.7);font-weight:400}
+
+/* ── TABLE OF CONTENTS OVERLAY ── */
+.toc-overlay{position:fixed;inset:0;z-index:200;background:rgba(8,8,14,0.92);backdrop-filter:blur(24px);display:none;justify-content:center;align-items:flex-start;padding:60px 20px;overflow-y:auto}
+.toc-overlay.visible{display:flex}
+.toc-panel{width:100%;max-width:520px;padding:20px 0}
+.toc-title{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(180,160,120,0.5);margin-bottom:20px;text-align:center}
+.toc-item{display:flex;align-items:baseline;gap:12px;padding:12px 16px;border-radius:10px;cursor:pointer;transition:all .2s;border-bottom:1px solid rgba(180,160,120,0.06)}
+.toc-item:hover{background:rgba(180,160,120,0.08)}
+.toc-item.active{background:rgba(180,160,120,0.12);box-shadow:inset 3px 0 0 rgba(200,170,100,0.5)}
+.toc-num{font-family:system-ui,sans-serif;font-size:11px;color:rgba(180,160,120,0.35);min-width:20px;text-align:right}
+.toc-name{font-family:'Crimson Pro',serif;font-size:17px;color:#d4c8a0;line-height:1.4}
+.toc-name-sub{font-family:'Crimson Pro',serif;font-size:13px;color:rgba(180,160,120,0.45);line-height:1.3;margin-top:2px}
+.toc-close{position:fixed;top:16px;right:20px;z-index:210;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#999;font-size:18px;transition:all .2s}
+.toc-close:hover{background:rgba(255,255,255,0.12);color:#ddd}
+.line-block{padding:8px 12px;margin:2px 0;border-radius:8px;transition:all .35s ease;position:relative}
+.line-block.past{opacity:.50}
+.line-block.current{opacity:1;background:rgba(180,160,120,0.07);box-shadow:inset 3px 0 0 rgba(200,170,100,0.6)}
+.line-block.future{opacity:.60}
+.line-block:hover:not(.current){opacity:.8;background:rgba(255,255,255,0.02)}
+
+.line-tib{font-family:'Noto Serif Tibetan',serif;font-size:22px;line-height:1.8;transition:color .3s}
+.line-tib.active{color:#efe8d0} .line-tib.dim{color:#8a8275}
+.line-tr{font-family:'Crimson Pro',serif;font-size:15px;font-style:italic;letter-spacing:.8px;line-height:1.5;transition:color .3s}
+.line-tr.active{color:#d0c090} .line-tr.dim{color:#7a7060}
+.line-en{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
+.line-en.active{color:#c0b898} .line-en.dim{color:#706858}
+.line-ru{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
+.line-ru.active{color:#b0a8c0} .line-ru.dim{color:#605870}
+.line-uk{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
+.line-uk.active{color:#a0c0b0} .line-uk.dim{color:#506860}
+
+/* ── EDIT MODE ── */
+.line-edit{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(180,160,120,0.2);border-radius:4px;padding:4px 8px;font-size:14px;color:#d4c8a0;font-family:inherit;outline:none;resize:none;margin-top:2px;line-height:1.5}
+.line-edit:focus{border-color:rgba(200,170,100,0.5);background:rgba(255,255,255,0.06)}
+.line-edit.tib-edit{font-family:'Noto Serif Tibetan',serif;font-size:18px;line-height:1.8}
+
+/* ── MARKER LINES (meditate / silence) ── */
+.line-block.marker{opacity:.7;border-left:2px dashed rgba(180,160,120,0.25);padding-left:16px}
+.line-block.marker.current{opacity:1;border-left-color:rgba(200,170,100,0.5);background:rgba(180,160,120,0.04)}
+.marker-label{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 0;transition:color .3s}
+.marker-label.meditate.active{color:rgba(160,200,180,0.8)}
+.marker-label.meditate.dim{color:rgba(100,140,120,0.4)}
+.marker-label.silence.active{color:rgba(180,170,150,0.6)}
+.marker-label.silence.dim{color:rgba(120,115,105,0.3)}
+.marker-label .marker-icon{font-size:14px;margin-right:6px}
+.marker-remove{position:absolute;right:40px;top:50%;transform:translateY(-50%);font-family:system-ui,sans-serif;font-size:10px;color:rgba(200,120,100,0.4);cursor:pointer;padding:2px 8px;border-radius:4px;background:transparent;border:none}
+.marker-remove:hover{background:rgba(200,120,100,0.1);color:rgba(200,120,100,0.7)}
+
+.ts-badge{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:monospace;font-size:10px;color:rgba(180,160,120,0.4);cursor:pointer;padding:2px 6px;border-radius:4px;background:transparent;border:none}
+.ts-badge:hover{background:rgba(180,160,120,0.1);color:rgba(180,160,120,0.7)}
+.ts-edit-row{display:flex;align-items:center;gap:6px;margin-top:4px}
+.ts-input{background:rgba(255,255,255,0.05);border:1px solid rgba(180,160,120,0.3);border-radius:6px;padding:3px 8px;font-family:monospace;font-size:12px;color:#d4c8a0;width:70px;outline:none}
+.ts-input:focus{border-color:rgba(200,170,100,0.6)}
+.ts-small-btn{border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:system-ui,sans-serif;border:1px solid}
+.ts-save{background:rgba(120,160,100,0.2);border-color:rgba(120,160,100,0.3);color:#a0c880}
+.ts-tap{background:rgba(100,130,180,0.15);border-color:rgba(100,130,180,0.3);color:#8ab4c8}
+.ts-cancel{background:transparent;border-color:rgba(100,100,100,0.2);color:#888}
+.nav-hint{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);font-family:system-ui,sans-serif;font-size:11px;color:rgba(180,160,120,0.3);letter-spacing:1px;pointer-events:none;text-align:center}
+#importFile,#importTextFile{display:none}
+</style>
+</head>
+<body>
+
+<div class="ctrl-bar" id="ctrlBar">
+ <div class="ctrl-row">
+  <button class="pill on" id="tocBtn" onclick="openTOC()" style="border-color:rgba(200,170,100,0.4);color:#d4c8a0;font-size:13px;padding:4px 10px">☰</button>
+  <button class="pill on" id="togTib" onclick="toggleLayer('tib')">✓ བོད</button>
+  <button class="pill on" id="togTr" onclick="toggleLayer('tr')">✓ Translit</button>
+  <button class="pill on" id="togEn" onclick="toggleLayer('en')">✓ English</button>
+  <button class="pill off" id="togRu" onclick="toggleLayer('ru')">○ Русский</button>
+  <button class="pill off" id="togUk" onclick="toggleLayer('uk')">○ Українська</button>
+  <div class="divider"></div>
+  <button class="mode-btn active" id="modeManual" onclick="setMode('manual')">Manual</button>
+  <button class="mode-btn inactive" id="modeAuto" onclick="setMode('auto')">Auto-sync</button>
+  <button class="mode-btn inactive" id="modeTap" onclick="setMode('tap')">Tap timing</button>
+  <button class="mode-btn inactive" id="modeEdit" onclick="setMode('edit')">✎ Edit</button>
+  <div class="timer-bar" id="timerBar" style="display:none">
+   <button class="timer-btn" id="timerPlayPause" onclick="toggleTimer()">▶</button>
+   <span id="timerDisplay">0:00</span>
+   <button class="timer-btn" onclick="resetTimer()">Reset</button>
+  </div>
+ </div>
+ <div class="ctrl-row">
+  <button class="pill off" id="togTs" onclick="toggleTimestamps()">○ ⏱ Timestamps</button>
+  <span class="spacer"></span>
+  <button class="action-btn" onclick="exportTimestamps()">↓ Timestamps</button>
+  <button class="action-btn" onclick="exportSRT()">↓ SRT</button>
+  <button class="action-btn" onclick="exportText()">↓ Text JSON</button>
+  <button class="action-btn" onclick="document.getElementById('importFile').click()">↑ Timestamps</button>
+  <button class="action-btn" onclick="document.getElementById('importTextFile').click()">↑ Text JSON</button>
+  <input type="file" id="importFile" accept=".json" onchange="importTimestamps(event)">
+  <input type="file" id="importTextFile" accept=".json" onchange="importText(event)">
+ </div>
+</div>
+
+<div class="tap-banner" id="tapBanner">
+ Press <kbd>Space</kbd> stamp & advance · <kbd>m</kbd> insert [Meditate] · <kbd>s</kbd> insert [Silence] · <kbd>Backspace</kbd> undo · <kbd>Esc</kbd> exit
+</div>
+<div class="edit-banner" id="editBanner">
+ ✎ Edit mode — click any text to edit · changes auto-save · <kbd>Esc</kbd> to exit
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="if(event.target===this)closeTOC()">
+ <button class="toc-close" onclick="closeTOC()">✕</button>
+ <div class="toc-panel">
+  <div class="toc-title">Contents</div>
+  <div id="tocList"></div>
+ </div>
+</div>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div><div class="progress-dot" id="progressDot"></div></div>
+<div class="lyrics-area" id="lyricsArea"></div>
+<div class="nav-hint" id="navHint">tap / click / ↓ ↑ / space to navigate</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   PRACTICE DATA
+   ═══════════════════════════════════════════════════════════════════════
+   ★ To update text permanently: Export Text JSON → edit → paste below
+   ★ To set default timestamps: Export Timestamps → paste into DEFAULT_TIMESTAMPS
+   ═══════════════════════════════════════════════════════════════════════ */
+const SECTIONS = [
+  {
+    "title": "Seven-Line Prayer",
+    "titleRu": "Семистрочная молитва",
+    "titleUk": "Семирядкова молитва",
+    "lines": [
+      {
+        "tib": "ཧཱུྂཿཨོ་རྒྱན་ཡུལ་གྱི་ནུབ་བྱང་མཚམས།",
+        "tr": "HUNG ORGYEN YUL GYI NUB DSCHANG TSAM",
+        "en": "HUNG, in the northwest country of Uddiyana,",
+        "ru": "Хум. На северо-западной границе Уддияны,",
+        "uk": "ХУМ, на північно-західному кордоні Уддіяни,"
+      },
+      {
+        "tib": "པདྨ་གེ་སར་སྡོང་པོ་ལ།",
+        "tr": "PEDMA GESAR DONG PO LA",
+        "en": "Born in the pollen heart of a lotus,",
+        "ru": "На пестике цветущего лотоса,",
+        "uk": "На маточці квітучого лотоса,"
+      },
+      {
+        "tib": "ཡ་མཚན་མཆོག་གི་དངོས་གྲུབ་བརྙེས།",
+        "tr": "JATSEN SCHOG GI NGÖ DRUB NJÄ",
+        "en": "Endowed with the most marvellous spiritual attainments,",
+        "ru": "Достигший удивительных высших совершенств,",
+        "uk": "Досягнувши дивовижних найвищих досконалостей,"
+      },
+      {
+        "tib": "པདྨ་འབྱུང་གནས་ཞེས་སུ་གྲགས།",
+        "tr": "PEDMA DSCHUNG NÄ SCHÄ SU DRAG",
+        "en": "You are renowned as the 'Lotus Born'.",
+        "ru": "Прославленный как Рожденный из лотоса,",
+        "uk": "Прославлений як Народжений з лотоса,"
+      },
+      {
+        "tib": "འཁོར་དུ་མཁའ་འགྲོ་མང་པོས་བསྐོར།",
+        "tr": "KOR DU KANDRO MANG PÖ KOR",
+        "en": "Surrounded by a retinue of many Dakinis,",
+        "ru": "Окруженный множеством дакини!",
+        "uk": "Оточений численними дакінями!"
+      },
+      {
+        "tib": "ཁྱེད་ཀྱི་རྗེས་སུ་བདག་བསྒྲུབ་ཀྱིས།",
+        "tr": "KYED KYI DSCHE SU DAG DRUB KYI",
+        "en": "Following you, I practice to become like you,",
+        "ru": "Следуя Тебе в своей практике,",
+        "uk": "Слідуючи за Тобою у своїй практиці,"
+      },
+      {
+        "tib": "བྱིན་གྱིས་བརླབ་ཕྱིར་གཤེགས་སུ་གསོལ།",
+        "tr": "DSCHIN GYI LAB TSCHIR SCHEG SU SOL",
+        "en": "Therefore, come and bless me!",
+        "ru": "Молю, приди и даруй благословение!",
+        "uk": "Молю, прийди і даруй благословення!"
+      },
+      {
+        "tib": "གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃཿ",
+        "tr": "GURU PEDMA SIDDHI HUNG",
+        "en": "GURU PEDMA SIDDHI HUNG",
+        "ru": "ГУРУ ПЕМА СИДДХИ ХУНГ",
+        "uk": "ҐУРУ ПЕМА СІДДХІ ХУНГ"
+      }
+    ]
+  },
+  {
+    "title": "Lineage Prayer",
+    "titleRu": "Молитва Учителям линии",
+    "titleUk": "Молитва Вчителям лінії",
+    "lines": [
+      {
+        "tib": "ཀུན་བཟང་རྡོར་སེམས་དགའ་རབ་ཤྲཱི་སེང་།",
+        "tr": "KUN ZANG DOR SEM GA RAB SCHRI SENG",
+        "en": "Samantabhadra, Vajrasattva, Garab Dorje, Shri Singha,",
+        "ru": "Самантабхадре, Ваджрасаттве, Гарабу Дордже, Шри Сингхе",
+        "uk": "Самантабхадрі, Ваджрасаттві, Ґарабу Дордже, Шрі Сінгхі,"
+      },
+      {
+        "tib": "པདྨ་ཀ་ར་རྗེ་འབངས་ཉི་ཤུ་ལྔ།",
+        "tr": "PE MA KA RA DSCHE BANG NYI SCHU NGA",
+        "en": "Padmakara and his 25 disciples,",
+        "ru": "Падмакаре и его 25 ученикам: Царю и подданным,",
+        "uk": "Падмакарі та його 25 учням: Царю та підданим,"
+      },
+      {
+        "tib": "སོ་ཟུར་གནུབས་གཉགས་གཏེར་སྟོན་བརྒྱ་རྩ་སོགས།",
+        "tr": "SO ZUR NUB NYAG TER TÖN GYA TSA SOG",
+        "en": "So, Zur, Nub, Nyag, and hundreds of tertöns,",
+        "ru": "Со Еше Вангчуку, Зуру Шакья Джунгне, Нубчену Сангье Еше, Ньягу Джнанакумаре и сотне тертонов,",
+        "uk": "Со Єше Вангчуку, Зуру Шак'я Джунгне, Нубчену Санг'є Єше, Ньяґу Джнанакумарі та сотням тертонів,"
+      },
+      {
+        "tib": "བཀའ་གཏེར་བླ་མ་རྣམས་ལ་གསོལ་བ་འདེབས།",
+        "tr": "KA TER LA MA NAM LA SOL WA DEB",
+        "en": "To the lamas of kama and terma lineages, I pray!",
+        "ru": "Ламам линии кама и терма я молюсь.",
+        "uk": "Ламам лінії кама і терма я молюся!"
+      }
+    ]
+  },
+  {
+    "title": "Prayer to Tertön Migyur Dorje",
+    "titleRu": "Молитва Тертону Мингьюру Дордже",
+    "titleUk": "Молитва Тертону Мінг'юру Дордже",
+    "lines": [
+      {
+        "tib": "ཤུད་བུ་དཔལ་སེང་ངོམ་ཡུལ་སྲིད་པ་བཟུང་།",
+        "tr": "SCHU PU PAL SENG NGOM YÜL SRID PA ZUNG",
+        "en": "You are the emanation of Shupu Palseng, born in Ngom Yül,",
+        "ru": "Ты воплощение Шупу Палсенга, рожденный в Нгом Йюл,",
+        "uk": "Ти втілення Шупу Палсенґа, народжений у Нґом Йюл,"
+      },
+      {
+        "tib": "རྩ་གསུམ་ཞལ་གཟིགས་གནམ་ཆོས་སྙན་བརྒྱུད་སྤེལ།",
+        "tr": "TSA SUM ZHAL ZIG NAM TSCHÖ NYEN GYÜD PEL",
+        "en": "Who had visions of the three roots, and propagated the Namchö aural lineage;",
+        "ru": "Узревший божеств, три драгоценности и распространяющий устную линию передачи Намчо.",
+        "uk": "Хто мав видіння трьох коренів і поширював усну лінію передачі Намчо;"
+      },
+      {
+        "tib": "བྱིན་རླབས་སྟོབས་ཀྱིས་གཞན་ཕན་བསམ་མི་ཁྱབ།",
+        "tr": "DSCHIN LAB TOB KYI ZHEN PEN SAM MI KYAB",
+        "en": "By the power of your blessings, you have inconceivably benefited others.",
+        "ru": "Благодаря силе твоего благословения существа получают невообразимую пользу",
+        "uk": "Завдяки силі твого благословення істоти отримують неосяжну користь."
+      },
+      {
+        "tib": "སྤྲུལ་སྐུ་མི་འགྱུར་རྡོ་རྗེ་ལ་གསོལ་བ་འདེབས།",
+        "tr": "TULKU MI GYUR DORDSCHE LA SOL WA DEB",
+        "en": "I pray to Tulku Mingyur Dorje!",
+        "ru": "Молюсь тебе, Тулку Мингьюр Дордже!",
+        "uk": "Молюся тобі, Тулку Мінг'юр Дордже!"
+      }
+    ]
+  },
+  {
+    "title": "Prayer to Pema Norbu (Penor Rinpoche)",
+    "titleRu": "Молитва Пема Норбу (Пенор Ринпоче)",
+    "titleUk": "Молитва Пема Норбу (Пенор Рінпоче)",
+    "lines": [
+      {
+        "tib": "ལྔ་བརྒྱའི་གཙུག་རྒྱན་པཎ་ཆེན་བི་མ་ལ།",
+        "tr": "NGA GYÄ DSUG GYEN PAN TSCHEN BI MA LA",
+        "en": "Vimalamitra, the crown ornament of the five hundred panditas,",
+        "ru": "Вималамитра, венечное украшение пяти сотен пандитов,",
+        "uk": "Вімаламітра, коронна окраса п'ятисот пандитів,"
+      },
+      {
+        "tib": "སླར་ཡང་སྲིད་པ་བཟུང་བའི་ཚུལ་བསྟན་ཅིང་།",
+        "tr": "LAR YANG SRID PA ZUNG WA'I TSÜL TEN DSCHING",
+        "en": "Once again showing your form in existence,",
+        "ru": "Вновь явивший свое воплощение,",
+        "uk": "Знову явивши своє втілення,"
+      },
+      {
+        "tib": "སྙིང་པོའི་བསྟན་པ་སྤེལ་ལ་ཟླ་བྲལ་བ།",
+        "tr": "NYING PO'I TEN PA PEL LA DA DRAL WA",
+        "en": "Increasing the essence of the Buddha's Doctrine, unequalled,",
+        "ru": "Распространяющий суть непревзойденного учения Будды,",
+        "uk": "Поширюючи суть неперевершеного вчення Будди,"
+      },
+      {
+        "tib": "པདྨ་ནོར་བུའི་ཞབས་ལ་གསོལ་བ་འདེབས།",
+        "tr": "PEMA NORBU'I ZHAB LA SOL WA DEB",
+        "en": "To Pema Norbu, I pray!",
+        "ru": "Пема Норбу, тебе я молюсь!",
+        "uk": "Пема Норбу, тобі я молюся!"
+      }
+    ]
+  },
+  {
+    "title": "Prayer to the Root Guru",
+    "titleRu": "Молитва Коренному Учителю",
+    "titleUk": "Молитва Кореневому Вчителю",
+    "lines": [
+      {
+        "tib": "འོག་མིན་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ།",
+        "tr": "OG MIN DSCHÖ KYI YING KYI ZHING KAM SU",
+        "en": "You who dwells in the Dharmadhatu of the Pure Realm of Akanishta,",
+        "ru": "Во Дворце Огмин Дхармадхату",
+        "uk": "У палаці Оґмін Дгармадгату"
+      },
+      {
+        "tib": "དུས་གསུམ་སངས་རྒྱས་ཀུན་གྱི་ངོ་བོ་ཉིད།",
+        "tr": "DÜ SUM SANGYE KUN GYI NGO WO NYID",
+        "en": "As the essence of all the Buddhas of the three times,",
+        "ru": "Сущность всех Будд трех времен,",
+        "uk": "Сутність усіх Будд трьох часів,"
+      },
+      {
+        "tib": "རང་སེམས་ཆོས་སྐུ་དངོས་སུ་སྟོན་མཛད་པ།",
+        "tr": "RANG SEM DSCHÖ KU NGÖ SU TÖN DZE PA",
+        "en": "You show us directly the Dharmakaya of our own mind,",
+        "ru": "Ясно являющий Дхармакаю моего ума,",
+        "uk": "Ясно являючи Дгармакаю мого розуму,"
+      },
+      {
+        "tib": "རྩ་བའི་བླ་མའི་ཞབས་ལ་གསོལ་བ་འདེབས།",
+        "tr": "TSA WA'I LAMA'I ZHAB LA SOL WA DEB",
+        "en": "Root Guru, to you I pray.",
+        "ru": "Молюсь стопам Коренного Учителя.",
+        "uk": "Молюся стопам Кореневого Вчителя."
+      }
+    ]
+  },
+  {
+    "title": "Refuge & Bodhicitta",
+    "titleRu": "Прибежище и бодхичитта",
+    "titleUk": "Притулок і бодгічітта",
+    "repeat": "×3",
+    "lines": [
+      {
+        "tib": "ན་མོ་བཛྲ་ཝ་རཱ་ཧི༔",
+        "tr": "NAMO BENDZA WARAHI",
+        "en": "NAMO BENDZA WARAHI",
+        "ru": "НАМО БЕДЗАР ВАРАХИ",
+        "uk": "НАМО БЕДЗАР ВАРАХІ"
+      },
+      {
+        "tib": "ན་མོ། དཀོན་མཆོག་གསུམ་དང་རྩ་བ་གསུམ།",
+        "tr": "NAMO KON SCHOK SUM DANG TSAWA SUM",
+        "en": "Homage! I take refuge in the Three Jewels, the Three Roots,",
+        "ru": "НАМО! Я принимаю прибежище в Трех Драгоценностях, Трех Корнях,",
+        "uk": "НАМО! Я приймаю притулок у Трьох Коштовностях, Трьох Коренях,"
+      },
+      {
+        "tib": "སྐྱབས་གནས་རྣམས་ལ་སྐྱབས་སུ་མཆི།",
+        "tr": "KYAB NE NAM LA KYAB SU TSCHI",
+        "en": "And all sources of refuge.",
+        "ru": "И во всех источниках Прибежища.",
+        "uk": "І в усіх джерелах Притулку."
+      },
+      {
+        "tib": "འགྲོ་ཀུན་སངས་རྒྱས་ལ་འགོད་ཕྱིར།",
+        "tr": "DRO KUN SANGYÄ LA GÖ TSCHIR",
+        "en": "In order to place all sentient beings in Buddhahood,",
+        "ru": "Чтобы привести всех живых существ к состоянию Будды,",
+        "uk": "Щоб привести всіх живих істот до стану Будди,"
+      },
+      {
+        "tib": "བྱང་ཆུབ་མཆོག་ཏུ་སེམས་བསྐྱེད་དོ།",
+        "tr": "DSCHANG TSCHUB TSCHOG TU SEM KYE DO",
+        "en": "I give rise to the Supreme Bodhicitta.",
+        "ru": "Я порождаю высшую бодхичитту.",
+        "uk": "Я породжую найвищу бодгічітту."
+      }
+    ]
+  },
+  {
+    "title": "Vajra Verse — Core Chöd",
+    "titleRu": "Ваджрные строки — Основная практика Чод",
+    "titleUk": "Ваджрні рядки — Основна практика Чод",
+    "lines": [
+      {
+        "tib": "ན་མོ༔ བདག་གི་རྣམ་པར་ཤེས་པ་ནི༔",
+        "tr": "NAMO DAG GI NAM PAR SCHE PA NI",
+        "en": "Homage! This consciousness of mine",
+        "ru": "НАМО! Мое собственное сознание",
+        "uk": "НАМО! Моя власна свідомість"
+      },
+      {
+        "tib": "ཕཊཿ རང་གི་སྤྱི་བོར་འཕྲོ་པ་ལས༔",
+        "tr": "PHET RANG GI TSCHI WOR TRO PA LÄ",
+        "en": "PHET — shoots out through the crown of my head",
+        "ru": "ПХЭТ! Вырывается из моей макушки",
+        "uk": "ПХЕТ! Вирвалася з моєї маківки"
+      },
+      {
+        "tib": "ཕཊཿ རྡོ་རྗེ་ཕག་མོ་རྒྱ་སྲན་ཙམ༔",
+        "tr": "PHET DORDSCHE PAGMO GYA SEN TSAM",
+        "en": "PHET — becomes Dorje Phagmo, the size of a bean",
+        "ru": "ПХЭТ! И становится Дордже Пхагмо, размером с фасолину,",
+        "uk": "ПХЕТ! І стає Дордже Пхаґмо, розміром з квасолину,"
+      },
+      {
+        "tib": "ཕཊཿ དེ་ནས་ཆེར་སོང་མཛུབ་གང་ཙམ༔",
+        "tr": "PHET DE NÄ SCHER SONG DZUB GANG TSAM",
+        "en": "PHET — She grows to the size of a finger",
+        "ru": "ПХЭТ! Вырастая до размера ногтя большого пальца,",
+        "uk": "ПХЕТ! Виростаючи до розміру пальця,"
+      },
+      {
+        "tib": "ཕཊཿ དེ་ནས་ཆེར་སོང་ཁྲུ་གང་ཙམ༔",
+        "tr": "PHET DE NÄ TSCHER SONG TRU GANG TSAM",
+        "en": "PHET — Growing to the size of a cubit",
+        "ru": "ПХЭТ! Затем до локтя",
+        "uk": "ПХЕТ! Потім до ліктя"
+      },
+      {
+        "tib": "ཕཊཿ གནམ་ས་གང་བའི་ཕག་མོར་གྱུར༔",
+        "tr": "PHET NAM SA GANG WÄ PHAG MOR GYUR",
+        "en": "PHET — Fills the entire earth and all of space",
+        "ru": "ПХЭТ! Дордже Пхагмо теперь охватывает и землю, и пространство.",
+        "uk": "ПХЕТ! Дордже Пхаґмо тепер охоплює і землю, і простір."
+      },
+      {
+        "tib": "ཕྱག་གཡས་གྲི་གུག་ཚད་ཙམ་གྱིས༔",
+        "tr": "TSCHAG JÄ DRI GUG TSED DSAM GYI",
+        "en": "With a mere motion of the blade in her right hand,",
+        "ru": "Взмахнув изогнутым ваджрным ножом в моей правой руке,",
+        "uk": "Змахнувши вигнутим ваджрним ножем у моїй правій руці,"
+      },
+      {
+        "tib": "བེམ་པོའི་མགོ་བོ་བྲེག་ནས་ཀྱང་༔",
+        "tr": "BEM PÖ GO WO DREG NÄ KYANG",
+        "en": "She severs the head from my fallen corpse",
+        "ru": "Отделяю голову от моего трупа.",
+        "uk": "Відділяю голову від мого тіла."
+      },
+      {
+        "tib": "དེ་ཉིད་གཡས་སུ་བཞག་བྱས་ནས༔",
+        "tr": "DE NYID JÄ SU ZCHAG DSCHÄ NÄ",
+        "en": "And places it to the right of my body",
+        "ru": "Поместив голову справа от трупа,",
+        "uk": "Поклавши голову праворуч від тіла,"
+      },
+      {
+        "tib": "གྲི་གུག་དེ་ཉིད་ཚད་ཙམ་གྱིས༔",
+        "tr": "DRI GUG DE NYID TSED TSAM GYI",
+        "en": "Simply waving the curved vajra blade,",
+        "ru": "взмахом кончика изогнутого ножа,",
+        "uk": "змахом кінчика вигнутого ножа,"
+      },
+      {
+        "tib": "མགོ་ཤུན་བཤུས་ཏེ་བྷནྡྷ་བྱས༔",
+        "tr": "GO SCHUN SCHÜ TE BHENDHA DSCHE",
+        "en": "The head skin becomes a kapala (skull cup)",
+        "ru": "снимаю верхушку черепа, превращая её в чашу из черепа.",
+        "uk": "знімаю верхівку черепа, перетворюючи її на чашу з черепа."
+      },
+      {
+        "tib": "དེ་ནང་རང་གི་བེམ་པོ་བཞག༔",
+        "tr": "DÄ NANG RANG GI BEM PO ZCHAG",
+        "en": "Placing one's corpse inside the kapala,",
+        "ru": "Затем, поместив труп внутрь чаши из черепа,",
+        "uk": "Потім, помістивши тіло всередину чаші з черепа,"
+      },
+      {
+        "tib": "གཡས་ཀྱི་གྲི་གུག་ཚད་ཙམ་གྱིས༔",
+        "tr": "JÄ KYI DRI GUG TSED DSAM GYI",
+        "en": "By merely waving the curved vajra blade,",
+        "ru": "взмахом изогнутого ножа в моей правой руке,",
+        "uk": "змахом вигнутого ножа у моїй правій руці,"
+      },
+      {
+        "tib": "ཤ་ལྔ་བདུད་རྩི་རྣམ་ལྔར་གྱུར༔",
+        "tr": "SCHA NGA DÜD TSI NAM NGAR GYUR",
+        "en": "The contents become the five meats and five nectars",
+        "ru": "содержимое становится пятью видами мяса и пятью видами нектара.",
+        "uk": "вміст стає п'ятьма видами м'яса та п'ятьма видами нектару."
+      },
+      {
+        "tib": "ཕཊཿ ཕཊཿ རང་གི་ཐུགས་ཀ་ནས༔",
+        "tr": "PHET PHET RANG GI TUG KA NÄ",
+        "en": "PHET PHET — From your heart,",
+        "ru": "ПХЭТ! ПХЭТ! Из моего сердца излучается свет и",
+        "uk": "ПХЕТ! ПХЕТ! З мого серця випромінюється світло і"
+      },
+      {
+        "tib": "རྡོ་རྗེ་ཕག་མོ་རང་འདྲ་བ༔",
+        "tr": "DORDSCHE PAGMO RANG DRA WA",
+        "en": "Dorje Phagmo, identical to yourself,",
+        "ru": "бесчисленное множество Дордже Пагмо, таких же как я,",
+        "uk": "незліченна кількість Дордже Паґмо, таких самих як я,"
+      },
+      {
+        "tib": "གྲངས་མེད་གཡས་པས་རིན་ཆེན་སྐྱོགས༔",
+        "tr": "DRANG MED JÄ PÄ RINDSCHEN KYOG",
+        "en": "Countless, holding jewelled ladles in right hands,",
+        "ru": "они держат в своих правых руках украшенные драгоценностями черпаки,",
+        "uk": "тримають у своїх правих руках оздоблені коштовностями черпаки,"
+      },
+      {
+        "tib": "གཡོན་པས་བྷནྡྷ་འཛིན་པ་འཕྲོས༔",
+        "tr": "JÖN PÄ BHENDA DZIN PA TRÖ",
+        "en": "And holding skull cups in their left hands",
+        "ru": "а в левых — чаши из черепов.",
+        "uk": "а в лівих — чаші з черепів."
+      }
+    ]
+  },
+  {
+    "title": "Offering to the Guests",
+    "titleRu": "Подношение гостям",
+    "titleUk": "Піднесення гостям",
+    "repeat": "×1, 3, 7, or 21",
+    "lines": [
+      {
+        "tib": "ཕཊཿ བླ་མ་ཡི་དམ་ལྷ་ལ་མཆོད༔",
+        "tr": "PHET LAMA JIDAM LHA LA TSCHÖD",
+        "en": "PHET — Offered to the lamas and meditational deities",
+        "ru": "Я предлагаю нектар Ламам и медитативным божествам,",
+        "uk": "Я підношу нектар Ламам і медитативним божествам,"
+      },
+      {
+        "tib": "ཕཊཿ མཁའ་འགྲོ་ཆོས་སྐྱོང་རྣམས་ལ་མཆོད༔",
+        "tr": "PHET KHANDRO TSCHÖ KJONG NAM LA TSCHÖD",
+        "en": "PHET — To all Dakinis and Dharma protectors",
+        "ru": "ПХЭТ! Всем дакиням и защитникам Дхармы,",
+        "uk": "ПХЕТ! Усім дакіням і захисникам Дгарми,"
+      },
+      {
+        "tib": "ཕཊཿ འཇིག་རྟེན་སྐྱོང་བ་རྣམས་ལ་མཆོད༔",
+        "tr": "PHET DSCHIGTEN KYONG WA NAM LA TSCHÖD",
+        "en": "PHET — To all worldly protectors",
+        "ru": "ПХЭТ! Всем мирским защитникам,",
+        "uk": "ПХЕТ! Усім мирським захисникам,"
+      },
+      {
+        "tib": "ཕཊཿ མི་མ་ཡིན་ཀུན་ཐམས་ཅད་མཆོད༔",
+        "tr": "PHET MI MA YIN KUN TAM DSCHE TSCHÖD",
+        "en": "PHET — To all formless spirits",
+        "ru": "ПХЭТ! Всем нечеловеческим духам,",
+        "uk": "ПХЕТ! Усім нелюдським духам,"
+      },
+      {
+        "tib": "ཕཊཿ འགྲོ་བ་རིགས་དྲུག་ཀུན་ལ་མཆོད༔",
+        "tr": "PHET DRO WA RIG DRUG KUN LA TSCHÖD",
+        "en": "PHET — To all beings of the six classes",
+        "ru": "ПХЭТ! Всем существам шести миров,",
+        "uk": "ПХЕТ! Усім істотам шести світів,"
+      },
+      {
+        "tib": "ཕཊཿ ཁྱད་པར་ལན་ཆགས་བུ་ལོན་ཅན༔",
+        "tr": "PHET KHYED PAR LEN TSCHAG BU LÖN DSCHEN",
+        "en": "PHET — To those to whom karmic debts are owed;",
+        "ru": "ПХЭТ! Особенно тем существам, перед которыми у меня есть кармические долги,",
+        "uk": "ПХЕТ! Особливо тим істотам, перед якими в мене є кармічні борги,"
+      },
+      {
+        "tib": "གནོད་བྱེད་ཀུན་ལ་མཆོད་པར་གྱུར༔",
+        "tr": "NÖD DSCHED KUN LA TSCHÖD PAR GYUR",
+        "en": "And to all harmful entities",
+        "ru": "и всем вредоносным существам.",
+        "uk": "і всім шкідливим істотам."
+      }
+    ]
+  },
+  {
+    "title": "Fulfillment",
+    "titleRu": "Исполнение",
+    "titleUk": "Здійснення",
+    "lines": [
+      {
+        "tib": "ཕཊཿ བདག་གིས་མཆོད་སྦྱིན་འདི་འབུལ་བས༔",
+        "tr": "PHET DAG GI TSCHÖD DSCHIN DI BUL WÄ",
+        "en": "PHET — Through the generosity of my offering,",
+        "ru": "ПХЭТ! Благодаря щедрости моего подношения,",
+        "uk": "ПХЕТ! Завдяки щедрості мого піднесення,"
+      },
+      {
+        "tib": "བླ་མ་ཡི་དམ་མཉེས་གྱུར་ཅིག༔",
+        "tr": "LAMA YIDAM NYÄ GYUR DSCHIG",
+        "en": "May the Gurus and deities be pleased.",
+        "ru": "да будут удовлетворены гуру и медитативные божества!",
+        "uk": "хай будуть задоволені ґуру та медитативні божества!"
+      },
+      {
+        "tib": "མཁའ་འགྲོ་ཆོས་སྐྱོང་འཇིག་རྟེན་སྐྱོང༔",
+        "tr": "KHANDRO TSCHÖ KYONG DSCHIGTEN KYONG",
+        "en": "May Dakinis, Dharma and worldly protectors,",
+        "ru": "Да будут удовлетворены дакини, защитники дхармы и мирские защитники!",
+        "uk": "Хай будуть задоволені дакіні, захисники дгарми та мирські захисники!"
+      },
+      {
+        "tib": "ཀུན་གྱི་ཐུགས་དམ་བསྐང་གྱུར་ཅིག༔",
+        "tr": "KUN GYI TUGDAM KANG GYUR DSCHIG",
+        "en": "All be pleasingly fulfilled.",
+        "ru": "Да будут они довольны и исполнят все желания!",
+        "uk": "Хай будуть вони задоволені та здійснять усі бажання!"
+      },
+      {
+        "tib": "མི་མ་ཡིན་ཀུན་མགུ་གྱུར་ཅིག༔",
+        "tr": "MI MA YIN KUN GU GYUR DSCHIG",
+        "en": "May all formless spirits be fulfilled.",
+        "ru": "Да возрадуются все нечеловеческие духи!",
+        "uk": "Хай зрадіють усі нелюдські духи!"
+      },
+      {
+        "tib": "འགྲོ་བ་རིགས་དྲུག་ཚིམ་གྱུར་ཅིག༔",
+        "tr": "DRO WA RIG DRUG TSIM GYUR DSCHIG",
+        "en": "May beings of the six realms be satisfied.",
+        "ru": "Да будут удовлетворены существа шести миров!",
+        "uk": "Хай будуть задоволені істоти шести світів!"
+      },
+      {
+        "tib": "ལན་ཆགས་བུ་ལོན་དག་གྱུར་ཅིག༔",
+        "tr": "LEN SCHAG BU LÖN DAG GYUR DSCHIG",
+        "en": "May all unpaid karmic debts be cleared.",
+        "ru": "Да будут погашены все неоплаченные кармические долги!",
+        "uk": "Хай будуть сплачені всі несплачені кармічні борги!"
+      },
+      {
+        "tib": "གནོད་བྱེད་འདོད་པ་སྐོངས་གྱུར་ཅིག༔",
+        "tr": "NÖD DSCHED DÖD PA KONG GYUR DSCHIG",
+        "en": "May desires of all harmful entities be fulfilled.",
+        "ru": "Да исполнятся желания всех вредоносных существ!",
+        "uk": "Хай здійсняться бажання всіх шкідливих істот!"
+      }
+    ]
+  },
+  {
+    "title": "Dissolution",
+    "titleRu": "Растворение",
+    "titleUk": "Розчинення",
+    "lines": [
+      {
+        "tib": "ཕཊཿཕཊཿཕཊཿ",
+        "tr": "PHET PHET PHET",
+        "en": "PHET PHET PHET",
+        "ru": "ПХЭТ ПХЭТ ПХЭТ",
+        "uk": "ПХЕТ ПХЕТ ПХЕТ"
+      },
+      {
+        "tib": "སྤྱན་དྲངས་མགྲོན་རྣམས་རང་གནས་བཛྲ་མུ༔",
+        "tr": "TSCHEN DRANG DRÖN NAM RANG NÄ BENDZA MU",
+        "en": "All guests return to their abodes — BENDZA MU",
+        "ru": "Все приглашенные гости возвращаются в свои обители — БЕНДЗРА МУ.",
+        "uk": "Усі запрошені гості повертаються до своїх обителей — БЕНДЗРА МУ."
+      },
+      {
+        "tib": "བདག་དང་མགྲོན་དང་མཆོད་པོ་མི་དམིགས་པ༔",
+        "tr": "DAG DANG DRÖN DANG TSCHÖD PO MI MIG PA",
+        "en": "Oneself, all guests, and offerings are objectless.",
+        "ru": "Я, гости и подношения пусты.",
+        "uk": "Я, гості та піднесення порожні."
+      },
+      {
+        "tib": "གནས་ལུགས་རང་བཞིན་ཀ་དག་རྫོགས་པ་ཆེ༔",
+        "tr": "NÄ LUG RANG ZCHIN KA DAG DZOG PA TSCHÄ",
+        "en": "The originally pure natural state of Great Perfection.",
+        "ru": "Так пребывают вещи, внутреннее осознание и Великое совершенство изначальной чистоты.",
+        "uk": "Так перебувають речі, внутрішнє усвідомлення та Велика досконалість первісної чистоти."
+      },
+      {
+        "tib": "དགེ་བས་བདག་གཞན་ཀུན་གྱིས་འགྲུབ་གྱུར་ཅིག༔",
+        "tr": "GÄ WÄ DAG ZCHEN KUN GYI DRUB GYUR DSCHIG",
+        "en": "May this virtue accomplish the purpose of self and all!",
+        "ru": "Благодаря этой добродетели я и все остальные сможем достичь состояния Будды!",
+        "uk": "Завдяки цій чесноті я та всі інші зможемо досягти стану Будди!"
+      }
+    ]
+  },
+  {
+    "title": "Auspicious Prayer",
+    "titleRu": "Молитва-благопожелание",
+    "titleUk": "Молитва-благопобажання",
+    "lines": [
+      {
+        "tib": "སྨྲ་བསམ་བརྗོད་མེད་ཤེས་རབ་ཕ་རོལ་ཕྱིན།",
+        "tr": "MRA SAM DSCHÖ ME SCHE RAB PA ROL TSCHIN",
+        "en": "Ineffable and inconceivable Prajnaparamita,",
+        "ru": "Невыразимая и непостижимая Праджняпарамита,",
+        "uk": "Невимовна і незбагненна Праджняпараміта,"
+      },
+      {
+        "tib": "མ་སྐྱེས་མི་འགག་ནམ་མཁའི་ངོ་བོ་ཉིད།",
+        "tr": "MA KYE MI GAG NAM KA'I NGO WO NYID",
+        "en": "Possessing the essence of space, unborn and endless.",
+        "ru": "Суть пространства, нерожденная и не прекращающаяся,",
+        "uk": "Суть простору, ненароджена і нескінченна,"
+      },
+      {
+        "tib": "སོ་སོ་རང་རིག་ཡེ་ཤེས་སྤྱོད་ཡུལ་བ།",
+        "tr": "SO SO RANG RIG YE SCHE TSCHÖ YÜL WA",
+        "en": "You are the object of one's own self-awareness.",
+        "ru": "Воспринимающая различные объекты как мудрость самоосознавания.",
+        "uk": "Що сприймає різні об'єкти як мудрість самоусвідомлення."
+      },
+      {
+        "tib": "དུས་གསུམ་རྒྱལ་བའི་ཡུམ་གྱིས་བཀྲིས་ཤོག།",
+        "tr": "DÜ SUM GYAL WA'I YUM GYI TRI SCHOG",
+        "en": "May all be auspicious for the Great Mother of the three times.",
+        "ru": "Пусть все благоприятствует Великой Матери, владычице трех времен.",
+        "uk": "Хай все сприяє Великій Матері, владарці трьох часів."
+      },
+      {
+        "tib": "ཏདྱཐཱ། ཨོཾ་ག་ཏེ་ག་ཏེ། པཱ་ར་ག་ཏེ། པཱ་ར་སཾ་ག་ཏེ། བོ་དྷི་སྭཱ་ཧཱ།",
+        "tr": "TADYATA OM GATE GATE PARAGATE PARASAM GATE BODHI SVAHA",
+        "en": "TADYATA OM GATE GATE PARAGATE PARASAM GATE BODHI SVAHA",
+        "ru": "ТАДЬЯТА ОМ ГАТЕ ГАТЕ ПАРАГАТЕ ПАРАСАМ ГАТЕ БОДХИ СВАХА",
+        "uk": "ТАДЬЯТА ОМ ҐАТЕ ҐАТЕ ПАРАҐАТЕ ПАРАСАМ ҐАТЕ БОДГІ СВАХА"
+      }
+    ]
+  },
+  {
+    "title": "Dedication",
+    "titleRu": "Посвящение заслуги",
+    "titleUk": "Присвячення заслуги",
+    "lines": [
+      {
+        "tib": "དགེ་བ་མ་རྒན་འགྲོ་དྲུག་ཀུན་ལ་བསྔོ༔",
+        "tr": "GEWA MA GEN DRO DRUG KUN LA NGO",
+        "en": "I dedicate all merit to motherly beings of the six realms.",
+        "ru": "Я посвящаю всю заслугу моим матерям чувствующим существам шести миров.",
+        "uk": "Я присвячую всю заслугу моїм матерям чуттєвим істотам шести світів."
+      },
+      {
+        "tib": "རྒྱལ་བ་མཆོད་པས་མཉེས་གྱུར་ཅིག",
+        "tr": "GYAL WA TSCHÖ PE NYE GYUR DSCHIG",
+        "en": "May all Buddhas rejoice in these offerings!",
+        "ru": "Будды – пусть усладятся подношениями!",
+        "uk": "Будди — хай втішаться піднесеннями!"
+      },
+      {
+        "tib": "དམ་ཅན་ཐུགས་དམ་སྐོང་གྱུར་ཅིག",
+        "tr": "DAMSCHEN TUGDAM KONG GYUR DSCHIG",
+        "en": "May the vows of the protectors be fulfilled!",
+        "ru": "Дамчены – пусть полностью удовлетворятся!",
+        "uk": "Дамчени — хай повністю задовольняться!"
+      },
+      {
+        "tib": "རིགས་དྲུག་འདོད་པ་ཚིམས་གྱུར་ཅིག",
+        "tr": "RIG DRUG DÖPA TSIM GYUR DSCHIG",
+        "en": "May wishes of the six types of beings be fulfilled!",
+        "ru": "Существа шести миров – пусть насладятся желаемым!",
+        "uk": "Істоти шести світів — хай насолодяться бажаним!"
+      },
+      {
+        "tib": "ལན་ཆགས་ཤ་མཁོན་སྦྱང་གྱུར་ཅིག",
+        "tr": "LEN SCHAG SCHA KÖN DSCHANG GYUR DSCHIG",
+        "en": "May hostilities with karmic debtors be pacified!",
+        "ru": "Пусть очистятся долги плоти!",
+        "uk": "Хай очистяться борги плоті!"
+      },
+      {
+        "tib": "ཚོགས་གཉིས་ཡོངས་སུ་རྫོགས་གྱུར་ཅིག",
+        "tr": "TSOG NYI YONG SU DZOG GYUR DSCHIG",
+        "en": "May we complete accumulations of merit and wisdom!",
+        "ru": "Пусть полностью завершатся два Накопления!",
+        "uk": "Хай повністю завершаться два Накопичення!"
+      },
+      {
+        "tib": "སྒྲིབ་གཉིས་བག་ཆགས་དག་གྱུར་ཅིག",
+        "tr": "DRIB NYI BAG TSCHAG DAG GYUR DSCHIG",
+        "en": "May we purify afflictions and habitual patterns!",
+        "ru": "Пусть очистятся кармические склонности и два омрачения!",
+        "uk": "Хай очистяться кармічні схильності та два затьмарення!"
+      },
+      {
+        "tib": "དམ་པ་སྐུ་གཉིས་ཐོབ་གྱུར་ཅིག",
+        "tr": "DAMPA KU NYI TOB GYUR DSCHIG",
+        "en": "May we attain Dharmakaya and Rupakaya!",
+        "ru": "Пусть обретутся два святых Тела Будды!",
+        "uk": "Хай здобудуться два святих Тіла Будди!"
+      },
+      {
+        "tib": "སྦྱིན་པ་རྒྱ་ཆེན་གྱུར་པ་འདི་ཡི་མཐུས།",
+        "tr": "DSCHINPA GYA TSCHEN GYUR PA DI YI TÜ",
+        "en": "By this immeasurable deed of generosity,",
+        "ru": "Силой этого огромного даяния,",
+        "uk": "Силою цього величезного дарування,"
+      },
+      {
+        "tib": "འགྲོ་བའི་དོན་དུ་རང་བྱུང་སངས་རྒྱས་ཤོག",
+        "tr": "DROWA'I DÖN DU RANG DSCHUNG SANGYE SCHOG",
+        "en": "May we attain Buddhahood for the benefit of all!",
+        "ru": "На благо существ пусть станем самовозникшими Буддами,",
+        "uk": "На благо істот хай станемо самовинниклими Буддами,"
+      },
+      {
+        "tib": "སྔོན་གྱི་རྒྱལ་བ་རྣམས་ཀྱིས་མ་གྲོལ་བའི།",
+        "tr": "NGNÖN GYI GYALWA NAM KYI MA DROL WA'I",
+        "en": "May those not liberated by past Buddhas,",
+        "ru": "Собрание существ, Буддами прошлого",
+        "uk": "Зібрання істот, Буддами минулого"
+      },
+      {
+        "tib": "སྐྱེ་བོའི་ཚོགས་རྣམས་སྦྱིན་པས་གྲོལ་གྱུར་ཅིག",
+        "tr": "KYEWO'I TSOG NAM DSCHIN PÄ DROL GYUR DSCHIG",
+        "en": "By this generosity be fully liberated!",
+        "ru": "Не освобожденные, силой этого даяния пусть обретут освобождение!",
+        "uk": "Не звільнені, силою цього дарування хай здобудуть звільнення!"
+      },
+      {
+        "tib": "འབྱུང་པོ་གང་འདིར་ནི་ལྷགས་གྱུར་ཏམ།",
+        "tr": "DSCHUNG PO GANG DIR NI LHAG GYUR TAM",
+        "en": "However many spirits still remain here,",
+        "ru": "Все собравшиеся здесь духи,",
+        "uk": "Усі зібрані тут духи,"
+      },
+      {
+        "tib": "སའམ་འོན་ཏེ་བར་སྣང་འཁོད་ཀྱང་རུང།",
+        "tr": "SA'AM ÖN TE BAR NANG KÖ KYANG RUNG",
+        "en": "On earth or in the sky, wherever they are,",
+        "ru": "Где бы ни находились: на земле, внизу, вверху или промежутке",
+        "uk": "Де б не перебували: на землі, внизу, вгорі чи проміжку"
+      },
+      {
+        "tib": "སྐྱེ་དགུ་རྣམས་ལ་རྟག་ཏུ་བྱམས་བྱེད་ཅིང།",
+        "tr": "KYE GU NAM LA TAG TU DSCHAM DSCHE DSCHING",
+        "en": "May they always love all beings,",
+        "ru": "Будьте всегда милосердны ко всем существам!",
+        "uk": "Будьте завжди милосердні до всіх істот!"
+      },
+      {
+        "tib": "ཉིན་དང་མཚན་དུ་ཆོས་ལ་སྤྱོད་པར་ཤོག།",
+        "tr": "NYIN DANG TSEN DU TSCHÖ LA TSCHÖ PAR SCHOG",
+        "en": "And practice the Dharma by day and night!",
+        "ru": "Днем и ночью поступайте согласно дхарме!",
+        "uk": "Вдень і вночі чиніть згідно з дгармою!"
+      },
+      {
+        "tib": "བསོད་ནམས་འདི་ཡིས་ཐམས་ཅད་གཟིགས་པ་ཉིད།",
+        "tr": "SÖNAM DI YI TAM DSCHE ZIG PA NYI",
+        "en": "By this merit, through complete omniscience,",
+        "ru": "Благодаря этой добродетели пусть каждый обретет всеведение,",
+        "uk": "Завдяки цій чесноті хай кожен здобуде всевідання,"
+      },
+      {
+        "tib": "ཐོབ་ནས་ཉེས་པའི་དགྲ་རྣམས་ཕམ་བྱས་ཤིང༌།",
+        "tr": "TOB NÄ NYÄ PA'I DRA NAM PAM DSCHE SCHING",
+        "en": "And the total defeat of all negative forces,",
+        "ru": "Победив врага - порочные действия,",
+        "uk": "Перемігши ворога — ганебні дії,"
+      },
+      {
+        "tib": "སྐྱེ་རྒ་ན་འཆིའི་རྦ་ཀློང་འཁྲུགས་པ་ཡི།",
+        "tr": "KYE GA NA TSCHI'I BA LONG DRUG PA YI",
+        "en": "From the waves of birth, old age, sickness and death —",
+        "ru": "От бушующих волн рождения, старости, болезни и смерти",
+        "uk": "Від бурхливих хвиль народження, старості, хвороби та смерті"
+      },
+      {
+        "tib": "སྲིད་པའི་མཚོ་ལས་འགྲོ་བ་སྒྲོལ་བར་ཤོག",
+        "tr": "SRID PA'I TSO LÄ DRO WA DROL WAR SCHOG",
+        "en": "From this ocean of existence — may all be set free!",
+        "ru": "Из океана Сансары да освобожу я всех существ.",
+        "uk": "З океану Сансари хай звільню я всіх істот."
+      }
+    ]
+  },
+  {
+    "title": "Sukhavati Prayer",
+    "titleRu": "Молитва о рождении в Сукхавати",
+    "titleUk": "Молитва про народження в Сукхаваті",
+    "lines": [
+      {
+        "tib": "ཨེ་མ་ཧོ། ངོ་མཚར་སངས་རྒྱས་སྣང་བ་མཐའ་ཡས་དང་༔",
+        "tr": "E MA HO NGO TSAR SANG GYÄ NANG WA THA YÄ DANG",
+        "en": "How astonishing! The Buddha of Boundless Light,",
+        "ru": "Чудесный Будда Амитабха Безграничный Свет,",
+        "uk": "Чудесний Будда Амітабга Безмежне Світло,"
+      },
+      {
+        "tib": "གཡས་སུ་ཇོ་བོ་ཐུགས་རྗེ་ཆེན་པོ་དང་༔",
+        "tr": "YÄ SU DSCHO WO TUG DSCHE TSCHEN PO DANG",
+        "en": "The Lord of Great Compassion to your right,",
+        "ru": "Справа от него Владыка Великое Сострадание,",
+        "uk": "Праворуч від нього Владика Велике Співчуття,"
+      },
+      {
+        "tib": "གཡོན་དུ་སེམས་དཔའ་མཐུ་ཆེན་ཐོབ་རྣམས་ལ༔",
+        "tr": "YÖN DU SEM PA THU TSCHEN TOB NAM LA",
+        "en": "The Bodhisattva of power to your left,",
+        "ru": "Слева Бодхисаттва Ваджрапани,",
+        "uk": "Ліворуч Бодгісаттва Ваджрапані,"
+      },
+      {
+        "tib": "སངས་རྒྱས་བྱང་སེམས་དཔག་མེད་འཁོར་གྱིས་བསྐོར༔",
+        "tr": "SANG YÄ DSCHANG SEM PAG ME KOR GYI KOR",
+        "en": "Surrounded by boundless Buddhas and Bodhisattvas,",
+        "ru": "Окруженные бесчисленными Буддами и бодхисаттвами,",
+        "uk": "Оточені незліченними Буддами та бодгісаттвами,"
+      },
+      {
+        "tib": "བདེ་སྐྱིད་ངོ་མཚར་དཔག་ཏུ་མེད་པ་ཡི༔",
+        "tr": "DE KYI NGO TSAR PAG TU ME PA YI",
+        "en": "Into the wondrous, immeasurably blissful",
+        "ru": "В этой чистой Земле, неизмеримого чудесного счастья и радости,",
+        "uk": "У цій чистій Землі, неосяжного чудесного щастя та радості,"
+      },
+      {
+        "tib": "བདེ་བ་ཅན་ཞེས་བྱ་བའི་ཞིང་ཁམས་དེར༔",
+        "tr": "DE WA DSCHEN ZCHE DSCHA WÄ SCHING KAM DER",
+        "en": "Pure Realm of Great Bliss (Dewachen),",
+        "ru": "Называемой Девачен, Великое Блаженство,",
+        "uk": "Що зветься Девачен, Велике Блаженство,"
+      },
+      {
+        "tib": "བདག་ནི་འདི་ནས་ཚེ་འཕོས་གྱུར་མ་ཐག༔",
+        "tr": "DAG NI DI NÄ TSE PÖ GYUR MA TAG",
+        "en": "May I, at the moment of transfer from this life,",
+        "ru": "Пусть я, сразу же по окончанию этой жизни,",
+        "uk": "Хай я, одразу ж по закінченні цього життя,"
+      },
+      {
+        "tib": "སྐྱེ་བ་གཞན་གྱིས་བར་མ་ཆོད་པ་རུ༔",
+        "tr": "KYE WA ZCHEN GYI BAR MA TSCHÖ PA RU",
+        "en": "Without any other births intervening,",
+        "ru": "Не принимая следующего рождения,",
+        "uk": "Не приймаючи наступного народження,"
+      },
+      {
+        "tib": "དེ་རུ་སྐྱེས་ནས་སྣང་མཐའི་ཞལ་མཐོང་ཤོག༔",
+        "tr": "DE RU KYE NÄ NANG TA'I ZCHAL TONG SCHOG",
+        "en": "Be reborn to behold the face of Amitabha.",
+        "ru": "Там обрету рождение, узрею лик Амитабхи!",
+        "uk": "Там здобуду народження, побачу лик Амітабги!"
+      },
+      {
+        "tib": "དེ་སྐད་བདག་གིས་སྨོན་ལམ་བཏབ་པ་འདི༔",
+        "tr": "DE KÄ DAG GI MÖN LAM TAB PA DI",
+        "en": "Through the power of this very prayer,",
+        "ru": "В силу произнесения этого устремления,",
+        "uk": "В силу проголошення цього устремління,"
+      },
+      {
+        "tib": "ཕྱོགས་བཅུའི་སངས་རྒྱས་བྱང་སེམས་ཐམས་ཅད་ཀྱིས༔",
+        "tr": "TSCHOG TSCHU'I SANG GYÄ DSCHANG SEM TAM DSCHE KYI",
+        "en": "May the Buddhas and Bodhisattvas of ten directions,",
+        "ru": "Все Будды и Бодхисаттвы 10 направлений,",
+        "uk": "Усі Будди та Бодгісаттви 10 напрямків,"
+      },
+      {
+        "tib": "གེགས་མེད་འགྲུབ་པར་བྱིན་གྱིས་བརླབ་ཏུ་གསོལ༔",
+        "tr": "GEG ME DRUB PAR DSCHIN GYI LAB TU SOL",
+        "en": "Grant blessing to accomplish this without interference.",
+        "ru": "Благословите беспрепятственное исполнение этого!",
+        "uk": "Благословіть безперешкодне здійснення цього!"
+      },
+      {
+        "tib": "ཏདྱ་ཐ༔ པཉྩ་དྲི་ཡ་ཨ་ཝ་བོ་དྷ་ན་ཡ་སྭཱ་ཧཱ༔",
+        "tr": "TA DYA TA PEN TSA DRI YA AWA BODHA NA YA SVA HA",
+        "en": "TA DYA TA PEN TSA DRI YA AWA BODHA NA YA SVA HA",
+        "ru": "ТЕДЬЯТА ПАНЦА ДРИЙЯ АВА БОДА НАЙЕ СОХА",
+        "uk": "ТЕДЬЯТА ПАНЦА ДРІЙЯ АВА БОДА НАЙЄ СОХА"
+      }
+    ]
+  },
+  {
+    "title": "Bodhicitta Aspiration",
+    "titleRu": "Увеличение постижения Бодхичитты",
+    "titleUk": "Збільшення осягнення Бодгічітти",
+    "lines": [
+      {
+        "tib": "བྱང་ཆུབ་སེམས་མཆོག་རིན་པོ་ཆེ།",
+        "tr": "DSCHANG TSCHUB SEM TSCHOG RINPODSCHE",
+        "en": "Oh precious and sublime Bodhicitta,",
+        "ru": "Драгоценная Бодхичитта,",
+        "uk": "Дорогоцінна Бодгічітта,"
+      },
+      {
+        "tib": "མ་སྐྱེས་པ་རྣམས་སྐྱེ་གྱུར་ཅིག",
+        "tr": "MA KYÄ PA NAM KYE GYUR DSCHIG",
+        "en": "May it arise in those in whom it has not arisen,",
+        "ru": "В ком ее нет, да зародится она;",
+        "uk": "У кому її немає, хай зародиться вона;"
+      },
+      {
+        "tib": "སྐྱེས་པ་ཉམས་པ་མེད་པ་ཡང་།",
+        "tr": "KYE PA NYAM PA ME PA YANG",
+        "en": "May it never decline where it has arisen,",
+        "ru": "В ком она есть, да не уменьшится никогда,",
+        "uk": "У кому вона є, хай не зменшиться ніколи,"
+      },
+      {
+        "tib": "གོང་ནས་གོང་དུ་འཕེལ་བར་ཤོག",
+        "tr": "GONG NÄ GONG DU PELWAR SCHOG",
+        "en": "But go on increasing, further and further!",
+        "ru": "Но всё больше и больше возрастает.",
+        "uk": "А все більше і більше зростає."
+      }
+    ]
+  },
+  {
+    "title": "Concluding — Essential Advice",
+    "titleRu": "Заключительные слова: Сущностный совет",
+    "titleUk": "Заключні слова: Сутнісна порада",
+    "lines": [
+      {
+        "tib": "སྣང་གྲགས་རིག་གསུམ་ལྷ་སྔགས་ཆོས་སྐུའི་ངང༌།",
+        "tr": "NANG DRAG RIG SUM LHA NGAG CHÖKU'I NGANG",
+        "en": "Appearance, sound and awareness as Deity, Mantra and Dharmakaya.",
+        "ru": "Пусть все явления, звуки и осознавания предстанут как бесконечная игра.",
+        "uk": "Хай усі явища, звуки та усвідомлення постануть як нескінченна гра."
+      },
+      {
+        "tib": "སྐུ་དང་ཡེ་ཤེས་རོལ་པར་འབྱམས་ཀླས་པས།",
+        "tr": "KU DANG YESCHE ROLPA DSCHAM LÄ PÄ",
+        "en": "Within the vast expanse of enlightened phenomena and wisdom,",
+        "ru": "Пробуждённой воплощённости и мудрости в природе божеств, мантр и дхармакаи",
+        "uk": "Пробудженої втіленості та мудрості в природі божеств, мантр і дгармакаї"
+      },
+      {
+        "tib": "ཟབ་གསང་རྣལ་འབྱོར་ཆེན་པོའི་ཉམས་ལེན་ལ།",
+        "tr": "ZAB SANG NAL DSCHOR TSCHEN PO'I NYAM LEN LA",
+        "en": "Through the practice of the great yoga of the profound secret,",
+        "ru": "И сольются в едином вкусе с нераздельной сердечной биндху",
+        "uk": "І зіллються в єдиному смаку з нероздільною серцевою біндху"
+      },
+      {
+        "tib": "དབྱེར་མེད་ཐུགས་ཀྱི་ཐིག་ལེར་རོ་གཅིག་ཤོག",
+        "tr": "YERME TUG KYI TIG LER RO DSCHIG SCHOG",
+        "en": "May we remain indivisible in one taste of enlightened mind.",
+        "ru": "На пути глубокой и тайной практики великой йоги!",
+        "uk": "На шляху глибокої та таємної практики великої йоги!"
+      },
+      {
+        "tib": "ཨོཾ་ཨཱ༔ཧཱུྃ་བཛྲ་གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ༔",
+        "tr": "OM AH HUNG VAJRA GURU PADMA SIDDHI HUNG",
+        "en": "OM AH HUNG VAJRA GURU PADMA SIDDHI HUNG",
+        "ru": "ОМ АХ ХУНГ БЕНДЗА ГУРУ ПАДМА СИДДХИ ХУНГ",
+        "uk": "ОМ АХ ХУНГ БЕНДЗА ҐУРУ ПАДМА СІДДХІ ХУНГ"
+      }
+    ]
+  }
+];
+
+const DEFAULT_TIMESTAMPS = null; // ← paste your timestamps array here
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+const LAYERS = ['tib','tr','en','ru','uk'];
+const LAYER_LABELS = {tib:'བོད',tr:'Translit',en:'English',ru:'Русский',uk:'Українська'};
+const STORAGE_KEY_TS = 'kusali_chod_timestamps';
+const STORAGE_KEY_TEXT = 'kusali_chod_text';
+
+let flatLines=[], current=0, timestamps=[], elapsed=0, timerRunning=false, timerInterval=null, editingTs=-1;
+let show={tib:true,tr:true,en:true,ru:false,uk:false};
+let showTs=false, mode='manual';
+
+function init(){
+  // flatten
+  SECTIONS.forEach((sec,si)=>{
+    sec.lines.forEach((line,li)=>{
+      flatLines.push({...line, sectionIdx:si, lineIdx:li, sectionTitle:sec.title,
+        titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null});
+    });
+  });
+
+  // load saved text edits (may include marker lines → different length)
+  const savedText = loadJSON(STORAGE_KEY_TEXT);
+  if(savedText && Array.isArray(savedText)){
+    // check if saved data has markers (different length than base)
+    const hasMarkers = savedText.some(t=>t._marker);
+    if(hasMarkers){
+      // rebuild flatLines from saved data entirely
+      flatLines=[];
+      savedText.forEach((t)=>{
+        const si=t.sectionIdx!=null?t.sectionIdx:0;
+        const sec=SECTIONS[si]||SECTIONS[0];
+        const obj={sectionIdx:si, lineIdx:-1, sectionTitle:sec.title,
+          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null};
+        LAYERS.forEach(l=>{obj[l]=t[l]||'';});
+        if(t._marker) obj._marker=t._marker;
+        flatLines.push(obj);
+      });
+    } else if(savedText.length === flatLines.length){
+      savedText.forEach((t,i)=>{ LAYERS.forEach(l=>{ if(t[l]!=null) flatLines[i][l]=t[l]; }); });
+    }
+  }
+
+  // load timestamps
+  const savedTs = loadJSON(STORAGE_KEY_TS);
+  if(savedTs && Array.isArray(savedTs) && savedTs.length === flatLines.length) timestamps=savedTs;
+  else if(DEFAULT_TIMESTAMPS && DEFAULT_TIMESTAMPS.length === flatLines.length) timestamps=[...DEFAULT_TIMESTAMPS];
+  else timestamps=flatLines.map(()=>null);
+
+  renderLyrics();
+  updateHighlight();
+  updateProgress();
+}
+
+function renderLyrics(){
+  const area=document.getElementById('lyricsArea');
+  area.innerHTML='';
+  flatLines.forEach((line,i)=>{
+    if(i===0||line.sectionIdx!==flatLines[i-1].sectionIdx){
+      const secNum=line.sectionIdx+1;
+      const hdr=document.createElement('div');
+      hdr.className='section-hdr';
+      hdr.id='section-'+line.sectionIdx;
+      const numSpan=document.createElement('span');
+      numSpan.className='hdr-num';numSpan.textContent=secNum;
+      hdr.appendChild(numSpan);
+      const nameSpan=document.createElement('span');
+      nameSpan.textContent=line.sectionTitle;
+      hdr.appendChild(nameSpan);
+      if(line.repeat){const b=document.createElement('span');b.className='repeat-badge';b.textContent=line.repeat;hdr.appendChild(b);}
+      const subtitles=[];
+      if(show.ru && line.titleRu) subtitles.push(line.titleRu);
+      if(show.uk && line.titleUk) subtitles.push(line.titleUk);
+      if(subtitles.length){
+        const sub=document.createElement('span');sub.className='section-subtitle';sub.textContent=subtitles.join(' · ');
+        hdr.appendChild(sub);
+      }
+      area.appendChild(hdr);
+    }
+    const block=document.createElement('div');
+    block.id='line-'+i;
+    block.onclick=(e)=>{
+      if(e.target.closest('.ts-edit-row')||e.target.closest('.ts-badge')||e.target.closest('.marker-remove')||e.target.tagName==='TEXTAREA') return;
+      if(mode!=='edit') setCurrent(i);
+    };
+
+    // ── MARKER LINE (meditate / silence) ──
+    if(line._marker){
+      block.className='line-block marker future';
+      const label=document.createElement('div');
+      label.className='marker-label '+line._marker+' dim';
+      label.id='marker-'+i;
+      const icon=line._marker==='meditate'?'◎':'⋯';
+      const text=line._marker==='meditate'?'Meditate':'· · ·';
+      label.innerHTML=`<span class="marker-icon">${icon}</span>${text}`;
+      block.appendChild(label);
+      // remove button
+      const rmBtn=document.createElement('button');
+      rmBtn.className='marker-remove';rmBtn.textContent='✕ remove';
+      rmBtn.onclick=(e)=>{e.stopPropagation();removeMarkerAt(i);};
+      block.appendChild(rmBtn);
+      // timestamp badge
+      const tsBadge=document.createElement('button');
+      tsBadge.className='ts-badge';tsBadge.id='tsbadge-'+i;
+      tsBadge.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';
+      tsBadge.style.display=showTs?'':'none';
+      tsBadge.onclick=(e)=>{e.stopPropagation();startEditTs(i);};
+      block.appendChild(tsBadge);
+      area.appendChild(block);
+      return;
+    }
+
+    // ── NORMAL LINE ──
+    block.className='line-block future';
+
+    LAYERS.forEach(l=>{
+      const div=document.createElement('div');
+      div.className=`line-${l} dim`;
+      div.id=`${l}-${i}`;
+      div.textContent=line[l]||'';
+      if(!show[l]) div.style.display='none';
+      if(mode==='edit' && show[l]){
+        div.style.cursor='pointer';
+        div.ondblclick=()=>startEditLine(i,l);
+      }
+      block.appendChild(div);
+    });
+
+    const tsBadge=document.createElement('button');
+    tsBadge.className='ts-badge';tsBadge.id='tsbadge-'+i;
+    tsBadge.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';
+    tsBadge.style.display=showTs?'':'none';
+    tsBadge.onclick=(e)=>{e.stopPropagation();startEditTs(i);};
+    block.appendChild(tsBadge);
+    area.appendChild(block);
+  });
+}
+
+/* ── TEXT EDITING ── */
+function startEditLine(idx,layer){
+  if(mode!=='edit') return;
+  const el=document.getElementById(`${layer}-${idx}`);
+  if(!el||el.querySelector('textarea')) return;
+  const current_text=flatLines[idx][layer]||'';
+  el.innerHTML='';
+  const ta=document.createElement('textarea');
+  ta.className='line-edit'+(layer==='tib'?' tib-edit':'');
+  ta.value=current_text;
+  ta.rows=layer==='tib'?2:1;
+  ta.onblur=()=>finishEditLine(idx,layer,ta.value);
+  ta.onkeydown=(e)=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ta.blur();}
+    if(e.key==='Escape'){ta.value=current_text;ta.blur();}
+    e.stopPropagation();
+  };
+  el.appendChild(ta);
+  ta.focus();
+  ta.select();
+}
+
+function finishEditLine(idx,layer,val){
+  flatLines[idx][layer]=val;
+  const el=document.getElementById(`${layer}-${idx}`);
+  if(el){el.innerHTML='';el.textContent=val;}
+  persistText();
+}
+
+function persistText(){
+  try{
+    const data=flatLines.map(l=>{
+      const o={};LAYERS.forEach(k=>{o[k]=l[k];});
+      if(l._marker) o._marker=l._marker;
+      o.sectionIdx=l.sectionIdx;
+      return o;
+    });
+    localStorage.setItem(STORAGE_KEY_TEXT,JSON.stringify(data));
+  }catch(e){}
+}
+
+/* ── HIGHLIGHT & SCROLL ── */
+function updateHighlight(){
+  flatLines.forEach((_,i)=>{
+    const block=document.getElementById('line-'+i);
+    if(!block) return;
+    const isCurrent=i===current;
+    const line=flatLines[i];
+    if(line._marker){
+      block.className='line-block marker '+(isCurrent?'current':i<current?'past':'future');
+      const label=document.getElementById('marker-'+i);
+      if(label) label.className='marker-label '+line._marker+' '+(isCurrent?'active':'dim');
+    } else {
+      block.className='line-block '+(isCurrent?'current':i<current?'past':'future');
+      LAYERS.forEach(l=>{
+        const el=document.getElementById(`${l}-${i}`);
+        if(el&&!el.querySelector('textarea')) el.className=`line-${l} ${isCurrent?'active':'dim'}`;
+      });
+    }
+  });
+}
+function scrollToCurrent(){const el=document.getElementById('line-'+current);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}
+function updateProgress(){
+  const pct=flatLines.length>1?(current/(flatLines.length-1))*100:0;
+  document.getElementById('progressFill').style.height=pct+'%';
+  document.getElementById('progressDot').style.top=pct+'%';
+}
+function setCurrent(i){current=Math.max(0,Math.min(i,flatLines.length-1));updateHighlight();scrollToCurrent();updateProgress();}
+
+/* ── LAYER TOGGLES ── */
+function toggleLayer(l){
+  show[l]=!show[l];
+  updatePill('tog'+l.charAt(0).toUpperCase()+l.slice(1),show[l],LAYER_LABELS[l]);
+  flatLines.forEach((_,i)=>{const el=document.getElementById(`${l}-${i}`);if(el)el.style.display=show[l]?'':'none';});
+  renderLyrics();updateHighlight();
+}
+function updatePill(id,on,label){const el=document.getElementById(id);if(!el)return;el.className='pill '+(on?'on':'off');el.textContent=(on?'✓ ':'○ ')+label;}
+function toggleTimestamps(){
+  showTs=!showTs;const el=document.getElementById('togTs');
+  el.className='pill '+(showTs?'on':'off');el.textContent=(showTs?'✓':'○')+' ⏱ Timestamps';
+  flatLines.forEach((_,i)=>{const b=document.getElementById('tsbadge-'+i);if(b)b.style.display=showTs?'':'none';});
+}
+
+/* ── MODE ── */
+function setMode(m){
+  mode=m;
+  ['Manual','Auto','Tap','Edit'].forEach(n=>{
+    const btn=document.getElementById('mode'+n);
+    if(btn)btn.className='mode-btn '+(m===n.toLowerCase()?'active':'inactive');
+  });
+  document.getElementById('timerBar').style.display=(m==='auto'||m==='tap')?'flex':'none';
+  document.getElementById('tapBanner').className='tap-banner'+(m==='tap'?' visible':'');
+  document.getElementById('editBanner').className='edit-banner'+(m==='edit'?' visible':'');
+  if(m==='tap'&&!showTs) toggleTimestamps();
+  const hints={manual:'tap / click / ↓ ↑ / space to navigate',auto:'timestamps drive auto-scroll',tap:'▶ then space to stamp each line',edit:'double-click any visible text to edit'};
+  document.getElementById('navHint').textContent=hints[m]||'';
+  renderLyrics();updateHighlight();
+}
+
+/* ── TIMER ── */
+function toggleTimer(){timerRunning?stopTimer():startTimer();}
+function startTimer(){
+  timerRunning=true;document.getElementById('timerPlayPause').textContent='⏸';
+  timerInterval=setInterval(()=>{
+    elapsed+=0.1;document.getElementById('timerDisplay').textContent=formatTime(elapsed);
+    if(mode==='auto'){let best=0;for(let i=0;i<flatLines.length;i++){if(timestamps[i]!=null&&elapsed>=timestamps[i])best=i;}if(best!==current)setCurrent(best);}
+  },100);
+}
+function stopTimer(){timerRunning=false;document.getElementById('timerPlayPause').textContent='▶';clearInterval(timerInterval);}
+function resetTimer(){stopTimer();elapsed=0;document.getElementById('timerDisplay').textContent='0:00';setCurrent(0);}
+
+/* ── TIMESTAMP EDITING ── */
+function startEditTs(i){
+  if(editingTs>=0)closeEditTs(editingTs);editingTs=i;
+  const block=document.getElementById('line-'+i),badge=document.getElementById('tsbadge-'+i);
+  if(badge)badge.style.display='none';
+  const row=document.createElement('div');row.className='ts-edit-row';row.id='tsedit-'+i;
+  const input=document.createElement('input');input.className='ts-input';input.placeholder='m:ss';
+  input.value=timestamps[i]!=null?formatTime(timestamps[i]):'';
+  input.onkeydown=(e)=>{if(e.key==='Enter'){saveEditTs(i,input.value);e.preventDefault();}if(e.key==='Escape')closeEditTs(i);e.stopPropagation();};
+  const saveBtn=document.createElement('button');saveBtn.className='ts-small-btn ts-save';saveBtn.textContent='Set';
+  saveBtn.onclick=(e)=>{e.stopPropagation();saveEditTs(i,input.value);};
+  const tapBtn=document.createElement('button');tapBtn.className='ts-small-btn ts-tap';
+  tapBtn.textContent='Tap ⏱ '+formatTime(elapsed);
+  tapBtn.onclick=(e)=>{e.stopPropagation();timestamps[i]=Math.round(elapsed*10)/10;closeEditTs(i);persistTs();};
+  const cancelBtn=document.createElement('button');cancelBtn.className='ts-small-btn ts-cancel';cancelBtn.textContent='✕';
+  cancelBtn.onclick=(e)=>{e.stopPropagation();closeEditTs(i);};
+  row.appendChild(input);row.appendChild(saveBtn);
+  if(mode==='auto'||mode==='tap')row.appendChild(tapBtn);
+  row.appendChild(cancelBtn);block.appendChild(row);input.focus();
+}
+function saveEditTs(i,val){timestamps[i]=parseTime(val);closeEditTs(i);persistTs();}
+function closeEditTs(i){
+  editingTs=-1;const row=document.getElementById('tsedit-'+i);if(row)row.remove();
+  const badge=document.getElementById('tsbadge-'+i);
+  if(badge){badge.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';if(showTs)badge.style.display='';}
+}
+
+/* ── TAP MODE ── */
+function tapStampCurrent(){
+  if(!timerRunning)return;timestamps[current]=Math.round(elapsed*10)/10;
+  const badge=document.getElementById('tsbadge-'+current);if(badge)badge.textContent=formatTime(timestamps[current]);
+  persistTs();if(current<flatLines.length-1)setCurrent(current+1);
+}
+function tapUndoLast(){
+  if(current>0){
+    // if previous line is a marker we just inserted, remove it
+    const prev=current-1;
+    if(flatLines[prev]._marker){
+      removeMarkerAt(prev);
+      return;
+    }
+    setCurrent(prev);timestamps[current]=null;
+    const b=document.getElementById('tsbadge-'+current);if(b)b.textContent='＋';persistTs();
+  }
+}
+
+/* ── MARKER LINES (meditate / silence) ── */
+function insertMarker(type){
+  if(!timerRunning)return;
+  const ts=Math.round(elapsed*10)/10;
+  // create a marker line object
+  const marker={
+    tib:'', tr:'', en:'', ru:'', uk:'',
+    _marker: type, // 'meditate' or 'silence'
+    sectionIdx: flatLines[current].sectionIdx,
+    lineIdx: -1,
+    sectionTitle: flatLines[current].sectionTitle,
+    titleRu: flatLines[current].titleRu,
+    titleUk: flatLines[current].titleUk,
+    repeat: null,
+  };
+  // insert before current position
+  flatLines.splice(current, 0, marker);
+  timestamps.splice(current, 0, ts);
+  // re-render and stay on next real line
+  renderLyrics(); persistTs(); persistText();
+  setCurrent(current+1);
+}
+
+function removeMarkerAt(idx){
+  if(!flatLines[idx]._marker) return;
+  flatLines.splice(idx,1);
+  timestamps.splice(idx,1);
+  renderLyrics(); persistTs(); persistText();
+  if(current>=flatLines.length) current=flatLines.length-1;
+  setCurrent(current);
+}
+
+// Override renderLyrics line rendering to handle markers
+const _origRenderLine = null; // we patch inside renderLyrics
+
+/* ── KEYBOARD ── */
+document.addEventListener('keydown',(e)=>{
+  // close TOC on Escape
+  if(e.key==='Escape'&&document.getElementById('tocOverlay').classList.contains('visible')){closeTOC();e.preventDefault();return;}
+  if(editingTs>=0||mode==='edit') return;
+  if(mode==='tap'){
+    if(e.key===' '){e.preventDefault();tapStampCurrent();return;}
+    if(e.key==='m'||e.key==='M'){e.preventDefault();insertMarker('meditate');return;}
+    if(e.key==='s'||e.key==='S'){e.preventDefault();insertMarker('silence');return;}
+    if(e.key==='Backspace'){e.preventDefault();tapUndoLast();return;}
+    if(e.key==='Escape'){e.preventDefault();setMode('manual');return;}
+  }
+  if(e.key==='Escape'&&mode!=='manual'){e.preventDefault();setMode('manual');return;}
+  if(e.key==='ArrowDown'||(e.key===' '&&mode==='manual')||e.key==='ArrowRight'){e.preventDefault();setCurrent(current+1);}
+  else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();setCurrent(current-1);}
+});
+
+/* ── PERSISTENCE ── */
+function persistTs(){try{localStorage.setItem(STORAGE_KEY_TS,JSON.stringify(timestamps));}catch(e){}}
+function loadJSON(key){try{const r=localStorage.getItem(key);return r?JSON.parse(r):null;}catch(e){return null;}}
+
+/* ── IMPORT / EXPORT ── */
+function exportTimestamps(){downloadFile('kusali_chod_timestamps.json',JSON.stringify(timestamps,null,2),'application/json');}
+function importTimestamps(ev){
+  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=(e)=>{try{const d=JSON.parse(e.target.result);
+    if(Array.isArray(d)&&d.length===flatLines.length){timestamps=d;persistTs();
+      flatLines.forEach((_,i)=>{const b=document.getElementById('tsbadge-'+i);if(b)b.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';});
+      alert('Imported '+d.filter(t=>t!=null).length+' timestamps');
+    }else alert('Expected array of '+flatLines.length+' entries');}catch(err){alert('JSON error: '+err.message);}};
+  r.readAsText(f);ev.target.value='';
+}
+function exportText(){
+  const data=flatLines.map(l=>{
+    const o={};LAYERS.forEach(k=>{o[k]=l[k];});
+    if(l._marker) o._marker=l._marker;
+    o.sectionIdx=l.sectionIdx;
+    return o;
+  });
+  downloadFile('kusali_chod_text.json',JSON.stringify(data,null,2),'application/json');
+}
+function importText(ev){
+  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=(e)=>{try{const d=JSON.parse(e.target.result);
+    if(Array.isArray(d)){
+      // rebuild flatLines from imported data, preserving section metadata
+      const newFlat=[];
+      d.forEach((t)=>{
+        const si=t.sectionIdx!=null?t.sectionIdx:0;
+        const sec=SECTIONS[si]||SECTIONS[0];
+        const obj={sectionIdx:si, lineIdx:-1, sectionTitle:sec.title,
+          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null};
+        LAYERS.forEach(l=>{obj[l]=t[l]||'';});
+        if(t._marker) obj._marker=t._marker;
+        newFlat.push(obj);
+      });
+      flatLines=newFlat;
+      // adjust timestamps array to match
+      while(timestamps.length<flatLines.length) timestamps.push(null);
+      timestamps.length=flatLines.length;
+      persistText();renderLyrics();updateHighlight();
+      alert('Text imported: '+d.length+' lines');
+    }else alert('Expected a JSON array');}catch(err){alert('JSON error: '+err.message);}};
+  r.readAsText(f);ev.target.value='';
+}
+function exportSRT(){
+  let srt='',count=1;
+  flatLines.forEach((line,i)=>{
+    const start=timestamps[i];if(start==null)return;
+    const end=(i+1<flatLines.length&&timestamps[i+1]!=null)?timestamps[i+1]:start+5;
+    let parts=[];
+    if(line._marker){
+      parts.push(line._marker==='meditate'?'[Meditate]':'');
+    } else {
+      LAYERS.forEach(l=>{if(show[l]&&line[l])parts.push(line[l]);});
+    }
+    if(parts.join('').trim()==='') return; // skip empty silence markers in SRT
+    srt+=count+'\n'+formatSRT(start)+' --> '+formatSRT(end)+'\n'+parts.join('\n')+'\n\n';count++;
+  });
+  downloadFile('kusali_chod.srt',srt,'text/plain');
+}
+
+/* ── UTILS ── */
+function formatTime(s){if(s==null)return'--:--';return Math.floor(s/60)+':'+Math.floor(s%60).toString().padStart(2,'0');}
+function parseTime(str){if(!str)return null;const p=str.split(':');if(p.length!==2)return null;const m=parseInt(p[0]),s=parseInt(p[1]);return isNaN(m)||isNaN(s)?null:m*60+s;}
+function formatSRT(s){const h=Math.floor(s/3600).toString().padStart(2,'0'),m=Math.floor((s%3600)/60).toString().padStart(2,'0'),sec=Math.floor(s%60).toString().padStart(2,'0'),ms=Math.round((s%1)*1000).toString().padStart(3,'0');return h+':'+m+':'+sec+','+ms;}
+function downloadFile(name,content,type){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
+
+/* ── TABLE OF CONTENTS ── */
+function openTOC(){
+  const list=document.getElementById('tocList');
+  list.innerHTML='';
+  // find which section is current
+  const curSec=flatLines[current]?flatLines[current].sectionIdx:-1;
+  SECTIONS.forEach((sec,si)=>{
+    const item=document.createElement('div');
+    item.className='toc-item'+(si===curSec?' active':'');
+    const num=document.createElement('span');num.className='toc-num';num.textContent=si+1;
+    const nameWrap=document.createElement('div');
+    const name=document.createElement('div');name.className='toc-name';name.textContent=sec.title;
+    nameWrap.appendChild(name);
+    const subs=[];
+    if(sec.titleRu)subs.push(sec.titleRu);
+    if(sec.titleUk)subs.push(sec.titleUk);
+    if(subs.length){const sub=document.createElement('div');sub.className='toc-name-sub';sub.textContent=subs.join(' · ');nameWrap.appendChild(sub);}
+    item.appendChild(num);item.appendChild(nameWrap);
+    item.onclick=()=>{
+      closeTOC();
+      // find first line of this section
+      const idx=flatLines.findIndex(l=>l.sectionIdx===si);
+      if(idx>=0)setCurrent(idx);
+    };
+    list.appendChild(item);
+  });
+  document.getElementById('tocOverlay').classList.add('visible');
+}
+function closeTOC(){document.getElementById('tocOverlay').classList.remove('visible');}
+
+init();
+</script>
+</body>
+</html>
