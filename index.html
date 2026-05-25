@@ -23,45 +23,45 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 .mode-btn:hover{border-color:rgba(180,160,120,0.6);color:#bbb}
 .action-btn{padding:4px 12px;border-radius:20px;font-size:11px;font-family:system-ui,sans-serif;cursor:pointer;border:1px solid rgba(100,150,180,0.3);background:rgba(100,150,180,0.1);color:#8ab4c8;transition:all .2s;white-space:nowrap}
 .action-btn:hover{background:rgba(100,150,180,0.2);border-color:rgba(100,150,180,0.5)}
-.action-btn.warn{border-color:rgba(200,120,80,0.3);background:rgba(200,120,80,0.1);color:#c8a070}
 .divider{width:1px;height:18px;background:rgba(255,255,255,0.08);margin:0 2px}
 .spacer{margin-left:auto}
 .timer-bar{display:flex;align-items:center;gap:6px;font-family:monospace;font-size:12px;color:#8ab4c8}
 .timer-btn{background:rgba(100,130,180,0.15);border:1px solid rgba(100,130,180,0.3);border-radius:14px;padding:3px 10px;font-size:11px;color:#8ab4c8;cursor:pointer;font-family:system-ui,sans-serif}
 .timer-btn:hover{background:rgba(100,130,180,0.25)}
-.tap-banner{display:none;position:sticky;top:80px;z-index:99;background:rgba(120,90,40,0.25);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,170,100,0.25);padding:6px 16px;font-family:system-ui,sans-serif;font-size:12px;color:#d4c8a0;text-align:center;gap:8px;align-items:center;justify-content:center}
+.tap-banner{display:none;position:sticky;top:var(--sticky-top,80px);z-index:99;background:rgba(120,90,40,0.25);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,170,100,0.25);padding:6px 16px;font-family:system-ui,sans-serif;font-size:12px;color:#d4c8a0;text-align:center;gap:8px;align-items:center;justify-content:center}
 .tap-banner.visible{display:flex}
 .tap-banner kbd{display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:11px}
-
-/* ── EDIT MODE BANNER ── */
-.edit-banner{display:none;position:sticky;top:80px;z-index:99;background:rgba(80,130,100,0.2);backdrop-filter:blur(12px);border-bottom:1px solid rgba(100,180,130,0.25);padding:6px 16px;font-family:system-ui,sans-serif;font-size:12px;color:#a0d0b0;text-align:center;gap:8px;align-items:center;justify-content:center}
-.edit-banner.visible{display:flex}
+.edit-banner{display:none;position:sticky;top:var(--sticky-top,80px);z-index:99;background:rgba(80,130,100,0.2);backdrop-filter:blur(12px);border-bottom:1px solid rgba(100,180,130,0.25);padding:6px 16px;font-family:system-ui,sans-serif;font-size:12px;color:#a0d0b0;text-align:center}
+.edit-banner.visible{display:flex;justify-content:center}
 
 /* ── PROGRESS ── */
 .progress-track{position:fixed;right:6px;top:90px;bottom:40px;width:3px;background:rgba(180,160,120,0.08);border-radius:2px;z-index:50}
 .progress-fill{position:absolute;top:0;width:100%;background:rgba(200,170,100,0.4);border-radius:2px;transition:height .3s}
 .progress-dot{position:absolute;width:7px;height:7px;background:#c8a850;border-radius:50%;right:-2px;transition:top .3s;box-shadow:0 0 6px rgba(200,170,100,0.4)}
 
-/* ── LYRICS ── */
-.lyrics-area{padding:30vh 20px 40vh 20px;max-width:900px;margin:0 auto;cursor:pointer}
-.section-hdr{font-family:system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(210,190,140,0.85);margin:48px 0 6px 0;padding:10px 12px 8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-top:1px solid rgba(180,160,120,0.15);position:relative}
+/* ── SECTION HEADERS (sticky) ── */
+.section-hdr{font-family:system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(210,190,140,0.85);margin:0;padding:10px 12px 8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-top:1px solid rgba(180,160,120,0.15);position:sticky;top:var(--sticky-top,44px);z-index:30;background:rgba(10,10,18,0.96);backdrop-filter:blur(16px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 .section-hdr .hdr-num{font-size:11px;font-weight:400;color:rgba(180,160,120,0.4);min-width:18px}
 .section-subtitle{font-size:11px;color:rgba(180,160,120,0.5);letter-spacing:.5px;font-weight:400;display:block;width:100%;margin-top:2px;text-transform:none}
-.repeat-badge{font-size:10px;background:rgba(180,160,120,0.18);padding:2px 10px;border-radius:10px;color:rgba(210,190,140,0.7);font-weight:400}
 
-/* ── TABLE OF CONTENTS OVERLAY ── */
-.toc-overlay{position:fixed;inset:0;z-index:200;background:rgba(8,8,14,0.92);backdrop-filter:blur(24px);display:none;justify-content:center;align-items:flex-start;padding:60px 20px;overflow-y:auto}
-.toc-overlay.visible{display:flex}
-.toc-panel{width:100%;max-width:520px;padding:20px 0}
-.toc-title{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(180,160,120,0.5);margin-bottom:20px;text-align:center}
-.toc-item{display:flex;align-items:baseline;gap:12px;padding:12px 16px;border-radius:10px;cursor:pointer;transition:all .2s;border-bottom:1px solid rgba(180,160,120,0.06)}
-.toc-item:hover{background:rgba(180,160,120,0.08)}
-.toc-item.active{background:rgba(180,160,120,0.12);box-shadow:inset 3px 0 0 rgba(200,170,100,0.5)}
-.toc-num{font-family:system-ui,sans-serif;font-size:11px;color:rgba(180,160,120,0.35);min-width:20px;text-align:right}
-.toc-name{font-family:'Crimson Pro',serif;font-size:17px;color:#d4c8a0;line-height:1.4}
-.toc-name-sub{font-family:'Crimson Pro',serif;font-size:13px;color:rgba(180,160,120,0.45);line-height:1.3;margin-top:2px}
-.toc-close{position:fixed;top:16px;right:20px;z-index:210;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#999;font-size:18px;transition:all .2s}
-.toc-close:hover{background:rgba(255,255,255,0.12);color:#ddd}
+/* ── REPEAT EDITOR & ROUND DIVIDERS ── */
+.repeat-editor{display:inline-flex;align-items:center;gap:2px;margin-left:4px}
+.rep-btn{background:rgba(180,160,120,0.12);border:1px solid rgba(180,160,120,0.2);border-radius:4px;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(210,190,140,0.6);font-size:13px;font-family:system-ui,sans-serif;transition:all .2s;padding:0;line-height:1}
+.rep-btn:hover{background:rgba(180,160,120,0.25);color:rgba(210,190,140,0.9)}
+.rep-count{font-family:system-ui,sans-serif;font-size:12px;color:rgba(210,190,140,0.7);min-width:24px;text-align:center;letter-spacing:0;font-weight:400}
+.hdr-chevron{cursor:pointer;font-size:14px;color:rgba(210,190,140,0.5);transition:transform .25s,color .2s;display:inline-block;margin-right:2px;user-select:none}
+.hdr-chevron:hover{color:rgba(210,190,140,0.9)}
+.hdr-chevron.collapsed{transform:rotate(-90deg)}
+.section-hdr.clickable{cursor:pointer;transition:background .2s}
+.section-hdr.clickable:hover{background:rgba(180,160,120,0.08)}
+.section-hdr.clickable:hover .hdr-chevron{color:rgba(210,190,140,0.85)}
+.section-hdr.clickable:active{background:rgba(180,160,120,0.12)}
+.round-divider{display:flex;align-items:center;gap:10px;margin:20px 0 8px 0;padding:0 12px}
+.round-divider::before,.round-divider::after{content:'';flex:1;height:1px;background:rgba(180,160,120,0.1)}
+.round-label{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(180,160,120,0.35);white-space:nowrap}
+
+/* ── LYRICS ── */
+.lyrics-area{padding:12px 20px 40vh 20px;max-width:900px;margin:0 auto;cursor:pointer}
 .line-block{padding:8px 12px;margin:2px 0;border-radius:8px;transition:all .35s ease;position:relative}
 .line-block.past{opacity:.50}
 .line-block.current{opacity:1;background:rgba(180,160,120,0.07);box-shadow:inset 3px 0 0 rgba(200,170,100,0.6)}
@@ -79,21 +79,12 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 .line-uk{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
 .line-uk.active{color:#a0c0b0} .line-uk.dim{color:#506860}
 
-/* ── EDIT MODE ── */
+/* edit mode */
 .line-edit{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(180,160,120,0.2);border-radius:4px;padding:4px 8px;font-size:14px;color:#d4c8a0;font-family:inherit;outline:none;resize:none;margin-top:2px;line-height:1.5}
 .line-edit:focus{border-color:rgba(200,170,100,0.5);background:rgba(255,255,255,0.06)}
 .line-edit.tib-edit{font-family:'Noto Serif Tibetan',serif;font-size:18px;line-height:1.8}
 
-/* ── REPEAT EDITOR & ROUND DIVIDERS ── */
-.repeat-editor{display:inline-flex;align-items:center;gap:2px;margin-left:4px}
-.rep-btn{background:rgba(180,160,120,0.12);border:1px solid rgba(180,160,120,0.2);border-radius:4px;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(210,190,140,0.6);font-size:13px;font-family:system-ui,sans-serif;transition:all .2s;padding:0;line-height:1}
-.rep-btn:hover{background:rgba(180,160,120,0.25);color:rgba(210,190,140,0.9)}
-.rep-count{font-family:system-ui,sans-serif;font-size:12px;color:rgba(210,190,140,0.7);min-width:24px;text-align:center;letter-spacing:0}
-.round-divider{display:flex;align-items:center;gap:10px;margin:20px 0 8px 0;padding:0 12px}
-.round-divider::before,.round-divider::after{content:'';flex:1;height:1px;background:rgba(180,160,120,0.1)}
-.round-label{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(180,160,120,0.35);white-space:nowrap}
-
-/* ── MARKER LINES (meditate / silence) ── */
+/* marker lines */
 .line-block.marker{opacity:.7;border-left:2px dashed rgba(180,160,120,0.25);padding-left:16px}
 .line-block.marker.current{opacity:1;border-left-color:rgba(200,170,100,0.5);background:rgba(180,160,120,0.04)}
 .marker-label{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 0;transition:color .3s}
@@ -116,6 +107,20 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 .ts-cancel{background:transparent;border-color:rgba(100,100,100,0.2);color:#888}
 .nav-hint{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);font-family:system-ui,sans-serif;font-size:11px;color:rgba(180,160,120,0.3);letter-spacing:1px;pointer-events:none;text-align:center}
 #importFile,#importTextFile{display:none}
+
+/* ── TOC ── */
+.toc-overlay{position:fixed;inset:0;z-index:200;background:rgba(8,8,14,0.92);backdrop-filter:blur(24px);display:none;justify-content:center;align-items:flex-start;padding:60px 20px;overflow-y:auto}
+.toc-overlay.visible{display:flex}
+.toc-panel{width:100%;max-width:520px;padding:20px 0}
+.toc-title{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(180,160,120,0.5);margin-bottom:20px;text-align:center}
+.toc-item{display:flex;align-items:baseline;gap:12px;padding:12px 16px;border-radius:10px;cursor:pointer;transition:all .2s;border-bottom:1px solid rgba(180,160,120,0.06)}
+.toc-item:hover{background:rgba(180,160,120,0.08)}
+.toc-item.active{background:rgba(180,160,120,0.12);box-shadow:inset 3px 0 0 rgba(200,170,100,0.5)}
+.toc-num{font-family:system-ui,sans-serif;font-size:11px;color:rgba(180,160,120,0.35);min-width:20px;text-align:right}
+.toc-name{font-family:'Crimson Pro',serif;font-size:17px;color:#d4c8a0;line-height:1.4}
+.toc-name-sub{font-family:'Crimson Pro',serif;font-size:13px;color:rgba(180,160,120,0.45);line-height:1.3;margin-top:2px}
+.toc-close{position:fixed;top:16px;right:20px;z-index:210;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#999;font-size:18px;transition:all .2s}
+.toc-close:hover{background:rgba(255,255,255,0.12);color:#ddd}
 </style>
 </head>
 <body>
@@ -157,15 +162,12 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
  Press <kbd>Space</kbd> stamp & advance · <kbd>m</kbd> insert [Meditate] · <kbd>s</kbd> insert [Silence] · <kbd>Backspace</kbd> undo · <kbd>Esc</kbd> exit
 </div>
 <div class="edit-banner" id="editBanner">
- ✎ Edit mode — click any text to edit · changes auto-save · <kbd>Esc</kbd> to exit
+ ✎ Edit mode — double-click any text to edit · changes auto-save · <kbd>Esc</kbd> to exit
 </div>
 
 <div class="toc-overlay" id="tocOverlay" onclick="if(event.target===this)closeTOC()">
  <button class="toc-close" onclick="closeTOC()">✕</button>
- <div class="toc-panel">
-  <div class="toc-title">Contents</div>
-  <div id="tocList"></div>
- </div>
+ <div class="toc-panel"><div class="toc-title">Contents</div><div id="tocList"></div></div>
 </div>
 
 <div class="progress-track"><div class="progress-fill" id="progressFill"></div><div class="progress-dot" id="progressDot"></div></div>
@@ -175,8 +177,7 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    PRACTICE DATA
-   ═══════════════════════════════════════════════════════════════════════
-   ★ To update text permanently: Export Text JSON → edit → paste below
+   ★ To update text: Export Text JSON → edit → paste below
    ★ To set default timestamps: Export Timestamps → paste into DEFAULT_TIMESTAMPS
    ═══════════════════════════════════════════════════════════════════════ */
 const SECTIONS = [
@@ -390,6 +391,13 @@ const SECTIONS = [
     "titleUk": "Притулок і бодгічітта",
     "repeat": "×2",
     "lines": [
+      {
+        "tib": "ན་མོ་བཛྲ་ཝ་རཱ་ཧི༔",
+        "tr": "NAMO BENDZA WARAHI",
+        "en": "NAMO BENDZA WARAHI",
+        "ru": "НАМО БЕДЗАР ВАРАХИ",
+        "uk": "НАМО БЕДЗАР ВАРАХІ"
+      },
       {
         "tib": "ན་མོ། དཀོན་མཆོག་གསུམ་དང་རྩ་བ་གསུམ།",
         "tr": "NAMO KON SCHOK SUM DANG TSAWA SUM",
@@ -1081,292 +1089,217 @@ const SECTIONS = [
   }
 ];
 
-const DEFAULT_TIMESTAMPS = null; // ← paste your timestamps array here
+const DEFAULT_TIMESTAMPS = null;
 
 /* ═══════════════════════════════════════════════════════════════════════ */
 const LAYERS = ['tib','tr','en','ru','uk'];
 const LAYER_LABELS = {tib:'བོད',tr:'Translit',en:'English',ru:'Русский',uk:'Українська'};
-const STORAGE_KEY_TS = 'kusali_chod_timestamps';
-const STORAGE_KEY_TEXT = 'kusali_chod_text';
-const STORAGE_KEY_REPEATS = 'kusali_chod_repeats';
+const SK_TS = 'kusali_chod_timestamps';
+const SK_TEXT = 'kusali_chod_text';
+const SK_REPS = 'kusali_chod_repeats';
 
 let flatLines=[], current=0, timestamps=[], elapsed=0, timerRunning=false, timerInterval=null, editingTs=-1;
 let show={tib:true,tr:true,en:true,ru:false,uk:false};
 let showTs=false, mode='manual';
-let repeatsExpanded=true; // global toggle: show all repeat lines or collapse
-let sectionRepeats=[];    // per-section repeat count (loaded from storage or defaults)
+let sectionRepeats=[];          // per-section repeat count
+let sectionCollapsed={};        // per-section collapsed state {sectionIdx: true=collapsed}
 
+/* ═══ INIT ═══ */
 function init(){
-  // load saved repeat counts or use defaults from SECTIONS
-  const savedRepeats = loadJSON(STORAGE_KEY_REPEATS);
-  sectionRepeats = SECTIONS.map((sec, si) => {
-    if (savedRepeats && savedRepeats[si] != null) return savedRepeats[si];
-    // parse default: "×3" → 3, "×1, 3, 7, or 21" → 1, no repeat → 1
-    const m = (sec.repeat || '').match(/×(\d+)/);
-    return m ? parseInt(m[1]) : 1;
+  const savedReps=loadJSON(SK_REPS);
+  sectionRepeats=SECTIONS.map((sec,si)=>{
+    if(savedReps&&savedReps[si]!=null) return savedReps[si];
+    const m=(sec.repeat||'').match(/×(\d+)/);
+    return m?parseInt(m[1]):1;
   });
-
   rebuildFlatLines();
 
-  // load saved text edits (may include marker lines → different length)
-  const savedText = loadJSON(STORAGE_KEY_TEXT);
-  if(savedText && Array.isArray(savedText)){
-    const hasMarkers = savedText.some(t=>t._marker);
-    if(hasMarkers || savedText.length !== flatLines.length){
-      // rebuild from saved data
+  const savedText=loadJSON(SK_TEXT);
+  if(savedText&&Array.isArray(savedText)){
+    if(savedText.some(t=>t._marker)||savedText.length!==flatLines.length){
       flatLines=[];
-      savedText.forEach((t)=>{
+      savedText.forEach(t=>{
         const si=t.sectionIdx!=null?t.sectionIdx:0;
         const sec=SECTIONS[si]||SECTIONS[0];
-        const obj={sectionIdx:si, lineIdx:t.lineIdx||-1, sectionTitle:sec.title,
-          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null,
-          _repeatNum:t._repeatNum||1};
+        const obj={sectionIdx:si,lineIdx:t.lineIdx||-1,sectionTitle:sec.title,
+          titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:t._repeatNum||1};
         LAYERS.forEach(l=>{obj[l]=t[l]||'';});
         if(t._marker) obj._marker=t._marker;
         flatLines.push(obj);
       });
     } else {
-      savedText.forEach((t,i)=>{ LAYERS.forEach(l=>{ if(t[l]!=null) flatLines[i][l]=t[l]; }); });
+      savedText.forEach((t,i)=>{LAYERS.forEach(l=>{if(t[l]!=null)flatLines[i][l]=t[l];});});
     }
   }
 
-  // load timestamps
-  const savedTs = loadJSON(STORAGE_KEY_TS);
-  if(savedTs && Array.isArray(savedTs) && savedTs.length === flatLines.length) timestamps=savedTs;
-  else if(DEFAULT_TIMESTAMPS && DEFAULT_TIMESTAMPS.length === flatLines.length) timestamps=[...DEFAULT_TIMESTAMPS];
+  const savedTs=loadJSON(SK_TS);
+  if(savedTs&&Array.isArray(savedTs)&&savedTs.length===flatLines.length) timestamps=savedTs;
+  else if(DEFAULT_TIMESTAMPS&&DEFAULT_TIMESTAMPS.length===flatLines.length) timestamps=[...DEFAULT_TIMESTAMPS];
   else timestamps=flatLines.map(()=>null);
 
-  renderLyrics();
-  updateHighlight();
-  updateProgress();
+  renderLyrics();updateHighlight();updateProgress();
 }
 
-// Build flatLines from SECTIONS + sectionRepeats
 function rebuildFlatLines(){
   flatLines=[];
   SECTIONS.forEach((sec,si)=>{
-    const reps = sectionRepeats[si] || 1;
-    for(let r=0; r<reps; r++){
+    const reps=sectionRepeats[si]||1;
+    for(let r=0;r<reps;r++){
       sec.lines.forEach((line,li)=>{
-        flatLines.push({...line, sectionIdx:si, lineIdx:li, sectionTitle:sec.title,
-          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null,
-          _repeatNum: r+1 // which repetition (1-based)
-        });
+        flatLines.push({...line,sectionIdx:si,lineIdx:li,sectionTitle:sec.title,
+          titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:r+1});
       });
     }
   });
 }
 
-// Change repeat count for a section and rebuild
-function setRepeatCount(si, count){
-  count = Math.max(1, Math.min(21, count));
-  sectionRepeats[si] = count;
+/* ═══ CHANGE REPEAT COUNT — preserves timestamps ═══ */
+function setRepeatCount(si,count){
+  count=Math.max(1,Math.min(21,count));
+  const oldCount=sectionRepeats[si]||1;
+  if(count===oldCount) return;
+  sectionRepeats[si]=count;
   persistRepeats();
-  // save current position's section+line to restore after rebuild
-  const curLine = flatLines[current];
-  const curSec = curLine ? curLine.sectionIdx : 0;
+
+  // snapshot: map old flatLines index → {sectionIdx, lineIdx, _repeatNum, ts}
+  const oldTs=[...timestamps];
+  const tsMap={};
+  flatLines.forEach((l,i)=>{
+    if(oldTs[i]!=null&&!l._marker){
+      tsMap[l.sectionIdx+'-'+l._repeatNum+'-'+l.lineIdx]=oldTs[i];
+    }
+  });
+
+  const curLine=flatLines[current];
+  const curKey=curLine?(curLine.sectionIdx+'-'+(curLine._repeatNum||1)+'-'+curLine.lineIdx):'';
 
   rebuildFlatLines();
-  timestamps = flatLines.map(()=>null); // reset timestamps on repeat change
-  persistTs();
-  persistText();
+  // restore timestamps from snapshot
+  timestamps=flatLines.map(l=>{
+    if(l._marker) return null;
+    return tsMap[l.sectionIdx+'-'+l._repeatNum+'-'+l.lineIdx]||null;
+  });
+  persistTs();persistText();
 
-  // restore position to same section
-  const newIdx = flatLines.findIndex(l=>l.sectionIdx===curSec);
-  current = newIdx>=0 ? newIdx : 0;
+  // restore position
+  let newIdx=flatLines.findIndex(l=>!l._marker&&(l.sectionIdx+'-'+l._repeatNum+'-'+l.lineIdx)===curKey);
+  if(newIdx<0) newIdx=flatLines.findIndex(l=>l.sectionIdx===si);
+  if(newIdx<0) newIdx=0;
+  current=newIdx;
 
-  renderLyrics();
-  updateHighlight();
-  updateProgress();
+  renderLyrics();updateHighlight();updateProgress();
 }
 
-function persistRepeats(){
-  try{localStorage.setItem(STORAGE_KEY_REPEATS,JSON.stringify(sectionRepeats));}catch(e){}
-}
+function persistRepeats(){try{localStorage.setItem(SK_REPS,JSON.stringify(sectionRepeats));}catch(e){}}
 
+/* ═══ RENDER ═══ */
 function renderLyrics(){
   const area=document.getElementById('lyricsArea');
   area.innerHTML='';
-  let prevSecIdx=-1, prevRepeatNum=-1;
+  let prevSecIdx=-1,prevRepNum=-1;
 
   flatLines.forEach((line,i)=>{
     const si=line.sectionIdx;
     const repNum=line._repeatNum||1;
     const totalReps=sectionRepeats[si]||1;
-    const isNewSection = si!==prevSecIdx;
-    const isNewRound = !isNewSection && repNum!==prevRepeatNum && !line._marker;
+    const isNewSection=si!==prevSecIdx;
+    const isNewRound=!isNewSection&&repNum!==prevRepNum&&!line._marker;
 
-    // ── SECTION HEADER (first occurrence of this section) ──
     if(isNewSection){
-      const secNum=si+1;
-      const hdr=document.createElement('div');
-      hdr.className='section-hdr';
-      hdr.id='section-'+si;
-      const numSpan=document.createElement('span');
-      numSpan.className='hdr-num';numSpan.textContent=secNum;
-      hdr.appendChild(numSpan);
-      const nameSpan=document.createElement('span');
-      nameSpan.textContent=line.sectionTitle;
-      hdr.appendChild(nameSpan);
-
-      // editable repeat count
-      const repWrap=document.createElement('span');
-      repWrap.className='repeat-editor';
-      repWrap.innerHTML=`<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps-1})">−</button>`+
-        `<span class="rep-count" id="repcount-${si}">×${totalReps}</span>`+
-        `<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps+1})">+</button>`;
-      hdr.appendChild(repWrap);
-
-      const subtitles=[];
-      if(show.ru && line.titleRu) subtitles.push(line.titleRu);
-      if(show.uk && line.titleUk) subtitles.push(line.titleUk);
-      if(subtitles.length){
-        const sub=document.createElement('span');sub.className='section-subtitle';sub.textContent=subtitles.join(' · ');
-        hdr.appendChild(sub);
+      const isCollapsed = isSectionCollapsed(si);
+      const hdr=document.createElement('div');hdr.className='section-hdr'+(totalReps>1?' clickable':'');hdr.id='section-'+si;
+      // whole header toggles collapse (if section has repeats)
+      if(totalReps>1){
+        hdr.onclick=(e)=>{
+          // don't toggle if clicking on repeat editor buttons
+          if(e.target.closest('.repeat-editor'))return;
+          toggleSectionCollapse(si);
+        };
       }
+      // chevron (only show if section has repeats > 1)
+      if(totalReps>1){
+        const chevron=document.createElement('span');
+        chevron.className='hdr-chevron'+(isCollapsed?' collapsed':'');
+        chevron.textContent='▾';
+        hdr.appendChild(chevron);
+      }
+      const numSpan=document.createElement('span');numSpan.className='hdr-num';numSpan.textContent=si+1;
+      hdr.appendChild(numSpan);
+      const nameSpan=document.createElement('span');nameSpan.textContent=line.sectionTitle;
+      hdr.appendChild(nameSpan);
+      // repeat editor
+      const re=document.createElement('span');re.className='repeat-editor';
+      re.innerHTML=`<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps-1})">−</button>`+
+        `<span class="rep-count">×${totalReps}</span>`+
+        `<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps+1})">+</button>`;
+      hdr.appendChild(re);
+      const subs=[];
+      if(show.ru&&line.titleRu)subs.push(line.titleRu);
+      if(show.uk&&line.titleUk)subs.push(line.titleUk);
+      if(subs.length){const sub=document.createElement('span');sub.className='section-subtitle';sub.textContent=subs.join(' · ');hdr.appendChild(sub);}
       area.appendChild(hdr);
-      prevSecIdx=si;
-      prevRepeatNum=repNum;
+      prevSecIdx=si;prevRepNum=repNum;
     }
 
-    // ── ROUND DIVIDER (repeat 2, 3, etc.) ──
-    if(isNewRound && totalReps>1){
-      const roundDiv=document.createElement('div');
-      roundDiv.className='round-divider';
-      roundDiv.innerHTML=`<span class="round-label">round ${repNum} / ${totalReps}</span>`;
-      // collapse: hide repeat rounds > 1 when collapsed
-      if(!repeatsExpanded) roundDiv.style.display='none';
-      roundDiv.dataset.section=si;
-      roundDiv.dataset.repeatRound=repNum;
-      area.appendChild(roundDiv);
-      prevRepeatNum=repNum;
+    if(isNewRound&&totalReps>1){
+      const isCollapsed=isSectionCollapsed(si);
+      const rd=document.createElement('div');rd.className='round-divider';
+      rd.innerHTML=`<span class="round-label">round ${repNum} / ${totalReps}</span>`;
+      if(isCollapsed)rd.style.display='none';
+      area.appendChild(rd);
+      prevRepNum=repNum;
     }
 
-    // ── COLLAPSE: hide lines from repeat rounds > 1 when collapsed ──
-    const isRepeatLine = totalReps>1 && repNum>1 && !line._marker;
-    const shouldHide = isRepeatLine && !repeatsExpanded;
+    const isRepeatLine=totalReps>1&&repNum>1&&!line._marker;
+    const shouldHide=isRepeatLine&&isSectionCollapsed(si);
 
-    const block=document.createElement('div');
-    block.id='line-'+i;
-    if(shouldHide) block.style.display='none';
-    block.dataset.section=si;
-    block.dataset.repeatRound=repNum;
-    block.onclick=(e)=>{
-      if(e.target.closest('.ts-edit-row')||e.target.closest('.ts-badge')||e.target.closest('.marker-remove')||e.target.tagName==='TEXTAREA') return;
-      if(mode!=='edit') setCurrent(i);
+    const block=document.createElement('div');block.id='line-'+i;
+    if(shouldHide)block.style.display='none';
+    block.onclick=e=>{
+      if(e.target.closest('.ts-edit-row,.ts-badge,.marker-remove')||e.target.tagName==='TEXTAREA')return;
+      if(mode!=='edit')setCurrent(i);
     };
 
-    // ── MARKER LINE (meditate / silence) ──
     if(line._marker){
       block.className='line-block marker future';
-      const label=document.createElement('div');
-      label.className='marker-label '+line._marker+' dim';
-      label.id='marker-'+i;
-      const icon=line._marker==='meditate'?'◎':'⋯';
-      const text=line._marker==='meditate'?'Meditate':'· · ·';
-      label.innerHTML=`<span class="marker-icon">${icon}</span>${text}`;
-      block.appendChild(label);
-      // remove button
-      const rmBtn=document.createElement('button');
-      rmBtn.className='marker-remove';rmBtn.textContent='✕ remove';
-      rmBtn.onclick=(e)=>{e.stopPropagation();removeMarkerAt(i);};
-      block.appendChild(rmBtn);
-      // timestamp badge
-      const tsBadge=document.createElement('button');
-      tsBadge.className='ts-badge';tsBadge.id='tsbadge-'+i;
-      tsBadge.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';
-      tsBadge.style.display=showTs?'':'none';
-      tsBadge.onclick=(e)=>{e.stopPropagation();startEditTs(i);};
-      block.appendChild(tsBadge);
-      area.appendChild(block);
-      return;
+      const lbl=document.createElement('div');lbl.className='marker-label '+line._marker+' dim';lbl.id='marker-'+i;
+      lbl.innerHTML=`<span class="marker-icon">${line._marker==='meditate'?'◎':'⋯'}</span>${line._marker==='meditate'?'Meditate':'· · ·'}`;
+      block.appendChild(lbl);
+      const rm=document.createElement('button');rm.className='marker-remove';rm.textContent='✕ remove';
+      rm.onclick=e=>{e.stopPropagation();removeMarkerAt(i);};block.appendChild(rm);
+    } else {
+      block.className='line-block future';
+      LAYERS.forEach(l=>{
+        const div=document.createElement('div');div.className=`line-${l} dim`;div.id=`${l}-${i}`;
+        div.textContent=line[l]||'';if(!show[l])div.style.display='none';
+        if(mode==='edit'&&show[l]){div.style.cursor='pointer';div.ondblclick=()=>startEditLine(i,l);}
+        block.appendChild(div);
+      });
     }
 
-    // ── NORMAL LINE ──
-    block.className='line-block future';
-
-    LAYERS.forEach(l=>{
-      const div=document.createElement('div');
-      div.className=`line-${l} dim`;
-      div.id=`${l}-${i}`;
-      div.textContent=line[l]||'';
-      if(!show[l]) div.style.display='none';
-      if(mode==='edit' && show[l]){
-        div.style.cursor='pointer';
-        div.ondblclick=()=>startEditLine(i,l);
-      }
-      block.appendChild(div);
-    });
-
-    const tsBadge=document.createElement('button');
-    tsBadge.className='ts-badge';tsBadge.id='tsbadge-'+i;
-    tsBadge.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';
-    tsBadge.style.display=showTs?'':'none';
-    tsBadge.onclick=(e)=>{e.stopPropagation();startEditTs(i);};
-    block.appendChild(tsBadge);
+    const tsB=document.createElement('button');tsB.className='ts-badge';tsB.id='tsbadge-'+i;
+    tsB.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';
+    tsB.style.display=showTs?'':'none';
+    tsB.onclick=e=>{e.stopPropagation();startEditTs(i);};
+    block.appendChild(tsB);
     area.appendChild(block);
   });
 }
 
-/* ── TEXT EDITING ── */
-function startEditLine(idx,layer){
-  if(mode!=='edit') return;
-  const el=document.getElementById(`${layer}-${idx}`);
-  if(!el||el.querySelector('textarea')) return;
-  const current_text=flatLines[idx][layer]||'';
-  el.innerHTML='';
-  const ta=document.createElement('textarea');
-  ta.className='line-edit'+(layer==='tib'?' tib-edit':'');
-  ta.value=current_text;
-  ta.rows=layer==='tib'?2:1;
-  ta.onblur=()=>finishEditLine(idx,layer,ta.value);
-  ta.onkeydown=(e)=>{
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ta.blur();}
-    if(e.key==='Escape'){ta.value=current_text;ta.blur();}
-    e.stopPropagation();
-  };
-  el.appendChild(ta);
-  ta.focus();
-  ta.select();
-}
-
-function finishEditLine(idx,layer,val){
-  flatLines[idx][layer]=val;
-  const el=document.getElementById(`${layer}-${idx}`);
-  if(el){el.innerHTML='';el.textContent=val;}
-  persistText();
-}
-
-function persistText(){
-  try{
-    const data=flatLines.map(l=>{
-      const o={};LAYERS.forEach(k=>{o[k]=l[k];});
-      if(l._marker) o._marker=l._marker;
-      o.sectionIdx=l.sectionIdx;
-      o.lineIdx=l.lineIdx;
-      o._repeatNum=l._repeatNum||1;
-      return o;
-    });
-    localStorage.setItem(STORAGE_KEY_TEXT,JSON.stringify(data));
-  }catch(e){}
-}
-
-/* ── HIGHLIGHT & SCROLL ── */
+/* ═══ HIGHLIGHT ═══ */
 function updateHighlight(){
   flatLines.forEach((_,i)=>{
-    const block=document.getElementById('line-'+i);
-    if(!block) return;
-    const isCurrent=i===current;
-    const line=flatLines[i];
+    const block=document.getElementById('line-'+i);if(!block)return;
+    const isCur=i===current,line=flatLines[i];
     if(line._marker){
-      block.className='line-block marker '+(isCurrent?'current':i<current?'past':'future');
-      const label=document.getElementById('marker-'+i);
-      if(label) label.className='marker-label '+line._marker+' '+(isCurrent?'active':'dim');
+      block.className='line-block marker '+(isCur?'current':i<current?'past':'future');
+      const lbl=document.getElementById('marker-'+i);
+      if(lbl)lbl.className='marker-label '+line._marker+' '+(isCur?'active':'dim');
     } else {
-      block.className='line-block '+(isCurrent?'current':i<current?'past':'future');
+      block.className='line-block '+(isCur?'current':i<current?'past':'future');
       LAYERS.forEach(l=>{
         const el=document.getElementById(`${l}-${i}`);
-        if(el&&!el.querySelector('textarea')) el.className=`line-${l} ${isCurrent?'active':'dim'}`;
+        if(el&&!el.querySelector('textarea'))el.className=`line-${l} ${isCur?'active':'dim'}`;
       });
     }
   });
@@ -1379,7 +1312,7 @@ function updateProgress(){
 }
 function setCurrent(i){current=Math.max(0,Math.min(i,flatLines.length-1));updateHighlight();scrollToCurrent();updateProgress();}
 
-/* ── LAYER TOGGLES ── */
+/* ═══ TOGGLES ═══ */
 function toggleLayer(l){
   show[l]=!show[l];
   updatePill('tog'+l.charAt(0).toUpperCase()+l.slice(1),show[l],LAYER_LABELS[l]);
@@ -1392,24 +1325,46 @@ function toggleTimestamps(){
   el.className='pill '+(showTs?'on':'off');el.textContent=(showTs?'✓':'○')+' ⏱ Timestamps';
   flatLines.forEach((_,i)=>{const b=document.getElementById('tsbadge-'+i);if(b)b.style.display=showTs?'':'none';});
 }
+function toggleRepeats(){
+  // one-shot: if any section with repeats is expanded → collapse all; else expand all
+  const anyExpanded = SECTIONS.some((_,si)=>(sectionRepeats[si]||1)>1 && !isSectionCollapsed(si));
+  SECTIONS.forEach((_,si)=>{
+    if((sectionRepeats[si]||1)>1){
+      sectionCollapsed[si]=anyExpanded;
+    }
+  });
+  // update pill to reflect new state (shows current majority)
+  updatePill('togRepeats',!anyExpanded,'Repeats');
+  renderLyrics();updateHighlight();
+}
 
-/* ── MODE ── */
+function isSectionCollapsed(si){
+  // only per-section state matters — no global override
+  return !!sectionCollapsed[si];
+}
+
+function toggleSectionCollapse(si){
+  sectionCollapsed[si]=!isSectionCollapsed(si);
+  // update global pill to reflect if any section is still expanded
+  const anyExpanded = SECTIONS.some((_,s)=>(sectionRepeats[s]||1)>1 && !isSectionCollapsed(s));
+  updatePill('togRepeats',anyExpanded,'Repeats');
+  renderLyrics();updateHighlight();
+}
+
+/* ═══ MODE ═══ */
 function setMode(m){
   mode=m;
-  ['Manual','Auto','Tap','Edit'].forEach(n=>{
-    const btn=document.getElementById('mode'+n);
-    if(btn)btn.className='mode-btn '+(m===n.toLowerCase()?'active':'inactive');
-  });
+  ['Manual','Auto','Tap','Edit'].forEach(n=>{const b=document.getElementById('mode'+n);if(b)b.className='mode-btn '+(m===n.toLowerCase()?'active':'inactive');});
   document.getElementById('timerBar').style.display=(m==='auto'||m==='tap')?'flex':'none';
   document.getElementById('tapBanner').className='tap-banner'+(m==='tap'?' visible':'');
   document.getElementById('editBanner').className='edit-banner'+(m==='edit'?' visible':'');
-  if(m==='tap'&&!showTs) toggleTimestamps();
+  if(m==='tap'&&!showTs)toggleTimestamps();
   const hints={manual:'tap / click / ↓ ↑ / space to navigate',auto:'timestamps drive auto-scroll',tap:'▶ then space to stamp each line',edit:'double-click any visible text to edit'};
   document.getElementById('navHint').textContent=hints[m]||'';
   renderLyrics();updateHighlight();
 }
 
-/* ── TIMER ── */
+/* ═══ TIMER ═══ */
 function toggleTimer(){timerRunning?stopTimer():startTimer();}
 function startTimer(){
   timerRunning=true;document.getElementById('timerPlayPause').textContent='⏸';
@@ -1421,7 +1376,19 @@ function startTimer(){
 function stopTimer(){timerRunning=false;document.getElementById('timerPlayPause').textContent='▶';clearInterval(timerInterval);}
 function resetTimer(){stopTimer();elapsed=0;document.getElementById('timerDisplay').textContent='0:00';setCurrent(0);}
 
-/* ── TIMESTAMP EDITING ── */
+/* ═══ TEXT EDITING ═══ */
+function startEditLine(idx,layer){
+  if(mode!=='edit')return;const el=document.getElementById(`${layer}-${idx}`);
+  if(!el||el.querySelector('textarea'))return;
+  const cur=flatLines[idx][layer]||'';el.innerHTML='';
+  const ta=document.createElement('textarea');ta.className='line-edit'+(layer==='tib'?' tib-edit':'');
+  ta.value=cur;ta.rows=layer==='tib'?2:1;
+  ta.onblur=()=>{flatLines[idx][layer]=ta.value;el.innerHTML='';el.textContent=ta.value;persistText();};
+  ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ta.blur();}if(e.key==='Escape'){ta.value=cur;ta.blur();}e.stopPropagation();};
+  el.appendChild(ta);ta.focus();ta.select();
+}
+
+/* ═══ TIMESTAMP EDITING ═══ */
 function startEditTs(i){
   if(editingTs>=0)closeEditTs(editingTs);editingTs=i;
   const block=document.getElementById('line-'+i),badge=document.getElementById('tsbadge-'+i);
@@ -1429,14 +1396,13 @@ function startEditTs(i){
   const row=document.createElement('div');row.className='ts-edit-row';row.id='tsedit-'+i;
   const input=document.createElement('input');input.className='ts-input';input.placeholder='m:ss';
   input.value=timestamps[i]!=null?formatTime(timestamps[i]):'';
-  input.onkeydown=(e)=>{if(e.key==='Enter'){saveEditTs(i,input.value);e.preventDefault();}if(e.key==='Escape')closeEditTs(i);e.stopPropagation();};
+  input.onkeydown=e=>{if(e.key==='Enter'){saveEditTs(i,input.value);e.preventDefault();}if(e.key==='Escape')closeEditTs(i);e.stopPropagation();};
   const saveBtn=document.createElement('button');saveBtn.className='ts-small-btn ts-save';saveBtn.textContent='Set';
-  saveBtn.onclick=(e)=>{e.stopPropagation();saveEditTs(i,input.value);};
-  const tapBtn=document.createElement('button');tapBtn.className='ts-small-btn ts-tap';
-  tapBtn.textContent='Tap ⏱ '+formatTime(elapsed);
-  tapBtn.onclick=(e)=>{e.stopPropagation();timestamps[i]=Math.round(elapsed*10)/10;closeEditTs(i);persistTs();};
+  saveBtn.onclick=e=>{e.stopPropagation();saveEditTs(i,input.value);};
+  const tapBtn=document.createElement('button');tapBtn.className='ts-small-btn ts-tap';tapBtn.textContent='Tap ⏱ '+formatTime(elapsed);
+  tapBtn.onclick=e=>{e.stopPropagation();timestamps[i]=Math.round(elapsed*10)/10;closeEditTs(i);persistTs();};
   const cancelBtn=document.createElement('button');cancelBtn.className='ts-small-btn ts-cancel';cancelBtn.textContent='✕';
-  cancelBtn.onclick=(e)=>{e.stopPropagation();closeEditTs(i);};
+  cancelBtn.onclick=e=>{e.stopPropagation();closeEditTs(i);};
   row.appendChild(input);row.appendChild(saveBtn);
   if(mode==='auto'||mode==='tap')row.appendChild(tapBtn);
   row.appendChild(cancelBtn);block.appendChild(row);input.focus();
@@ -1448,7 +1414,7 @@ function closeEditTs(i){
   if(badge){badge.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';if(showTs)badge.style.display='';}
 }
 
-/* ── TAP MODE ── */
+/* ═══ TAP MODE ═══ */
 function tapStampCurrent(){
   if(!timerRunning)return;timestamps[current]=Math.round(elapsed*10)/10;
   const badge=document.getElementById('tsbadge-'+current);if(badge)badge.textContent=formatTime(timestamps[current]);
@@ -1456,57 +1422,33 @@ function tapStampCurrent(){
 }
 function tapUndoLast(){
   if(current>0){
-    // if previous line is a marker we just inserted, remove it
     const prev=current-1;
-    if(flatLines[prev]._marker){
-      removeMarkerAt(prev);
-      return;
-    }
+    if(flatLines[prev]._marker){removeMarkerAt(prev);return;}
     setCurrent(prev);timestamps[current]=null;
     const b=document.getElementById('tsbadge-'+current);if(b)b.textContent='＋';persistTs();
   }
 }
-
-/* ── MARKER LINES (meditate / silence) ── */
 function insertMarker(type){
-  if(!timerRunning)return;
-  const ts=Math.round(elapsed*10)/10;
-  // create a marker line object
-  const marker={
-    tib:'', tr:'', en:'', ru:'', uk:'',
-    _marker: type, // 'meditate' or 'silence'
-    sectionIdx: flatLines[current].sectionIdx,
-    lineIdx: -1,
-    sectionTitle: flatLines[current].sectionTitle,
-    titleRu: flatLines[current].titleRu,
-    titleUk: flatLines[current].titleUk,
-    repeat: null,
-  };
-  // insert before current position
-  flatLines.splice(current, 0, marker);
-  timestamps.splice(current, 0, ts);
-  // re-render and stay on next real line
-  renderLyrics(); persistTs(); persistText();
-  setCurrent(current+1);
+  if(!timerRunning)return;const ts=Math.round(elapsed*10)/10;
+  const marker={tib:'',tr:'',en:'',ru:'',uk:'',_marker:type,
+    sectionIdx:flatLines[current].sectionIdx,lineIdx:-1,
+    sectionTitle:flatLines[current].sectionTitle,
+    titleRu:flatLines[current].titleRu,titleUk:flatLines[current].titleUk,
+    repeat:null,_repeatNum:flatLines[current]._repeatNum||1};
+  flatLines.splice(current,0,marker);timestamps.splice(current,0,ts);
+  renderLyrics();persistTs();persistText();setCurrent(current+1);
 }
-
 function removeMarkerAt(idx){
-  if(!flatLines[idx]._marker) return;
-  flatLines.splice(idx,1);
-  timestamps.splice(idx,1);
-  renderLyrics(); persistTs(); persistText();
-  if(current>=flatLines.length) current=flatLines.length-1;
-  setCurrent(current);
+  if(!flatLines[idx]._marker)return;
+  flatLines.splice(idx,1);timestamps.splice(idx,1);
+  renderLyrics();persistTs();persistText();
+  if(current>=flatLines.length)current=flatLines.length-1;setCurrent(current);
 }
 
-// Override renderLyrics line rendering to handle markers
-const _origRenderLine = null; // we patch inside renderLyrics
-
-/* ── KEYBOARD ── */
-document.addEventListener('keydown',(e)=>{
-  // close TOC on Escape
+/* ═══ KEYBOARD ═══ */
+document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&document.getElementById('tocOverlay').classList.contains('visible')){closeTOC();e.preventDefault();return;}
-  if(editingTs>=0||mode==='edit') return;
+  if(editingTs>=0||mode==='edit')return;
   if(mode==='tap'){
     if(e.key===' '){e.preventDefault();tapStampCurrent();return;}
     if(e.key==='m'||e.key==='M'){e.preventDefault();insertMarker('meditate');return;}
@@ -1519,15 +1461,22 @@ document.addEventListener('keydown',(e)=>{
   else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();setCurrent(current-1);}
 });
 
-/* ── PERSISTENCE ── */
-function persistTs(){try{localStorage.setItem(STORAGE_KEY_TS,JSON.stringify(timestamps));}catch(e){}}
+/* ═══ PERSISTENCE ═══ */
+function persistTs(){try{localStorage.setItem(SK_TS,JSON.stringify(timestamps));}catch(e){}}
+function persistText(){
+  try{const data=flatLines.map(l=>{
+    const o={};LAYERS.forEach(k=>{o[k]=l[k];});
+    if(l._marker)o._marker=l._marker;
+    o.sectionIdx=l.sectionIdx;o.lineIdx=l.lineIdx;o._repeatNum=l._repeatNum||1;return o;
+  });localStorage.setItem(SK_TEXT,JSON.stringify(data));}catch(e){}
+}
 function loadJSON(key){try{const r=localStorage.getItem(key);return r?JSON.parse(r):null;}catch(e){return null;}}
 
-/* ── IMPORT / EXPORT ── */
+/* ═══ IMPORT / EXPORT ═══ */
 function exportTimestamps(){downloadFile('kusali_chod_timestamps.json',JSON.stringify(timestamps,null,2),'application/json');}
 function importTimestamps(ev){
   const f=ev.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=(e)=>{try{const d=JSON.parse(e.target.result);
+  r.onload=e=>{try{const d=JSON.parse(e.target.result);
     if(Array.isArray(d)&&d.length===flatLines.length){timestamps=d;persistTs();
       flatLines.forEach((_,i)=>{const b=document.getElementById('tsbadge-'+i);if(b)b.textContent=timestamps[i]!=null?formatTime(timestamps[i]):'＋';});
       alert('Imported '+d.filter(t=>t!=null).length+' timestamps');
@@ -1535,36 +1484,21 @@ function importTimestamps(ev){
   r.readAsText(f);ev.target.value='';
 }
 function exportText(){
-  const data=flatLines.map(l=>{
-    const o={};LAYERS.forEach(k=>{o[k]=l[k];});
-    if(l._marker) o._marker=l._marker;
-    o.sectionIdx=l.sectionIdx;
-    return o;
-  });
+  const data=flatLines.map(l=>{const o={};LAYERS.forEach(k=>{o[k]=l[k];});
+    if(l._marker)o._marker=l._marker;o.sectionIdx=l.sectionIdx;o.lineIdx=l.lineIdx;o._repeatNum=l._repeatNum||1;return o;});
   downloadFile('kusali_chod_text.json',JSON.stringify(data,null,2),'application/json');
 }
 function importText(ev){
   const f=ev.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=(e)=>{try{const d=JSON.parse(e.target.result);
-    if(Array.isArray(d)){
-      // rebuild flatLines from imported data, preserving section metadata
-      const newFlat=[];
-      d.forEach((t)=>{
-        const si=t.sectionIdx!=null?t.sectionIdx:0;
-        const sec=SECTIONS[si]||SECTIONS[0];
-        const obj={sectionIdx:si, lineIdx:-1, sectionTitle:sec.title,
-          titleRu:sec.titleRu||'', titleUk:sec.titleUk||'', repeat:sec.repeat||null};
-        LAYERS.forEach(l=>{obj[l]=t[l]||'';});
-        if(t._marker) obj._marker=t._marker;
-        newFlat.push(obj);
-      });
-      flatLines=newFlat;
-      // adjust timestamps array to match
-      while(timestamps.length<flatLines.length) timestamps.push(null);
-      timestamps.length=flatLines.length;
-      persistText();renderLyrics();updateHighlight();
-      alert('Text imported: '+d.length+' lines');
-    }else alert('Expected a JSON array');}catch(err){alert('JSON error: '+err.message);}};
+  r.onload=e=>{try{const d=JSON.parse(e.target.result);
+    if(Array.isArray(d)){flatLines=[];
+      d.forEach(t=>{const si=t.sectionIdx!=null?t.sectionIdx:0;const sec=SECTIONS[si]||SECTIONS[0];
+        const obj={sectionIdx:si,lineIdx:t.lineIdx||-1,sectionTitle:sec.title,
+          titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:t._repeatNum||1};
+        LAYERS.forEach(l=>{obj[l]=t[l]||'';});if(t._marker)obj._marker=t._marker;flatLines.push(obj);});
+      while(timestamps.length<flatLines.length)timestamps.push(null);timestamps.length=flatLines.length;
+      persistText();renderLyrics();updateHighlight();alert('Text imported: '+d.length+' lines');
+    }else alert('Expected JSON array');}catch(err){alert('JSON error: '+err.message);}};
   r.readAsText(f);ev.target.value='';
 }
 function exportSRT(){
@@ -1573,54 +1507,55 @@ function exportSRT(){
     const start=timestamps[i];if(start==null)return;
     const end=(i+1<flatLines.length&&timestamps[i+1]!=null)?timestamps[i+1]:start+5;
     let parts=[];
-    if(line._marker){
-      parts.push(line._marker==='meditate'?'[Meditate]':'');
-    } else {
-      LAYERS.forEach(l=>{if(show[l]&&line[l])parts.push(line[l]);});
-    }
-    if(parts.join('').trim()==='') return; // skip empty silence markers in SRT
+    if(line._marker){parts.push(line._marker==='meditate'?'[Meditate]':'');}
+    else{LAYERS.forEach(l=>{if(show[l]&&line[l])parts.push(line[l]);});}
+    if(parts.join('').trim()==='')return;
     srt+=count+'\n'+formatSRT(start)+' --> '+formatSRT(end)+'\n'+parts.join('\n')+'\n\n';count++;
   });
   downloadFile('kusali_chod.srt',srt,'text/plain');
 }
 
-/* ── UTILS ── */
-function formatTime(s){if(s==null)return'--:--';return Math.floor(s/60)+':'+Math.floor(s%60).toString().padStart(2,'0');}
-function parseTime(str){if(!str)return null;const p=str.split(':');if(p.length!==2)return null;const m=parseInt(p[0]),s=parseInt(p[1]);return isNaN(m)||isNaN(s)?null:m*60+s;}
-function formatSRT(s){const h=Math.floor(s/3600).toString().padStart(2,'0'),m=Math.floor((s%3600)/60).toString().padStart(2,'0'),sec=Math.floor(s%60).toString().padStart(2,'0'),ms=Math.round((s%1)*1000).toString().padStart(3,'0');return h+':'+m+':'+sec+','+ms;}
-function downloadFile(name,content,type){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
-
-/* ── TABLE OF CONTENTS ── */
+/* ═══ TOC ═══ */
 function openTOC(){
-  const list=document.getElementById('tocList');
-  list.innerHTML='';
-  // find which section is current
+  const list=document.getElementById('tocList');list.innerHTML='';
   const curSec=flatLines[current]?flatLines[current].sectionIdx:-1;
   SECTIONS.forEach((sec,si)=>{
-    const item=document.createElement('div');
-    item.className='toc-item'+(si===curSec?' active':'');
+    const item=document.createElement('div');item.className='toc-item'+(si===curSec?' active':'');
     const num=document.createElement('span');num.className='toc-num';num.textContent=si+1;
-    const nameWrap=document.createElement('div');
-    const name=document.createElement('div');name.className='toc-name';name.textContent=sec.title;
-    nameWrap.appendChild(name);
-    const subs=[];
-    if(sec.titleRu)subs.push(sec.titleRu);
-    if(sec.titleUk)subs.push(sec.titleUk);
-    if(subs.length){const sub=document.createElement('div');sub.className='toc-name-sub';sub.textContent=subs.join(' · ');nameWrap.appendChild(sub);}
-    item.appendChild(num);item.appendChild(nameWrap);
-    item.onclick=()=>{
-      closeTOC();
-      // find first line of this section
-      const idx=flatLines.findIndex(l=>l.sectionIdx===si);
-      if(idx>=0)setCurrent(idx);
-    };
+    const nw=document.createElement('div');
+    const name=document.createElement('div');name.className='toc-name';
+    name.textContent=sec.title+(sectionRepeats[si]>1?' ×'+sectionRepeats[si]:'');
+    nw.appendChild(name);
+    const subs=[];if(sec.titleRu)subs.push(sec.titleRu);if(sec.titleUk)subs.push(sec.titleUk);
+    if(subs.length){const sub=document.createElement('div');sub.className='toc-name-sub';sub.textContent=subs.join(' · ');nw.appendChild(sub);}
+    item.appendChild(num);item.appendChild(nw);
+    item.onclick=()=>{closeTOC();const idx=flatLines.findIndex(l=>l.sectionIdx===si);if(idx>=0)setCurrent(idx);};
     list.appendChild(item);
   });
   document.getElementById('tocOverlay').classList.add('visible');
 }
 function closeTOC(){document.getElementById('tocOverlay').classList.remove('visible');}
 
+/* ═══ UTILS ═══ */
+function formatTime(s){if(s==null)return'--:--';return Math.floor(s/60)+':'+Math.floor(s%60).toString().padStart(2,'0');}
+function parseTime(str){if(!str)return null;const p=str.split(':');if(p.length!==2)return null;const m=parseInt(p[0]),s=parseInt(p[1]);return isNaN(m)||isNaN(s)?null:m*60+s;}
+function formatSRT(s){const h=Math.floor(s/3600).toString().padStart(2,'0'),m=Math.floor((s%3600)/60).toString().padStart(2,'0'),sec=Math.floor(s%60).toString().padStart(2,'0'),ms=Math.round((s%1)*1000).toString().padStart(3,'0');return h+':'+m+':'+sec+','+ms;}
+function downloadFile(name,content,type){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
+
 init();
+
+/* ═══ STICKY HEADER TOP OFFSET ═══ */
+function updateStickyTop(){
+  const bar=document.getElementById('ctrlBar');
+  if(!bar)return;
+  const h=bar.offsetHeight;
+  document.documentElement.style.setProperty('--sticky-top',h+'px');
+  // also update banners
+  document.querySelectorAll('.tap-banner,.edit-banner').forEach(el=>{el.style.top=h+'px';});
+}
+updateStickyTop();
+window.addEventListener('resize',updateStickyTop);
+new ResizeObserver(updateStickyTop).observe(document.getElementById('ctrlBar'));
 </script>
 </body>
 </html>
