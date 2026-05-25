@@ -1095,16 +1095,7 @@ const SECTIONS = [
   }
 ];
 
-const DEFAULT_TIMESTAMPS = [
-  56.4, 61, 63.8, 66.6, 69.4, 72.4, 75.2, 78.1, 81, 85.1, 87.9, 91, 93.8, 96.6, 99.3, 102, 105.9, 108.4, 111.2, 114.2,
-  117, 119.7, 122.7, 125.5, 130, 133.7, 136, 140, 144, 148, 152.4, 156.1, 160, 164, 168.5, 171, 176, 179, 182, 186,
-  196.9, 199, 207.6, 213, 220.6, 227.3, 227.5, 232.4, 236.9, 241, 250, 255.9, 268.2, 278, 291, 303.7, 331.3, 335.6,
-  339.7, 344.1, 348.2, 352.5, 356.6, 360.9, 370, 378.9, 382.9, 387.4, 394.8, 420.3, 519.6, 555.4, 578.7, 603.5, 707.5,
-  715, 799.8, 806.7, 818.7, 823, 833.7, 838.1, 842.6, 847.4, 854.8, 870.5, 875.6, 880.9, 886.1, 912, 917, 922.3, 927.6,
-  934.6, 986, 997.8, 1000.3, 1002.8, 1005.2, 1007.9, 1010.4, 1012.6, 1015.2, 1017.9, 1021.7, 1024.6, 1031.9, 1034.8,
-  1038, 1041.2, 1082.8, 1085.5, 1088.7, 1092, 1103.5, 1138.7, 1142.1, 1145.7, 1149, 1153.2, 1156.9, 1160.4, 1164.1,
-  1167.6, 1171.3, 1175.3, 1179.2, 1186, 1189, 1192.1, 1195, 1201.5, 1205.1, 1209.5, 1212.5, 1220.1
-];
+const DEFAULT_TIMESTAMPS = [56.4,61,63.8,66.6,69.4,72.4,75.2,78.1,81,85.1,87.9,91,93.8,96.6,99.3,102,105.9,108.4,111.2,114.2,117,119.7,122.7,125.5,130,133.7,136,140,144,148,152.4,156.1,160,164,168.5,171,176,179,182,186,196.9,199,207.6,213,220.6,227.3,227.5,232.4,236.9,241,250,255.9,268.2,278,291,303.7,331.3,335.6,339.7,344.1,348.2,352.5,356.6,360.9,370,378.9,382.9,387.4,394.8,519.6,555.4,578.7,603.5,707.5,715,799.8,806.7,818.7,823,833.7,838.1,842.6,847.4,854.8,870.5,875.6,880.9,886.1,912,917,922.3,927.6,934.6,986,997.8,1000.3,1002.8,1005.2,1007.9,1010.4,1012.6,1015.2,1017.9,1021.7,1024.6,1031.9,1034.8,1038,1041.2,1082.8,1085.5,1088.7,1092,1103.5,1138.7,1142.1,1145.7,1149,1153.2,1156.9,1160.4,1164.1,1167.6,1171.3,1175.3,1179.2,1186,1189,1192.1,1195,1201.5,1205.1,1209.5,1212.5,1220.1];
 
 /* ═══════════════════════════════════════════════════════════════════════ */
 const LAYERS = ['tib','tr','en','ru','uk'];
@@ -1333,6 +1324,8 @@ function toggleLayer(l){
   updatePill('tog'+l.charAt(0).toUpperCase()+l.slice(1),show[l],LAYER_LABELS[l]);
   flatLines.forEach((_,i)=>{const el=document.getElementById(`${l}-${i}`);if(el)el.style.display=show[l]?'':'none';});
   renderLyrics();updateHighlight();
+  // keep current line visible after content height change
+  requestAnimationFrame(()=>scrollToCurrent());
 }
 function updatePill(id,on,label){const el=document.getElementById(id);if(!el)return;el.className='pill '+(on?'on':'off');el.textContent=(on?'✓ ':'○ ')+label;}
 function toggleTimestamps(){
@@ -1341,29 +1334,25 @@ function toggleTimestamps(){
   flatLines.forEach((_,i)=>{const b=document.getElementById('tsbadge-'+i);if(b)b.style.display=showTs?'':'none';});
 }
 function toggleRepeats(){
-  // one-shot: if any section with repeats is expanded → collapse all; else expand all
   const anyExpanded = SECTIONS.some((_,si)=>(sectionRepeats[si]||1)>1 && !isSectionCollapsed(si));
   SECTIONS.forEach((_,si)=>{
-    if((sectionRepeats[si]||1)>1){
-      sectionCollapsed[si]=anyExpanded;
-    }
+    if((sectionRepeats[si]||1)>1) sectionCollapsed[si]=anyExpanded;
   });
-  // update pill to reflect new state (shows current majority)
   updatePill('togRepeats',!anyExpanded,'Repeats');
   renderLyrics();updateHighlight();
+  requestAnimationFrame(()=>scrollToCurrent());
 }
 
 function isSectionCollapsed(si){
-  // only per-section state matters — no global override
   return !!sectionCollapsed[si];
 }
 
 function toggleSectionCollapse(si){
   sectionCollapsed[si]=!isSectionCollapsed(si);
-  // update global pill to reflect if any section is still expanded
   const anyExpanded = SECTIONS.some((_,s)=>(sectionRepeats[s]||1)>1 && !isSectionCollapsed(s));
   updatePill('togRepeats',anyExpanded,'Repeats');
   renderLyrics();updateHighlight();
+  requestAnimationFrame(()=>scrollToCurrent());
 }
 
 /* ═══ MODE ═══ */
