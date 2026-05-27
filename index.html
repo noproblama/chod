@@ -78,6 +78,8 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 .line-tr.active{color:#d0c090} .line-tr.dim{color:#7a7060}
 .line-en{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
 .line-en.active{color:#c0b898} .line-en.dim{color:#706858}
+.line-de{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
+.line-de.active{color:#c0b0a0} .line-de.dim{color:#706050}
 .line-ru{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
 .line-ru.active{color:#b0a8c0} .line-ru.dim{color:#605870}
 .line-uk{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;transition:color .3s}
@@ -135,6 +137,7 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
   <button class="pill on" id="togTib" onclick="toggleLayer('tib')">✓ བོད</button>
   <button class="pill on" id="togTr" onclick="toggleLayer('tr')">✓ Translit</button>
   <button class="pill on" id="togEn" onclick="toggleLayer('en')">✓ English</button>
+  <button class="pill off" id="togDe" onclick="toggleLayer('de')">○ Deutsch</button>
   <button class="pill off" id="togRu" onclick="toggleLayer('ru')">○ Русский</button>
   <button class="pill off" id="togUk" onclick="toggleLayer('uk')">○ Українська</button>
   <div class="divider"></div>
@@ -198,58 +201,67 @@ const SECTIONS = [
         "tr": "HUNG ORGYEN YUL GYI NUB DSCHANG TSAM",
         "en": "HUNG, in the northwest country of Uddiyana,",
         "ru": "Хум. На северо-западной границе Уддияны,",
-        "uk": "ХУМ, на північно-західному кордоні Уддіяни,"
+        "uk": "ХУМ, на північно-західному кордоні Уддіяни,",
+        "de": "HUNG, Im nordwestlichen Land Uddiyana,"
       },
       {
         "tib": "པདྨ་གེ་སར་སྡོང་པོ་ལ།",
         "tr": "PEDMA GESAR DONG PO LA",
         "en": "Born in the pollen heart of a lotus,",
         "ru": "На пестике цветущего лотоса,",
-        "uk": "На маточці квітучого лотоса,"
+        "uk": "На маточці квітучого лотоса,",
+        "de": "Geboren auf dem Pollenbett eines Lotus,"
       },
       {
         "tib": "ཡ་མཚན་མཆོག་གི་དངོས་གྲུབ་བརྙེས།",
         "tr": "JATSEN SCHOG GI NGÖ DRUB NJÄ",
         "en": "Endowed with the most marvellous spiritual attainments,",
         "ru": "Достигший удивительных высших совершенств,",
-        "uk": "Досягнувши дивовижних найвищих досконалостей,"
+        "uk": "Досягнувши дивовижних найвищих досконалостей,",
+        "de": "Ausgestattet mit den außergewöhnlichsten, wunderbarsten spirituellen Errungenschaften,"
       },
       {
         "tib": "པདྨ་འབྱུང་གནས་ཞེས་སུ་གྲགས།",
         "tr": "PEDMA DSCHUNG NÄ SCHÄ SU DRAG",
         "en": "You are renowned as the 'Lotus Born'.",
         "ru": "Прославленный как Рожденный из лотоса,",
-        "uk": "Прославлений як Народжений з лотоса,"
+        "uk": "Прославлений як Народжений з лотоса,",
+        "de": "Bist Du bekannt als der ‘Lotus-Geborene’."
       },
       {
         "tib": "འཁོར་དུ་མཁའ་འགྲོ་མང་པོས་བསྐོར།",
         "tr": "KOR DU KANDRO MANG PÖ KOR",
         "en": "Surrounded by a retinue of many Dakinis,",
         "ru": "Окруженный множеством дакини!",
-        "uk": "Оточений численними дакінями!"
+        "uk": "Оточений численними дакінями!",
+        "de": "Umgeben von einer Gefolgschaft aus Dakinis,"
       },
       {
         "tib": "ཁྱེད་ཀྱི་རྗེས་སུ་བདག་བསྒྲུབ་ཀྱིས།",
         "tr": "KYED KYI DSCHE SU DAG DRUB KYI",
         "en": "Following you, I practice to become like you,",
         "ru": "Следуя Тебе в своей практике,",
-        "uk": "Слідуючи за Тобою у своїй практиці,"
+        "uk": "Слідуючи за Тобою у своїй практиці,",
+        "de": "Dir folgend praktiziere ich, um so zu werden wie Du,"
       },
       {
         "tib": "བྱིན་གྱིས་བརླབ་ཕྱིར་གཤེགས་སུ་གསོལ།",
         "tr": "DSCHIN GYI LAB TSCHIR SCHEG SU SOL",
         "en": "Therefore, come and bless me!",
         "ru": "Молю, приди и даруй благословение!",
-        "uk": "Молю, прийди і даруй благословення!"
+        "uk": "Молю, прийди і даруй благословення!",
+        "de": "Deshalb komm und segne mich!"
       },
       {
         "tib": "གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃཿ",
         "tr": "GURU PEDMA SIDDHI HUNG",
         "en": "GURU PEDMA SIDDHI HUNG",
         "ru": "ГУРУ ПЕМА СИДДХИ ХУНГ",
-        "uk": "ҐУРУ ПЕМА СІДДХІ ХУНГ"
+        "uk": "ҐУРУ ПЕМА СІДДХІ ХУНГ",
+        "de": "GURU PEDMA SIDDHI HUNG"
       }
-    ]
+    ],
+    "titleDe": "Sieben-Zeilen Gebet"
   },
   {
     "title": "Lineage Prayer",
@@ -261,30 +273,35 @@ const SECTIONS = [
         "tr": "KUN ZANG DOR SEM GA RAB SCHRI SENG",
         "en": "Samantabhadra, Vajrasattva, Garab Dorje, Shri Singha,",
         "ru": "Самантабхадре, Ваджрасаттве, Гарабу Дордже, Шри Сингхе",
-        "uk": "Самантабхадрі, Ваджрасаттві, Ґарабу Дордже, Шрі Сінгхі,"
+        "uk": "Самантабхадрі, Ваджрасаттві, Ґарабу Дордже, Шрі Сінгхі,",
+        "de": "Zu Samantabhadra, Vajrasattva, Garab Dorje, Shri Singha,"
       },
       {
         "tib": "པདྨ་ཀ་ར་རྗེ་འབངས་ཉི་ཤུ་ལྔ།",
         "tr": "PE MA KA RA DSCHE BANG NYI SCHU NGA",
         "en": "Padmakara and his 25 disciples,",
         "ru": "Падмакаре и его 25 ученикам: Царю и подданным,",
-        "uk": "Падмакарі та його 25 учням: Царю та підданим,"
+        "uk": "Падмакарі та його 25 учням: Царю та підданим,",
+        "de": "Padmakaras 25 Schülern: dem König und seinen Untertanen,"
       },
       {
         "tib": "སོ་ཟུར་གནུབས་གཉགས་གཏེར་སྟོན་བརྒྱ་རྩ་སོགས།",
         "tr": "SO ZUR NUB NYAG TER TÖN GYA TSA SOG",
         "en": "So, Zur, Nub, Nyag, and hundreds of tertöns,",
         "ru": "Со Еше Вангчуку, Зуру Шакья Джунгне, Нубчену Сангье Еше, Ньягу Джнанакумаре и сотне тертонов,",
-        "uk": "Со Єше Вангчуку, Зуру Шак'я Джунгне, Нубчену Санг'є Єше, Ньяґу Джнанакумарі та сотням тертонів,"
+        "uk": "Со Єше Вангчуку, Зуру Шак'я Джунгне, Нубчену Санг'є Єше, Ньяґу Джнанакумарі та сотням тертонів,",
+        "de": "Zu So Yeshe Wangchuk, Zur Shakya Dschungne, Nubchen Sangye Yeshe, Nyag Dschnanakumara sowie Hunderten von Tertöns,"
       },
       {
         "tib": "བཀའ་གཏེར་བླ་མ་རྣམས་ལ་གསོལ་བ་འདེབས།",
         "tr": "KA TER LA MA NAM LA SOL WA DEB",
         "en": "To the lamas of kama and terma lineages, I pray!",
         "ru": "Ламам линии кама и терма я молюсь.",
-        "uk": "Ламам лінії кама і терма я молюся!"
+        "uk": "Ламам лінії кама і терма я молюся!",
+        "de": "Zu den Lamas der Kama- und Terma-Linien bete ich!"
       }
-    ]
+    ],
+    "titleDe": "Anrufung der Linien Meister"
   },
   {
     "title": "Prayer to Tertön Migyur Dorje",
@@ -296,30 +313,35 @@ const SECTIONS = [
         "tr": "SCHU PU PAL SENG NGOM YÜL SRID PA ZUNG",
         "en": "You are the emanation of Shupu Palseng, born in Ngom Yül,",
         "ru": "Ты воплощение Шупу Палсенга, рожденный в Нгом Йюл,",
-        "uk": "Ти втілення Шупу Палсенґа, народжений у Нґом Йюл,"
+        "uk": "Ти втілення Шупу Палсенґа, народжений у Нґом Йюл,",
+        "de": "Du bist die Emanation von Schupu Palseng, geboren in Ngom Yül,"
       },
       {
         "tib": "རྩ་གསུམ་ཞལ་གཟིགས་གནམ་ཆོས་སྙན་བརྒྱུད་སྤེལ།",
         "tr": "TSA SUM ZHAL ZIG NAM TSCHÖ NYEN GYÜD PEL",
         "en": "Who had visions of the three roots, and propagated the Namchö aural lineage;",
         "ru": "Узревший божеств, три драгоценности и распространяющий устную линию передачи Намчо.",
-        "uk": "Хто мав видіння трьох коренів і поширював усну лінію передачі Намчо;"
+        "uk": "Хто мав видіння трьох коренів і поширював усну лінію передачі Намчо;",
+        "de": "Der Visionen von Gottheiten, den drei Wurzeln hatte, und die Namchö Hörer-Linie verbreitete;"
       },
       {
         "tib": "བྱིན་རླབས་སྟོབས་ཀྱིས་གཞན་ཕན་བསམ་མི་ཁྱབ།",
         "tr": "DSCHIN LAB TOB KYI ZHEN PEN SAM MI KYAB",
         "en": "By the power of your blessings, you have inconceivably benefited others.",
         "ru": "Благодаря силе твоего благословения существа получают невообразимую пользу",
-        "uk": "Завдяки силі твого благословення істоти отримують неосяжну користь."
+        "uk": "Завдяки силі твого благословення істоти отримують неосяжну користь.",
+        "de": "Durch die Kraft deines Segens nützt du anderen in einem unvorstellbaren Ausmaß —"
       },
       {
         "tib": "སྤྲུལ་སྐུ་མི་འགྱུར་རྡོ་རྗེ་ལ་གསོལ་བ་འདེབས།",
         "tr": "TULKU MI GYUR DORDSCHE LA SOL WA DEB",
         "en": "I pray to Tulku Mingyur Dorje!",
         "ru": "Молюсь тебе, Тулку Мингьюр Дордже!",
-        "uk": "Молюся тобі, Тулку Мінг'юр Дордже!"
+        "uk": "Молюся тобі, Тулку Мінг'юр Дордже!",
+        "de": "Zu Tulku Mingyur Dordsche bete ich!"
       }
-    ]
+    ],
+    "titleDe": "Gebet an Tertön Migyur Dorje"
   },
   {
     "title": "Prayer to Pema Norbu (Penor Rinpoche)",
@@ -331,30 +353,35 @@ const SECTIONS = [
         "tr": "NGA GYÄ DSUG GYEN PAN TSCHEN BI MA LA",
         "en": "Vimalamitra, the crown ornament of the five hundred panditas,",
         "ru": "Вималамитра, венечное украшение пяти сотен пандитов,",
-        "uk": "Вімаламітра, коронна окраса п'ятисот пандитів,"
+        "uk": "Вімаламітра, коронна окраса п'ятисот пандитів,",
+        "de": "Vimalamitra, Kronenschmuck der 500 Panditas,"
       },
       {
         "tib": "སླར་ཡང་སྲིད་པ་བཟུང་བའི་ཚུལ་བསྟན་ཅིང་།",
         "tr": "LAR YANG SRID PA ZUNG WA'I TSÜL TEN DSCHING",
         "en": "Once again showing your form in existence,",
         "ru": "Вновь явивший свое воплощение,",
-        "uk": "Знову явивши своє втілення,"
+        "uk": "Знову явивши своє втілення,",
+        "de": "Wieder einmal erscheinst du körperlich in dieser Existenz,"
       },
       {
         "tib": "སྙིང་པོའི་བསྟན་པ་སྤེལ་ལ་ཟླ་བྲལ་བ།",
         "tr": "NYING PO'I TEN PA PEL LA DA DRAL WA",
         "en": "Increasing the essence of the Buddha's Doctrine, unequalled,",
         "ru": "Распространяющий суть непревзойденного учения Будды,",
-        "uk": "Поширюючи суть неперевершеного вчення Будди,"
+        "uk": "Поширюючи суть неперевершеного вчення Будди,",
+        "de": "Und verbreitest die Essenz der Lehren des Buddhas ohne gleichen!"
       },
       {
         "tib": "པདྨ་ནོར་བུའི་ཞབས་ལ་གསོལ་བ་འདེབས།",
         "tr": "PEMA NORBU'I ZHAB LA SOL WA DEB",
         "en": "To Pema Norbu, I pray!",
         "ru": "Пема Норбу, тебе я молюсь!",
-        "uk": "Пема Норбу, тобі я молюся!"
+        "uk": "Пема Норбу, тобі я молюся!",
+        "de": "Zu Pema Norbu bete ich!"
       }
-    ]
+    ],
+    "titleDe": "Gebet an Drubwang Pema Norbu (Penor Rinpoche)"
   },
   {
     "title": "Prayer to the Root Guru",
@@ -366,30 +393,35 @@ const SECTIONS = [
         "tr": "OG MIN DSCHÖ KYI YING KYI ZHING KAM SU",
         "en": "You who dwells in the Dharmadhatu of the Pure Realm of Akanishta,",
         "ru": "Во Дворце Огмин Дхармадхату",
-        "uk": "У палаці Оґмін Дгармадгату"
+        "uk": "У палаці Оґмін Дгармадгату",
+        "de": "Im Dharmadhatu des Reinen Gefildes Akanishta verweilst Du,"
       },
       {
         "tib": "དུས་གསུམ་སངས་རྒྱས་ཀུན་གྱི་ངོ་བོ་ཉིད།",
         "tr": "DÜ SUM SANGYE KUN GYI NGO WO NYID",
         "en": "As the essence of all the Buddhas of the three times,",
         "ru": "Сущность всех Будд трех времен,",
-        "uk": "Сутність усіх Будд трьох часів,"
+        "uk": "Сутність усіх Будд трьох часів,",
+        "de": "Als die Essenz aller Buddhas der drei Zeiten."
       },
       {
         "tib": "རང་སེམས་ཆོས་སྐུ་དངོས་སུ་སྟོན་མཛད་པ།",
         "tr": "RANG SEM DSCHÖ KU NGÖ SU TÖN DZE PA",
         "en": "You show us directly the Dharmakaya of our own mind,",
         "ru": "Ясно являющий Дхармакаю моего ума,",
-        "uk": "Ясно являючи Дгармакаю мого розуму,"
+        "uk": "Ясно являючи Дгармакаю мого розуму,",
+        "de": "Du zeigst uns unmittelbar den Dharmakaya unseres eigenen Geistes,"
       },
       {
         "tib": "རྩ་བའི་བླ་མའི་ཞབས་ལ་གསོལ་བ་འདེབས།",
         "tr": "TSA WA'I LAMA'I ZHAB LA SOL WA DEB",
         "en": "Root Guru, to you I pray.",
         "ru": "Молюсь стопам Коренного Учителя.",
-        "uk": "Молюся стопам Кореневого Вчителя."
+        "uk": "Молюся стопам Кореневого Вчителя.",
+        "de": "Wurzel-Lama, zu Dir bete ich."
       }
-    ]
+    ],
+    "titleDe": "Gebet an den Wurzel-Lehrer"
   },
   {
     "title": "Refuge & Bodhicitta",
@@ -402,37 +434,43 @@ const SECTIONS = [
         "tr": "NAMO BENDZA WARAHI",
         "en": "NAMO BENDZA WARAHI",
         "ru": "НАМО БЕДЗАР ВАРАХИ",
-        "uk": "НАМО БЕДЗАР ВАРАХІ"
+        "uk": "НАМО БЕДЗАР ВАРАХІ",
+        "de": "NAMO BENDZA WARAHI"
       },
       {
         "tib": "ན་མོ། དཀོན་མཆོག་གསུམ་དང་རྩ་བ་གསུམ།",
         "tr": "NAMO KON SCHOK SUM DANG TSAWA SUM",
         "en": "Homage! I take refuge in the Three Jewels, the Three Roots,",
         "ru": "НАМО! Я принимаю прибежище в Трех Драгоценностях, Трех Корнях,",
-        "uk": "НАМО! Я приймаю притулок у Трьох Коштовностях, Трьох Коренях,"
+        "uk": "НАМО! Я приймаю притулок у Трьох Коштовностях, Трьох Коренях,",
+        "de": "NAMO! Ich nehme Zuflucht zu den Drei Juwelen, den Drei Wurzeln,"
       },
       {
         "tib": "སྐྱབས་གནས་རྣམས་ལ་སྐྱབས་སུ་མཆི།",
         "tr": "KYAB NE NAM LA KYAB SU TSCHI",
         "en": "And all sources of refuge.",
         "ru": "И во всех источниках Прибежища.",
-        "uk": "І в усіх джерелах Притулку."
+        "uk": "І в усіх джерелах Притулку.",
+        "de": "Und allen Quellen der Zuflucht."
       },
       {
         "tib": "འགྲོ་ཀུན་སངས་རྒྱས་ལ་འགོད་ཕྱིར།",
         "tr": "DRO KUN SANGYÄ LA GÖ TSCHIR",
         "en": "In order to place all sentient beings in Buddhahood,",
         "ru": "Чтобы привести всех живых существ к состоянию Будды,",
-        "uk": "Щоб привести всіх живих істот до стану Будди,"
+        "uk": "Щоб привести всіх живих істот до стану Будди,",
+        "de": "Um alle Wesen in den Zustand der Buddhaschaft zu bringen,"
       },
       {
         "tib": "བྱང་ཆུབ་མཆོག་ཏུ་སེམས་བསྐྱེད་དོ།",
         "tr": "DSCHANG TSCHUB TSCHOG TU SEM KYE DO",
         "en": "I give rise to the Supreme Bodhicitta.",
         "ru": "Я порождаю высшую бодхичитту.",
-        "uk": "Я породжую найвищу бодгічітту."
+        "uk": "Я породжую найвищу бодгічітту.",
+        "de": "Erwecke ich das höchste Bodhicitta."
       }
-    ]
+    ],
+    "titleDe": "Zuflucht und Bodhicitta"
   },
   {
     "title": "Vajra Verse — Core Chöd",
@@ -444,128 +482,147 @@ const SECTIONS = [
         "tr": "NAMO DAG GI NAM PAR SCHE PA NI",
         "en": "Homage! This consciousness of mine",
         "ru": "НАМО! Мое собственное сознание",
-        "uk": "НАМО! Моя власна свідомість"
+        "uk": "НАМО! Моя власна свідомість",
+        "de": "Lobpreis! Mein Bewusstsein"
       },
       {
         "tib": "ཕཊཿ རང་གི་སྤྱི་བོར་འཕྲོ་པ་ལས༔",
         "tr": "PHET RANG GI TSCHI WOR TRO PA LÄ",
         "en": "PHET — shoots out through the crown of my head",
         "ru": "ПХЭТ! Вырывается из моей макушки",
-        "uk": "ПХЕТ! Вирвалася з моєї маківки"
+        "uk": "ПХЕТ! Вирвалася з моєї маківки",
+        "de": "Schießt aus meinem Kopf heraus"
       },
       {
         "tib": "ཕཊཿ རྡོ་རྗེ་ཕག་མོ་རྒྱ་སྲན་ཙམ༔",
         "tr": "PHET DORDSCHE PAGMO GYA SEN TSAM",
         "en": "PHET — becomes Dorje Phagmo, the size of a bean",
         "ru": "ПХЭТ! И становится Дордже Пхагмо, размером с фасолину,",
-        "uk": "ПХЕТ! І стає Дордже Пхаґмо, розміром з квасолину,"
+        "uk": "ПХЕТ! І стає Дордже Пхаґмо, розміром з квасолину,",
+        "de": "Und wird zu Dorje Pagmo, groß wie eine Erbse."
       },
       {
         "tib": "ཕཊཿ དེ་ནས་ཆེར་སོང་མཛུབ་གང་ཙམ༔",
         "tr": "PHET DE NÄ SCHER SONG DZUB GANG TSAM",
         "en": "PHET — She grows to the size of a finger",
         "ru": "ПХЭТ! Вырастая до размера ногтя большого пальца,",
-        "uk": "ПХЕТ! Виростаючи до розміру пальця,"
+        "uk": "ПХЕТ! Виростаючи до розміру пальця,",
+        "de": "Sie wächst an auf die Größe eines Fingers."
       },
       {
         "tib": "ཕཊཿ དེ་ནས་ཆེར་སོང་ཁྲུ་གང་ཙམ༔",
         "tr": "PHET DE NÄ TSCHER SONG TRU GANG TSAM",
         "en": "PHET — Growing to the size of a cubit",
         "ru": "ПХЭТ! Затем до локтя",
-        "uk": "ПХЕТ! Потім до ліктя"
+        "uk": "ПХЕТ! Потім до ліктя",
+        "de": "Sie wächst an auf die Größe einer Elle."
       },
       {
         "tib": "ཕཊཿ གནམ་ས་གང་བའི་ཕག་མོར་གྱུར༔",
         "tr": "PHET NAM SA GANG WÄ PHAG MOR GYUR",
         "en": "PHET — Fills the entire earth and all of space",
         "ru": "ПХЭТ! Дордже Пхагмо теперь охватывает и землю, и пространство.",
-        "uk": "ПХЕТ! Дордже Пхаґмо тепер охоплює і землю, і простір."
+        "uk": "ПХЕТ! Дордже Пхаґмо тепер охоплює і землю, і простір.",
+        "de": "Sie wächst an, bis sie die gesamte Erde und das gesamte Universum ausfüllt."
       },
       {
         "tib": "ཕྱག་གཡས་གྲི་གུག་ཚད་ཙམ་གྱིས༔",
         "tr": "TSCHAG JÄ DRI GUG TSED DSAM GYI",
         "en": "With a mere motion of the blade in her right hand,",
         "ru": "Взмахнув изогнутым ваджрным ножом в моей правой руке,",
-        "uk": "Змахнувши вигнутим ваджрним ножем у моїй правій руці,"
+        "uk": "Змахнувши вигнутим ваджрним ножем у моїй правій руці,",
+        "de": "Mit einer Bewegung des Vajra Krummessers in der rechten Hand,"
       },
       {
         "tib": "བེམ་པོའི་མགོ་བོ་བྲེག་ནས་ཀྱང་༔",
         "tr": "BEM PÖ GO WO DREG NÄ KYANG",
         "en": "She severs the head from my fallen corpse",
         "ru": "Отделяю голову от моего трупа.",
-        "uk": "Відділяю голову від мого тіла."
+        "uk": "Відділяю голову від мого тіла.",
+        "de": "Schneidet sie den Kopf meines gefallenen Körpers ab."
       },
       {
         "tib": "དེ་ཉིད་གཡས་སུ་བཞག་བྱས་ནས༔",
         "tr": "DE NYID JÄ SU ZCHAG DSCHÄ NÄ",
         "en": "And places it to the right of my body",
         "ru": "Поместив голову справа от трупа,",
-        "uk": "Поклавши голову праворуч від тіла,"
+        "uk": "Поклавши голову праворуч від тіла,",
+        "de": "Und legt ihn zur Rechten meines Körpers."
       },
       {
         "tib": "གྲི་གུག་དེ་ཉིད་ཚད་ཙམ་གྱིས༔",
         "tr": "DRI GUG DE NYID TSED TSAM GYI",
         "en": "Simply waving the curved vajra blade,",
         "ru": "взмахом кончика изогнутого ножа,",
-        "uk": "змахом кінчика вигнутого ножа,"
+        "uk": "змахом кінчика вигнутого ножа,",
+        "de": "Mit einer weiteren Bewegung des Krummessers,"
       },
       {
         "tib": "མགོ་ཤུན་བཤུས་ཏེ་བྷནྡྷ་བྱས༔",
         "tr": "GO SCHUN SCHÜ TE BHENDHA DSCHE",
         "en": "The head skin becomes a kapala (skull cup)",
         "ru": "снимаю верхушку черепа, превращая её в чашу из черепа.",
-        "uk": "знімаю верхівку черепа, перетворюючи її на чашу з черепа."
+        "uk": "знімаю верхівку черепа, перетворюючи її на чашу з черепа.",
+        "de": "Schält sie die Haut vom Kopf, der zu einem Kapala wird."
       },
       {
         "tib": "དེ་ནང་རང་གི་བེམ་པོ་བཞག༔",
         "tr": "DÄ NANG RANG GI BEM PO ZCHAG",
         "en": "Placing one's corpse inside the kapala,",
         "ru": "Затем, поместив труп внутрь чаши из черепа,",
-        "uk": "Потім, помістивши тіло всередину чаші з черепа,"
+        "uk": "Потім, помістивши тіло всередину чаші з черепа,",
+        "de": "Mein Körper wird in den Kapala gelegt."
       },
       {
         "tib": "གཡས་ཀྱི་གྲི་གུག་ཚད་ཙམ་གྱིས༔",
         "tr": "JÄ KYI DRI GUG TSED DSAM GYI",
         "en": "By merely waving the curved vajra blade,",
         "ru": "взмахом изогнутого ножа в моей правой руке,",
-        "uk": "змахом вигнутого ножа у моїй правій руці,"
+        "uk": "змахом вигнутого ножа у моїй правій руці,",
+        "de": "Mit einer Bewegung des Krummessers in ihrer rechten Hand,"
       },
       {
         "tib": "ཤ་ལྔ་བདུད་རྩི་རྣམ་ལྔར་གྱུར༔",
         "tr": "SCHA NGA DÜD TSI NAM NGAR GYUR",
         "en": "The contents become the five meats and five nectars",
         "ru": "содержимое становится пятью видами мяса и пятью видами нектара.",
-        "uk": "вміст стає п'ятьма видами м'яса та п'ятьма видами нектару."
+        "uk": "вміст стає п'ятьма видами м'яса та п'ятьма видами нектару.",
+        "de": "Verwandelt sich der Inhalt in die fünf Arten Fleisch und die fünf Nektare."
       },
       {
         "tib": "ཕཊཿ ཕཊཿ རང་གི་ཐུགས་ཀ་ནས༔",
         "tr": "PHET PHET RANG GI TUG KA NÄ",
         "en": "PHET PHET — From your heart,",
         "ru": "ПХЭТ! ПХЭТ! Из моего сердца излучается свет и",
-        "uk": "ПХЕТ! ПХЕТ! З мого серця випромінюється світло і"
+        "uk": "ПХЕТ! ПХЕТ! З мого серця випромінюється світло і",
+        "de": "Von meinem Herzzentrum"
       },
       {
         "tib": "རྡོ་རྗེ་ཕག་མོ་རང་འདྲ་བ༔",
         "tr": "DORDSCHE PAGMO RANG DRA WA",
         "en": "Dorje Phagmo, identical to yourself,",
         "ru": "бесчисленное множество Дордже Пагмо, таких же как я,",
-        "uk": "незліченна кількість Дордже Паґмо, таких самих як я,"
+        "uk": "незліченна кількість Дордже Паґмо, таких самих як я,",
+        "de": "Erheben sich unzählige Dorje Pagmos, identisch mit mir,"
       },
       {
         "tib": "གྲངས་མེད་གཡས་པས་རིན་ཆེན་སྐྱོགས༔",
         "tr": "DRANG MED JÄ PÄ RINDSCHEN KYOG",
         "en": "Countless, holding jewelled ladles in right hands,",
         "ru": "они держат в своих правых руках украшенные драгоценностями черпаки,",
-        "uk": "тримають у своїх правих руках оздоблені коштовностями черпаки,"
+        "uk": "тримають у своїх правих руках оздоблені коштовностями черпаки,",
+        "de": "Juwelenbestückte Schöpflöffel in ihren rechten Händen,"
       },
       {
         "tib": "གཡོན་པས་བྷནྡྷ་འཛིན་པ་འཕྲོས༔",
         "tr": "JÖN PÄ BHENDA DZIN PA TRÖ",
         "en": "And holding skull cups in their left hands",
         "ru": "а в левых — чаши из черепов.",
-        "uk": "а в лівих — чаші з черепів."
+        "uk": "а в лівих — чаші з черепів.",
+        "de": "Und Kapalas in ihren linken Händen haltend."
       }
-    ]
+    ],
+    "titleDe": "Vajra-Vers — Kern-Chöd"
   },
   {
     "title": "Offering to the Guests",
@@ -578,51 +635,59 @@ const SECTIONS = [
         "tr": "PHET LAMA JIDAM LHA LA TSCHÖD",
         "en": "PHET — Offered to the lamas and meditational deities",
         "ru": "Я предлагаю нектар Ламам и медитативным божествам,",
-        "uk": "Я підношу нектар Ламам і медитативним божествам,"
+        "uk": "Я підношу нектар Ламам і медитативним божествам,",
+        "de": "Ich bringe diesen Nektar den Lamas, Yidams und Gottheiten dar."
       },
       {
         "tib": "ཕཊཿ མཁའ་འགྲོ་ཆོས་སྐྱོང་རྣམས་ལ་མཆོད༔",
         "tr": "PHET KHANDRO TSCHÖ KJONG NAM LA TSCHÖD",
         "en": "PHET — To all Dakinis and Dharma protectors",
         "ru": "ПХЭТ! Всем дакиням и защитникам Дхармы,",
-        "uk": "ПХЕТ! Усім дакіням і захисникам Дгарми,"
+        "uk": "ПХЕТ! Усім дакіням і захисникам Дгарми,",
+        "de": "Ich bringe diesen Nektar den Dakinis und Dharmaschützern dar."
       },
       {
         "tib": "ཕཊཿ འཇིག་རྟེན་སྐྱོང་བ་རྣམས་ལ་མཆོད༔",
         "tr": "PHET DSCHIGTEN KYONG WA NAM LA TSCHÖD",
         "en": "PHET — To all worldly protectors",
         "ru": "ПХЭТ! Всем мирским защитникам,",
-        "uk": "ПХЕТ! Усім мирським захисникам,"
+        "uk": "ПХЕТ! Усім мирським захисникам,",
+        "de": "Ich bringe diesen Nektar den weltlichen Schützern dar."
       },
       {
         "tib": "ཕཊཿ མི་མ་ཡིན་ཀུན་ཐམས་ཅད་མཆོད༔",
         "tr": "PHET MI MA YIN KUN TAM DSCHE TSCHÖD",
         "en": "PHET — To all formless spirits",
         "ru": "ПХЭТ! Всем нечеловеческим духам,",
-        "uk": "ПХЕТ! Усім нелюдським духам,"
+        "uk": "ПХЕТ! Усім нелюдським духам,",
+        "de": "Ich bringe diesen Nektar allen nicht-menschlichen Wesen dar."
       },
       {
         "tib": "ཕཊཿ འགྲོ་བ་རིགས་དྲུག་ཀུན་ལ་མཆོད༔",
         "tr": "PHET DRO WA RIG DRUG KUN LA TSCHÖD",
         "en": "PHET — To all beings of the six classes",
         "ru": "ПХЭТ! Всем существам шести миров,",
-        "uk": "ПХЕТ! Усім істотам шести світів,"
+        "uk": "ПХЕТ! Усім істотам шести світів,",
+        "de": "Ich bringe diesen Nektar allen Wesen der sechs Daseinsbereiche dar."
       },
       {
         "tib": "ཕཊཿ ཁྱད་པར་ལན་ཆགས་བུ་ལོན་ཅན༔",
         "tr": "PHET KHYED PAR LEN TSCHAG BU LÖN DSCHEN",
         "en": "PHET — To those to whom karmic debts are owed;",
         "ru": "ПХЭТ! Особенно тем существам, перед которыми у меня есть кармические долги,",
-        "uk": "ПХЕТ! Особливо тим істотам, перед якими в мене є кармічні борги,"
+        "uk": "ПХЕТ! Особливо тим істотам, перед якими в мене є кармічні борги,",
+        "de": "Ich bringe diesen Nektar denjenigen dar, bei denen ich karmische Schulden habe."
       },
       {
         "tib": "གནོད་བྱེད་ཀུན་ལ་མཆོད་པར་གྱུར༔",
         "tr": "NÖD DSCHED KUN LA TSCHÖD PAR GYUR",
         "en": "And to all harmful entities",
         "ru": "и всем вредоносным существам.",
-        "uk": "і всім шкідливим істотам."
+        "uk": "і всім шкідливим істотам.",
+        "de": "Ich bringe diesen Nektar allen schadenbringenden Wesen dar."
       }
-    ]
+    ],
+    "titleDe": "Darbringung an die Gäste"
   },
   {
     "title": "Fulfillment",
@@ -634,58 +699,67 @@ const SECTIONS = [
         "tr": "PHET DAG GI TSCHÖD DSCHIN DI BUL WÄ",
         "en": "PHET — Through the generosity of my offering,",
         "ru": "ПХЭТ! Благодаря щедрости моего подношения,",
-        "uk": "ПХЕТ! Завдяки щедрості мого піднесення,"
+        "uk": "ПХЕТ! Завдяки щедрості мого піднесення,",
+        "de": "Während ich diese Opfergaben darbringe,"
       },
       {
         "tib": "བླ་མ་ཡི་དམ་མཉེས་གྱུར་ཅིག༔",
         "tr": "LAMA YIDAM NYÄ GYUR DSCHIG",
         "en": "May the Gurus and deities be pleased.",
         "ru": "да будут удовлетворены гуру и медитативные божества!",
-        "uk": "хай будуть задоволені ґуру та медитативні божества!"
+        "uk": "хай будуть задоволені ґуру та медитативні божества!",
+        "de": "Erfreuen sich die Lamas und Yidams."
       },
       {
         "tib": "མཁའ་འགྲོ་ཆོས་སྐྱོང་འཇིག་རྟེན་སྐྱོང༔",
         "tr": "KHANDRO TSCHÖ KYONG DSCHIGTEN KYONG",
         "en": "May Dakinis, Dharma and worldly protectors,",
         "ru": "Да будут удовлетворены дакини, защитники дхармы и мирские защитники!",
-        "uk": "Хай будуть задоволені дакіні, захисники дгарми та мирські захисники!"
+        "uk": "Хай будуть задоволені дакіні, захисники дгарми та мирські захисники!",
+        "de": "Die Dakinis, Dharmaschützer und weltlichen Schützer"
       },
       {
         "tib": "ཀུན་གྱི་ཐུགས་དམ་བསྐང་གྱུར་ཅིག༔",
         "tr": "KUN GYI TUGDAM KANG GYUR DSCHIG",
         "en": "All be pleasingly fulfilled.",
         "ru": "Да будут они довольны и исполнят все желания!",
-        "uk": "Хай будуть вони задоволені та здійснять усі бажання!"
+        "uk": "Хай будуть вони задоволені та здійснять усі бажання!",
+        "de": "Sind vollständig befriedigt."
       },
       {
         "tib": "མི་མ་ཡིན་ཀུན་མགུ་གྱུར་ཅིག༔",
         "tr": "MI MA YIN KUN GU GYUR DSCHIG",
         "en": "May all formless spirits be fulfilled.",
         "ru": "Да возрадуются все нечеловеческие духи!",
-        "uk": "Хай зрадіють усі нелюдські духи!"
+        "uk": "Хай зрадіють усі нелюдські духи!",
+        "de": "Alle nicht-menschlichen Wesen sind befriedigt."
       },
       {
         "tib": "འགྲོ་བ་རིགས་དྲུག་ཚིམ་གྱུར་ཅིག༔",
         "tr": "DRO WA RIG DRUG TSIM GYUR DSCHIG",
         "en": "May beings of the six realms be satisfied.",
         "ru": "Да будут удовлетворены существа шести миров!",
-        "uk": "Хай будуть задоволені істоти шести світів!"
+        "uk": "Хай будуть задоволені істоти шести світів!",
+        "de": "Alle Wesen der sechs Daseinsbereiche sind befriedigt."
       },
       {
         "tib": "ལན་ཆགས་བུ་ལོན་དག་གྱུར་ཅིག༔",
         "tr": "LEN SCHAG BU LÖN DAG GYUR DSCHIG",
         "en": "May all unpaid karmic debts be cleared.",
         "ru": "Да будут погашены все неоплаченные кармические долги!",
-        "uk": "Хай будуть сплачені всі несплачені кармічні борги!"
+        "uk": "Хай будуть сплачені всі несплачені кармічні борги!",
+        "de": "Alle karmischen Schulden sind beglichen."
       },
       {
         "tib": "གནོད་བྱེད་འདོད་པ་སྐོངས་གྱུར་ཅིག༔",
         "tr": "NÖD DSCHED DÖD PA KONG GYUR DSCHIG",
         "en": "May desires of all harmful entities be fulfilled.",
         "ru": "Да исполнятся желания всех вредоносных существ!",
-        "uk": "Хай здійсняться бажання всіх шкідливих істот!"
+        "uk": "Хай здійсняться бажання всіх шкідливих істот!",
+        "de": "Alle Wünsche der schadenbringenden Wesen sind erfüllt."
       }
-    ]
+    ],
+    "titleDe": "Erfüllung"
   },
   {
     "title": "Dissolution",
@@ -697,37 +771,43 @@ const SECTIONS = [
         "tr": "PHET PHET PHET",
         "en": "PHET PHET PHET",
         "ru": "ПХЭТ ПХЭТ ПХЭТ",
-        "uk": "ПХЕТ ПХЕТ ПХЕТ"
+        "uk": "ПХЕТ ПХЕТ ПХЕТ",
+        "de": "PHET PHET PHET"
       },
       {
         "tib": "སྤྱན་དྲངས་མགྲོན་རྣམས་རང་གནས་བཛྲ་མུ༔",
         "tr": "TSCHEN DRANG DRÖN NAM RANG NÄ BENDZA MU",
         "en": "All guests return to their abodes — BENDZA MU",
         "ru": "Все приглашенные гости возвращаются в свои обители — БЕНДЗРА МУ.",
-        "uk": "Усі запрошені гості повертаються до своїх обителей — БЕНДЗРА МУ."
+        "uk": "Усі запрошені гості повертаються до своїх обителей — БЕНДЗРА МУ.",
+        "de": "Alle Gäste kehren an ihre eigenen Orte zurück — BENDZA MU."
       },
       {
         "tib": "བདག་དང་མགྲོན་དང་མཆོད་པོ་མི་དམིགས་པ༔",
         "tr": "DAG DANG DRÖN DANG TSCHÖD PO MI MIG PA",
         "en": "Oneself, all guests, and offerings are objectless.",
         "ru": "Я, гости и подношения пусты.",
-        "uk": "Я, гості та піднесення порожні."
+        "uk": "Я, гості та піднесення порожні.",
+        "de": "Erkenne die eigene Natur, die des Gebers und die der Gäste als leer."
       },
       {
         "tib": "གནས་ལུགས་རང་བཞིན་ཀ་དག་རྫོགས་པ་ཆེ༔",
         "tr": "NÄ LUG RANG ZCHIN KA DAG DZOG PA TSCHÄ",
         "en": "The originally pure natural state of Great Perfection.",
         "ru": "Так пребывают вещи, внутреннее осознание и Великое совершенство изначальной чистоты.",
-        "uk": "Так перебувають речі, внутрішнє усвідомлення та Велика досконалість первісної чистоти."
+        "uk": "Так перебувають речі, внутрішнє усвідомлення та Велика досконалість первісної чистоти.",
+        "de": "Die Große Vollkommenheit, die ursprüngliche Reinheit ist die absolute Natur."
       },
       {
         "tib": "དགེ་བས་བདག་གཞན་ཀུན་གྱིས་འགྲུབ་གྱུར་ཅིག༔",
         "tr": "GÄ WÄ DAG ZCHEN KUN GYI DRUB GYUR DSCHIG",
         "en": "May this virtue accomplish the purpose of self and all!",
         "ru": "Благодаря этой добродетели я и все остальные сможем достичь состояния Будды!",
-        "uk": "Завдяки цій чесноті я та всі інші зможемо досягти стану Будди!"
+        "uk": "Завдяки цій чесноті я та всі інші зможемо досягти стану Будди!",
+        "de": "Mögen ich und alle anderen Wesen durch diesen Verdienst Erfüllung finden!"
       }
-    ]
+    ],
+    "titleDe": "Auflösung"
   },
   {
     "title": "Auspicious Prayer",
@@ -739,37 +819,43 @@ const SECTIONS = [
         "tr": "MRA SAM DSCHÖ ME SCHE RAB PA ROL TSCHIN",
         "en": "Ineffable and inconceivable Prajnaparamita,",
         "ru": "Невыразимая и непостижимая Праджняпарамита,",
-        "uk": "Невимовна і незбагненна Праджняпараміта,"
+        "uk": "Невимовна і незбагненна Праджняпараміта,",
+        "de": "Die unbeschreibliche und unvorstellbare Prajnaparamita,"
       },
       {
         "tib": "མ་སྐྱེས་མི་འགག་ནམ་མཁའི་ངོ་བོ་ཉིད།",
         "tr": "MA KYE MI GAG NAM KA'I NGO WO NYID",
         "en": "Possessing the essence of space, unborn and endless.",
         "ru": "Суть пространства, нерожденная и не прекращающаяся,",
-        "uk": "Суть простору, ненароджена і нескінченна,"
+        "uk": "Суть простору, ненароджена і нескінченна,",
+        "de": "Verfügt über die Essenz des Raumes, ungeboren und endlos."
       },
       {
         "tib": "སོ་སོ་རང་རིག་ཡེ་ཤེས་སྤྱོད་ཡུལ་བ།",
         "tr": "SO SO RANG RIG YE SCHE TSCHÖ YÜL WA",
         "en": "You are the object of one's own self-awareness.",
         "ru": "Воспринимающая различные объекты как мудрость самоосознавания.",
-        "uk": "Що сприймає різні об'єкти як мудрість самоусвідомлення."
+        "uk": "Що сприймає різні об'єкти як мудрість самоусвідомлення.",
+        "de": "Sie ist Objekt des eigenen Selbst-Gewahrseins."
       },
       {
         "tib": "དུས་གསུམ་རྒྱལ་བའི་ཡུམ་གྱིས་བཀྲིས་ཤོག།",
         "tr": "DÜ SUM GYAL WA'I YUM GYI TRI SCHOG",
         "en": "May all be auspicious for the Great Mother of the three times.",
         "ru": "Пусть все благоприятствует Великой Матери, владычице трех времен.",
-        "uk": "Хай все сприяє Великій Матері, владарці трьох часів."
+        "uk": "Хай все сприяє Великій Матері, владарці трьох часів.",
+        "de": "Möge alles glücksverheißend sein für die große Mutter, Herrscherin über die Drei Zeiten."
       },
       {
         "tib": "ཏདྱཐཱ། ཨོཾ་ག་ཏེ་ག་ཏེ། པཱ་ར་ག་ཏེ། པཱ་ར་སཾ་ག་ཏེ། བོ་དྷི་སྭཱ་ཧཱ།",
         "tr": "TADYATA OM GATE GATE PARAGATE PARASAM GATE BODHI SVAHA",
         "en": "TADYATA OM GATE GATE PARAGATE PARASAM GATE BODHI SVAHA",
         "ru": "ТАДЬЯТА ОМ ГАТЕ ГАТЕ ПАРАГАТЕ ПАРАСАМ ГАТЕ БОДХИ СВАХА",
-        "uk": "ТАДЬЯТА ОМ ҐАТЕ ҐАТЕ ПАРАҐАТЕ ПАРАСАМ ҐАТЕ БОДГІ СВАХА"
+        "uk": "ТАДЬЯТА ОМ ҐАТЕ ҐАТЕ ПАРАҐАТЕ ПАРАСАМ ҐАТЕ БОДГІ СВАХА",
+        "de": "TADYATA OM GATE GATE PARAGATE PARASAM GATE BODHI SVAHA"
       }
-    ]
+    ],
+    "titleDe": "Glücksverheißendes Gebet"
   },
   {
     "title": "Dedication",
@@ -781,142 +867,163 @@ const SECTIONS = [
         "tr": "GEWA MA GEN DRO DRUG KUN LA NGO",
         "en": "I dedicate all merit to motherly beings of the six realms.",
         "ru": "Я посвящаю всю заслугу моим матерям чувствующим существам шести миров.",
-        "uk": "Я присвячую всю заслугу моїм матерям чуттєвим істотам шести світів."
+        "uk": "Я присвячую всю заслугу моїм матерям чуттєвим істотам шести світів.",
+        "de": "Ich widme diesen Verdienst allen muttergleichen Wesen der sechs Daseinsbereiche."
       },
       {
         "tib": "རྒྱལ་བ་མཆོད་པས་མཉེས་གྱུར་ཅིག",
         "tr": "GYAL WA TSCHÖ PE NYE GYUR DSCHIG",
         "en": "May all Buddhas rejoice in these offerings!",
         "ru": "Будды – пусть усладятся подношениями!",
-        "uk": "Будди — хай втішаться піднесеннями!"
+        "uk": "Будди — хай втішаться піднесеннями!",
+        "de": "Mögen sich alle Buddhas an diesen Gaben erfreuen!"
       },
       {
         "tib": "དམ་ཅན་ཐུགས་དམ་སྐོང་གྱུར་ཅིག",
         "tr": "DAMSCHEN TUGDAM KONG GYUR DSCHIG",
         "en": "May the vows of the protectors be fulfilled!",
         "ru": "Дамчены – пусть полностью удовлетворятся!",
-        "uk": "Дамчени — хай повністю задовольняться!"
+        "uk": "Дамчени — хай повністю задовольняться!",
+        "de": "Möge das feierliche Versprechen der Schützer in Erfüllung gehen!"
       },
       {
         "tib": "རིགས་དྲུག་འདོད་པ་ཚིམས་གྱུར་ཅིག",
         "tr": "RIG DRUG DÖPA TSIM GYUR DSCHIG",
         "en": "May wishes of the six types of beings be fulfilled!",
         "ru": "Существа шести миров – пусть насладятся желаемым!",
-        "uk": "Істоти шести світів — хай насолодяться бажаним!"
+        "uk": "Істоти шести світів — хай насолодяться бажаним!",
+        "de": "Mögen die Wünsche der sechs Arten von Wesen in Erfüllung gehen!"
       },
       {
         "tib": "ལན་ཆགས་ཤ་མཁོན་སྦྱང་གྱུར་ཅིག",
         "tr": "LEN SCHAG SCHA KÖN DSCHANG GYUR DSCHIG",
         "en": "May hostilities with karmic debtors be pacified!",
         "ru": "Пусть очистятся долги плоти!",
-        "uk": "Хай очистяться борги плоті!"
+        "uk": "Хай очистяться борги плоті!",
+        "de": "Möge die Feindschaft mit karmischen Schuldnern befriedet werden!"
       },
       {
         "tib": "ཚོགས་གཉིས་ཡོངས་སུ་རྫོགས་གྱུར་ཅིག",
         "tr": "TSOG NYI YONG SU DZOG GYUR DSCHIG",
         "en": "May we complete accumulations of merit and wisdom!",
         "ru": "Пусть полностью завершатся два Накопления!",
-        "uk": "Хай повністю завершаться два Накопичення!"
+        "uk": "Хай повністю завершаться два Накопичення!",
+        "de": "Mögen wir die Ansammlung von Verdienst und Weisheit vervollständigen!"
       },
       {
         "tib": "སྒྲིབ་གཉིས་བག་ཆགས་དག་གྱུར་ཅིག",
         "tr": "DRIB NYI BAG TSCHAG DAG GYUR DSCHIG",
         "en": "May we purify afflictions and habitual patterns!",
         "ru": "Пусть очистятся кармические склонности и два омрачения!",
-        "uk": "Хай очистяться кармічні схильності та два затьмарення!"
+        "uk": "Хай очистяться кармічні схильності та два затьмарення!",
+        "de": "Mögen wir unsere emotionalen und gedanklichen Verunreinigungen sowie unsere karmischen Gewohnheitsmuster bereinigen!"
       },
       {
         "tib": "དམ་པ་སྐུ་གཉིས་ཐོབ་གྱུར་ཅིག",
         "tr": "DAMPA KU NYI TOB GYUR DSCHIG",
         "en": "May we attain Dharmakaya and Rupakaya!",
         "ru": "Пусть обретутся два святых Тела Будды!",
-        "uk": "Хай здобудуться два святих Тіла Будди!"
+        "uk": "Хай здобудуться два святих Тіла Будди!",
+        "de": "Mögen wir Dharmakaya und Rupakaya erlangen!"
       },
       {
         "tib": "སྦྱིན་པ་རྒྱ་ཆེན་གྱུར་པ་འདི་ཡི་མཐུས།",
         "tr": "DSCHINPA GYA TSCHEN GYUR PA DI YI TÜ",
         "en": "By this immeasurable deed of generosity,",
         "ru": "Силой этого огромного даяния,",
-        "uk": "Силою цього величезного дарування,"
+        "uk": "Силою цього величезного дарування,",
+        "de": "Durch diesen unermesslichen Akt der Freigebigkeit,"
       },
       {
         "tib": "འགྲོ་བའི་དོན་དུ་རང་བྱུང་སངས་རྒྱས་ཤོག",
         "tr": "DROWA'I DÖN DU RANG DSCHUNG SANGYE SCHOG",
         "en": "May we attain Buddhahood for the benefit of all!",
         "ru": "На благо существ пусть станем самовозникшими Буддами,",
-        "uk": "На благо істот хай станемо самовинниклими Буддами,"
+        "uk": "На благо істот хай станемо самовинниклими Буддами,",
+        "de": "Mögen wir spontan die Buddhaschaft erlangen zum Wohle aller Wesen!"
       },
       {
         "tib": "སྔོན་གྱི་རྒྱལ་བ་རྣམས་ཀྱིས་མ་གྲོལ་བའི།",
         "tr": "NGNÖN GYI GYALWA NAM KYI MA DROL WA'I",
         "en": "May those not liberated by past Buddhas,",
         "ru": "Собрание существ, Буддами прошлого",
-        "uk": "Зібрання істот, Буддами минулого"
+        "uk": "Зібрання істот, Буддами минулого",
+        "de": "Mögen all diejenigen, die durch die vergangenen Buddhas nicht die Befreiung erlangten,"
       },
       {
         "tib": "སྐྱེ་བོའི་ཚོགས་རྣམས་སྦྱིན་པས་གྲོལ་གྱུར་ཅིག",
         "tr": "KYEWO'I TSOG NAM DSCHIN PÄ DROL GYUR DSCHIG",
         "en": "By this generosity be fully liberated!",
         "ru": "Не освобожденные, силой этого даяния пусть обретут освобождение!",
-        "uk": "Не звільнені, силою цього дарування хай здобудуть звільнення!"
+        "uk": "Не звільнені, силою цього дарування хай здобудуть звільнення!",
+        "de": "Durch diesen Akt der Freigebigkeit befreit werden!"
       },
       {
         "tib": "འབྱུང་པོ་གང་འདིར་ནི་ལྷགས་གྱུར་ཏམ།",
         "tr": "DSCHUNG PO GANG DIR NI LHAG GYUR TAM",
         "en": "However many spirits still remain here,",
         "ru": "Все собравшиеся здесь духи,",
-        "uk": "Усі зібрані тут духи,"
+        "uk": "Усі зібрані тут духи,",
+        "de": "Welche Geister auch immer hier noch verweilen,"
       },
       {
         "tib": "སའམ་འོན་ཏེ་བར་སྣང་འཁོད་ཀྱང་རུང།",
         "tr": "SA'AM ÖN TE BAR NANG KÖ KYANG RUNG",
         "en": "On earth or in the sky, wherever they are,",
         "ru": "Где бы ни находились: на земле, внизу, вверху или промежутке",
-        "uk": "Де б не перебували: на землі, внизу, вгорі чи проміжку"
+        "uk": "Де б не перебували: на землі, внизу, вгорі чи проміжку",
+        "de": "Auf der Erde oder im Himmel, wo immer sie sind,"
       },
       {
         "tib": "སྐྱེ་དགུ་རྣམས་ལ་རྟག་ཏུ་བྱམས་བྱེད་ཅིང།",
         "tr": "KYE GU NAM LA TAG TU DSCHAM DSCHE DSCHING",
         "en": "May they always love all beings,",
         "ru": "Будьте всегда милосердны ко всем существам!",
-        "uk": "Будьте завжди милосердні до всіх істот!"
+        "uk": "Будьте завжди милосердні до всіх істот!",
+        "de": "Mögen sie alle Wesen stets lieben,"
       },
       {
         "tib": "ཉིན་དང་མཚན་དུ་ཆོས་ལ་སྤྱོད་པར་ཤོག།",
         "tr": "NYIN DANG TSEN DU TSCHÖ LA TSCHÖ PAR SCHOG",
         "en": "And practice the Dharma by day and night!",
         "ru": "Днем и ночью поступайте согласно дхарме!",
-        "uk": "Вдень і вночі чиніть згідно з дгармою!"
+        "uk": "Вдень і вночі чиніть згідно з дгармою!",
+        "de": "Und den Dharma Tag und Nacht praktizieren!"
       },
       {
         "tib": "བསོད་ནམས་འདི་ཡིས་ཐམས་ཅད་གཟིགས་པ་ཉིད།",
         "tr": "SÖNAM DI YI TAM DSCHE ZIG PA NYI",
         "en": "By this merit, through complete omniscience,",
         "ru": "Благодаря этой добродетели пусть каждый обретет всеведение,",
-        "uk": "Завдяки цій чесноті хай кожен здобуде всевідання,"
+        "uk": "Завдяки цій чесноті хай кожен здобуде всевідання,",
+        "de": "Mögen durch diesen Verdienst alle Wesen die Erleuchtung erlangen,"
       },
       {
         "tib": "ཐོབ་ནས་ཉེས་པའི་དགྲ་རྣམས་ཕམ་བྱས་ཤིང༌།",
         "tr": "TOB NÄ NYÄ PA'I DRA NAM PAM DSCHE SCHING",
         "en": "And the total defeat of all negative forces,",
         "ru": "Победив врага - порочные действия,",
-        "uk": "Перемігши ворога — ганебні дії,"
+        "uk": "Перемігши ворога — ганебні дії,",
+        "de": "Und ihre Feinde, ihre Fehler und Täuschungen, besiegen."
       },
       {
         "tib": "སྐྱེ་རྒ་ན་འཆིའི་རྦ་ཀློང་འཁྲུགས་པ་ཡི།",
         "tr": "KYE GA NA TSCHI'I BA LONG DRUG PA YI",
         "en": "From the waves of birth, old age, sickness and death —",
         "ru": "От бушующих волн рождения, старости, болезни и смерти",
-        "uk": "Від бурхливих хвиль народження, старості, хвороби та смерті"
+        "uk": "Від бурхливих хвиль народження, старості, хвороби та смерті",
+        "de": "Mögen sie von diesem Ozean der samsarischen Existenz befreit werden,"
       },
       {
         "tib": "སྲིད་པའི་མཚོ་ལས་འགྲོ་བ་སྒྲོལ་བར་ཤོག",
         "tr": "SRID PA'I TSO LÄ DRO WA DROL WAR SCHOG",
         "en": "From this ocean of existence — may all be set free!",
         "ru": "Из океана Сансары да освобожу я всех существ.",
-        "uk": "З океану Сансари хай звільню я всіх істот."
+        "uk": "З океану Сансари хай звільню я всіх істот.",
+        "de": "Und deren tosenden Wellen von Geburt, Altern, Krankheit und Tod."
       }
-    ]
+    ],
+    "titleDe": "Widmung"
   },
   {
     "title": "Sukhavati Prayer",
@@ -928,93 +1035,107 @@ const SECTIONS = [
         "tr": "E MA HO NGO TSAR SANG GYÄ NANG WA THA YÄ DANG",
         "en": "How astonishing! The Buddha of Boundless Light,",
         "ru": "Чудесный Будда Амитабха Безграничный Свет,",
-        "uk": "Чудесний Будда Амітабга Безмежне Світло,"
+        "uk": "Чудесний Будда Амітабга Безмежне Світло,",
+        "de": "Wie erstaunlich! Der wundervolle Buddha des grenzenlosen Lichtes (Amitabha):"
       },
       {
         "tib": "གཡས་སུ་ཇོ་བོ་ཐུགས་རྗེ་ཆེན་པོ་དང་༔",
         "tr": "YÄ SU DSCHO WO TUG DSCHE TSCHEN PO DANG",
         "en": "The Lord of Great Compassion to your right,",
         "ru": "Справа от него Владыка Великое Сострадание,",
-        "uk": "Праворуч від нього Владика Велике Співчуття,"
+        "uk": "Праворуч від нього Владика Велике Співчуття,",
+        "de": "Zu seiner Rechten befindet sich der Herr des Großen Mitgefühls (Chenrezig),"
       },
       {
         "tib": "གཡོན་དུ་སེམས་དཔའ་མཐུ་ཆེན་ཐོབ་རྣམས་ལ༔",
         "tr": "YÖN DU SEM PA THU TSCHEN TOB NAM LA",
         "en": "The Bodhisattva of power to your left,",
         "ru": "Слева Бодхисаттва Ваджрапани,",
-        "uk": "Ліворуч Бодгісаттва Ваджрапані,"
+        "uk": "Ліворуч Бодгісаттва Ваджрапані,",
+        "de": "Zu seiner Linken befindet sich der Bodhisattva der Großen Macht (Vajrapani)."
       },
       {
         "tib": "སངས་རྒྱས་བྱང་སེམས་དཔག་མེད་འཁོར་གྱིས་བསྐོར༔",
         "tr": "SANG YÄ DSCHANG SEM PAG ME KOR GYI KOR",
         "en": "Surrounded by boundless Buddhas and Bodhisattvas,",
         "ru": "Окруженные бесчисленными Буддами и бодхисаттвами,",
-        "uk": "Оточені незліченними Буддами та бодгісаттвами,"
+        "uk": "Оточені незліченними Буддами та бодгісаттвами,",
+        "de": "Sie sind umgeben von zahllosen Buddhas und Bodhisattvas."
       },
       {
         "tib": "བདེ་སྐྱིད་ངོ་མཚར་དཔག་ཏུ་མེད་པ་ཡི༔",
         "tr": "DE KYI NGO TSAR PAG TU ME PA YI",
         "en": "Into the wondrous, immeasurably blissful",
         "ru": "В этой чистой Земле, неизмеримого чудесного счастья и радости,",
-        "uk": "У цій чистій Землі, неосяжного чудесного щастя та радості,"
+        "uk": "У цій чистій Землі, неосяжного чудесного щастя та радості,",
+        "de": "Es herrscht unermessliche Freude und wunderbares Glück,"
       },
       {
         "tib": "བདེ་བ་ཅན་ཞེས་བྱ་བའི་ཞིང་ཁམས་དེར༔",
         "tr": "DE WA DSCHEN ZCHE DSCHA WÄ SCHING KAM DER",
         "en": "Pure Realm of Great Bliss (Dewachen),",
         "ru": "Называемой Девачен, Великое Блаженство,",
-        "uk": "Що зветься Девачен, Велике Блаженство,"
+        "uk": "Що зветься Девачен, Велике Блаженство,",
+        "de": "In diesem Buddhabereich namens Dewachen."
       },
       {
         "tib": "བདག་ནི་འདི་ནས་ཚེ་འཕོས་གྱུར་མ་ཐག༔",
         "tr": "DAG NI DI NÄ TSE PÖ GYUR MA TAG",
         "en": "May I, at the moment of transfer from this life,",
         "ru": "Пусть я, сразу же по окончанию этой жизни,",
-        "uk": "Хай я, одразу ж по закінченні цього життя,"
+        "uk": "Хай я, одразу ж по закінченні цього життя,",
+        "de": "Mögen ich und andere, nachdem wir dieses Leben verlassen haben,"
       },
       {
         "tib": "སྐྱེ་བ་གཞན་གྱིས་བར་མ་ཆོད་པ་རུ༔",
         "tr": "KYE WA ZCHEN GYI BAR MA TSCHÖ PA RU",
         "en": "Without any other births intervening,",
         "ru": "Не принимая следующего рождения,",
-        "uk": "Не приймаючи наступного народження,"
+        "uk": "Не приймаючи наступного народження,",
+        "de": "Ohne eine weitere Wiedergeburt anzunehmen,"
       },
       {
         "tib": "དེ་རུ་སྐྱེས་ནས་སྣང་མཐའི་ཞལ་མཐོང་ཤོག༔",
         "tr": "DE RU KYE NÄ NANG TA'I ZCHAL TONG SCHOG",
         "en": "Be reborn to behold the face of Amitabha.",
         "ru": "Там обрету рождение, узрею лик Амитабхи!",
-        "uk": "Там здобуду народження, побачу лик Амітабги!"
+        "uk": "Там здобуду народження, побачу лик Амітабги!",
+        "de": "Sofort dort wiedergeboren werden und Amitabha von Angesicht zu Angesicht begegnen."
       },
       {
         "tib": "དེ་སྐད་བདག་གིས་སྨོན་ལམ་བཏབ་པ་འདི༔",
         "tr": "DE KÄ DAG GI MÖN LAM TAB PA DI",
         "en": "Through the power of this very prayer,",
         "ru": "В силу произнесения этого устремления,",
-        "uk": "В силу проголошення цього устремління,"
+        "uk": "В силу проголошення цього устремління,",
+        "de": "Buddhas und Bodhisattvas der zehn Richtungen,"
       },
       {
         "tib": "ཕྱོགས་བཅུའི་སངས་རྒྱས་བྱང་སེམས་ཐམས་ཅད་ཀྱིས༔",
         "tr": "TSCHOG TSCHU'I SANG GYÄ DSCHANG SEM TAM DSCHE KYI",
         "en": "May the Buddhas and Bodhisattvas of ten directions,",
         "ru": "Все Будды и Бодхисаттвы 10 направлений,",
-        "uk": "Усі Будди та Бодгісаттви 10 напрямків,"
+        "uk": "Усі Будди та Бодгісаттви 10 напрямків,",
+        "de": "Gewährt Euren Segen, damit dieses von mir gesprochene Wunschgebet"
       },
       {
         "tib": "གེགས་མེད་འགྲུབ་པར་བྱིན་གྱིས་བརླབ་ཏུ་གསོལ༔",
         "tr": "GEG ME DRUB PAR DSCHIN GYI LAB TU SOL",
         "en": "Grant blessing to accomplish this without interference.",
         "ru": "Благословите беспрепятственное исполнение этого!",
-        "uk": "Благословіть безперешкодне здійснення цього!"
+        "uk": "Благословіть безперешкодне здійснення цього!",
+        "de": "Ohne Hindernisse in Erfüllung geht."
       },
       {
         "tib": "ཏདྱ་ཐ༔ པཉྩ་དྲི་ཡ་ཨ་ཝ་བོ་དྷ་ན་ཡ་སྭཱ་ཧཱ༔",
         "tr": "TA DYA TA PEN TSA DRI YA AWA BODHA NA YA SVA HA",
         "en": "TA DYA TA PEN TSA DRI YA AWA BODHA NA YA SVA HA",
         "ru": "ТЕДЬЯТА ПАНЦА ДРИЙЯ АВА БОДА НАЙЕ СОХА",
-        "uk": "ТЕДЬЯТА ПАНЦА ДРІЙЯ АВА БОДА НАЙЄ СОХА"
+        "uk": "ТЕДЬЯТА ПАНЦА ДРІЙЯ АВА БОДА НАЙЄ СОХА",
+        "de": "TA DYA TA PEN TSA DRI YA AWA BODHA NA YA SVA HA"
       }
-    ]
+    ],
+    "titleDe": "Das Kurze Sukhavati Gebet"
   },
   {
     "title": "Bodhicitta Aspiration",
@@ -1026,30 +1147,35 @@ const SECTIONS = [
         "tr": "DSCHANG TSCHUB SEM TSCHOG RINPODSCHE",
         "en": "Oh precious and sublime Bodhicitta,",
         "ru": "Драгоценная Бодхичитта,",
-        "uk": "Дорогоцінна Бодгічітта,"
+        "uk": "Дорогоцінна Бодгічітта,",
+        "de": "Kostbares und erhabenes Bodhicitta,"
       },
       {
         "tib": "མ་སྐྱེས་པ་རྣམས་སྐྱེ་གྱུར་ཅིག",
         "tr": "MA KYÄ PA NAM KYE GYUR DSCHIG",
         "en": "May it arise in those in whom it has not arisen,",
         "ru": "В ком ее нет, да зародится она;",
-        "uk": "У кому її немає, хай зародиться вона;"
+        "uk": "У кому її немає, хай зародиться вона;",
+        "de": "Möge es entstehen, wo es noch nicht entstanden ist."
       },
       {
         "tib": "སྐྱེས་པ་ཉམས་པ་མེད་པ་ཡང་།",
         "tr": "KYE PA NYAM PA ME PA YANG",
         "en": "May it never decline where it has arisen,",
         "ru": "В ком она есть, да не уменьшится никогда,",
-        "uk": "У кому вона є, хай не зменшиться ніколи,"
+        "uk": "У кому вона є, хай не зменшиться ніколи,",
+        "de": "Möge es niemals abnehmen, wo es entstanden ist,"
       },
       {
         "tib": "གོང་ནས་གོང་དུ་འཕེལ་བར་ཤོག",
         "tr": "GONG NÄ GONG DU PELWAR SCHOG",
         "en": "But go on increasing, further and further!",
         "ru": "Но всё больше и больше возрастает.",
-        "uk": "А все більше і більше зростає."
+        "uk": "А все більше і більше зростає.",
+        "de": "Sondern sich immer weiter vermehren."
       }
-    ]
+    ],
+    "titleDe": "Bodhicitta-Wunschgebet"
   },
   {
     "title": "Concluding — Essential Advice",
@@ -1061,51 +1187,57 @@ const SECTIONS = [
         "tr": "NANG DRAG RIG SUM LHA NGAG CHÖKU'I NGANG",
         "en": "Appearance, sound and awareness as Deity, Mantra and Dharmakaya.",
         "ru": "Пусть все явления, звуки и осознавания предстанут как бесконечная игра.",
-        "uk": "Хай усі явища, звуки та усвідомлення постануть як нескінченна гра."
+        "uk": "Хай усі явища, звуки та усвідомлення постануть як нескінченна гра.",
+        "de": "Mögen Erscheinungen, Klang und Gewahrsein im Zustand der Gottheit, des Mantra und des Dharmakaya"
       },
       {
         "tib": "སྐུ་དང་ཡེ་ཤེས་རོལ་པར་འབྱམས་ཀླས་པས།",
         "tr": "KU DANG YESCHE ROLPA DSCHAM LÄ PÄ",
         "en": "Within the vast expanse of enlightened phenomena and wisdom,",
         "ru": "Пробуждённой воплощённости и мудрости в природе божеств, мантр и дхармакаи",
-        "uk": "Пробудженої втіленості та мудрості в природі божеств, мантр і дгармакаї"
+        "uk": "Пробудженої втіленості та мудрості в природі божеств, мантр і дгармакаї",
+        "de": "Uneingeschränkt verschmelzen als Ausdruck der Kayas und Weisheiten,"
       },
       {
         "tib": "ཟབ་གསང་རྣལ་འབྱོར་ཆེན་པོའི་ཉམས་ལེན་ལ།",
         "tr": "ZAB SANG NAL DSCHOR TSCHEN PO'I NYAM LEN LA",
         "en": "Through the practice of the great yoga of the profound secret,",
         "ru": "И сольются в едином вкусе с нераздельной сердечной биндху",
-        "uk": "І зіллються в єдиному смаку з нероздільною серцевою біндху"
+        "uk": "І зіллються в єдиному смаку з нероздільною серцевою біндху",
+        "de": "In der tiefgründigen und geheimen Praxis des großen Yoga."
       },
       {
         "tib": "དབྱེར་མེད་ཐུགས་ཀྱི་ཐིག་ལེར་རོ་གཅིག་ཤོག",
         "tr": "YERME TUG KYI TIG LER RO DSCHIG SCHOG",
         "en": "May we remain indivisible in one taste of enlightened mind.",
         "ru": "На пути глубокой и тайной практики великой йоги!",
-        "uk": "На шляху глибокої та таємної практики великої йоги!"
+        "uk": "На шляху глибокої та таємної практики великої йоги!",
+        "de": "Und mögen sie einen einzigen Geschmack besitzen, untrennbar in der Sphäre des erleuchteten Geistes."
       },
       {
         "tib": "ཨོཾ་ཨཱ༔ཧཱུྃ་བཛྲ་གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ༔",
         "tr": "OM AH HUNG VAJRA GURU PADMA SIDDHI HUNG",
         "en": "OM AH HUNG VAJRA GURU PADMA SIDDHI HUNG",
         "ru": "ОМ АХ ХУНГ БЕНДЗА ГУРУ ПАДМА СИДДХИ ХУНГ",
-        "uk": "ОМ АХ ХУНГ БЕНДЗА ҐУРУ ПАДМА СІДДХІ ХУНГ"
+        "uk": "ОМ АХ ХУНГ БЕНДЗА ҐУРУ ПАДМА СІДДХІ ХУНГ",
+        "de": "OM AH HUNG VAJRA GURU PADMA SIDDHI HUNG"
       }
-    ]
+    ],
+    "titleDe": "Abschließende Worte: Der grundlegende Rat"
   }
 ];
 
 const DEFAULT_TIMESTAMPS = [56.4,61,63.8,66.6,69.4,72.4,75.2,78.1,81,85.1,87.9,91,93.8,96.6,99.3,102,105.9,108.4,111.2,114.2,117,119.7,122.7,125.5,130,133.7,136,140,144,148,152.4,156.1,160,164,168.5,171,176,179,182,186,196.9,199,207.6,213,220.6,227.3,227.5,232.4,236.9,241,250,255.9,268.2,278,291,303.7,331.3,335.6,339.7,344.1,348.2,352.5,356.6,360.9,370,378.9,382.9,387.4,394.8,519.6,555.4,578.7,603.5,707.5,715,799.8,806.7,818.7,823,833.7,838.1,842.6,847.4,854.8,870.5,875.6,880.9,886.1,912,917,922.3,927.6,934.6,986,997.8,1000.3,1002.8,1005.2,1007.9,1010.4,1012.6,1015.2,1017.9,1021.7,1024.6,1031.9,1034.8,1038,1041.2,1082.8,1085.5,1088.7,1092,1103.5,1138.7,1142.1,1145.7,1149,1153.2,1156.9,1160.4,1164.1,1167.6,1171.3,1175.3,1179.2,1186,1189,1192.1,1195,1201.5,1205.1,1209.5,1212.5,1220.1];
 
 /* ═══════════════════════════════════════════════════════════════════════ */
-const LAYERS = ['tib','tr','en','ru','uk'];
-const LAYER_LABELS = {tib:'བོད',tr:'Translit',en:'English',ru:'Русский',uk:'Українська'};
+const LAYERS = ['tib','tr','en','de','ru','uk'];
+const LAYER_LABELS = {tib:'བོད',tr:'Translit',en:'English',de:'Deutsch',ru:'Русский',uk:'Українська'};
 const SK_TS = 'kusali_chod_timestamps';
 const SK_TEXT = 'kusali_chod_text';
 const SK_REPS = 'kusali_chod_repeats';
 
 let flatLines=[], current=0, timestamps=[], elapsed=0, timerRunning=false, timerInterval=null, editingTs=-1;
-let show={tib:true,tr:true,en:true,ru:false,uk:false};
+let show={tib:true,tr:true,en:true,de:false,ru:false,uk:false};
 let showTs=false, mode='manual';
 let sectionRepeats=[];          // per-section repeat count
 let sectionCollapsed={};        // per-section collapsed state {sectionIdx: true=collapsed}
@@ -1128,7 +1260,7 @@ function init(){
         const si=t.sectionIdx!=null?t.sectionIdx:0;
         const sec=SECTIONS[si]||SECTIONS[0];
         const obj={sectionIdx:si,lineIdx:t.lineIdx||-1,sectionTitle:sec.title,
-          titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:t._repeatNum||1};
+          titleDe:sec.titleDe||'',titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:t._repeatNum||1};
         LAYERS.forEach(l=>{obj[l]=t[l]||'';});
         if(t._marker) obj._marker=t._marker;
         flatLines.push(obj);
@@ -1153,7 +1285,7 @@ function rebuildFlatLines(){
     for(let r=0;r<reps;r++){
       sec.lines.forEach((line,li)=>{
         flatLines.push({...line,sectionIdx:si,lineIdx:li,sectionTitle:sec.title,
-          titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:r+1});
+          titleDe:sec.titleDe||'',titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:r+1});
       });
     }
   });
@@ -1240,6 +1372,7 @@ function renderLyrics(){
         `<button class="rep-btn" onclick="event.stopPropagation();setRepeatCount(${si},${totalReps+1})">+</button>`;
       hdr.appendChild(re);
       const subs=[];
+      if(show.de&&line.titleDe)subs.push(line.titleDe);
       if(show.ru&&line.titleRu)subs.push(line.titleRu);
       if(show.uk&&line.titleUk)subs.push(line.titleUk);
       if(subs.length){const sub=document.createElement('span');sub.className='section-subtitle';sub.textContent=subs.join(' · ');hdr.appendChild(sub);}
@@ -1527,7 +1660,7 @@ function importText(ev){
     if(Array.isArray(d)){flatLines=[];
       d.forEach(t=>{const si=t.sectionIdx!=null?t.sectionIdx:0;const sec=SECTIONS[si]||SECTIONS[0];
         const obj={sectionIdx:si,lineIdx:t.lineIdx||-1,sectionTitle:sec.title,
-          titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:t._repeatNum||1};
+          titleDe:sec.titleDe||'',titleRu:sec.titleRu||'',titleUk:sec.titleUk||'',repeat:sec.repeat||null,_repeatNum:t._repeatNum||1};
         LAYERS.forEach(l=>{obj[l]=t[l]||'';});if(t._marker)obj._marker=t._marker;flatLines.push(obj);});
       while(timestamps.length<flatLines.length)timestamps.push(null);timestamps.length=flatLines.length;
       persistText();renderLyrics();updateHighlight();alert('Text imported: '+d.length+' lines');
