@@ -1753,7 +1753,7 @@ function downloadFile(name,content,type){const b=new Blob([content],{type}),u=UR
 /* ═══ TIBETAN WORD SEGMENTATION & TOOLTIPS ═══ */
 function segmentTibetan(text){
   if(!text) return [];
-  const clean = text.replace(/[༈།༑]/g,' ').trim();
+  const clean = text.replace(/[༈།༑ཿ༔]/g,' ').trim();
   // Split by tsheg (་) and spaces, filter empty
   const syllables = clean.split(/[་\s]+/).filter(s=>s.trim());
   const result = [];
