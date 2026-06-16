@@ -72,6 +72,23 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 .line-block.future{opacity:.60}
 .line-block:hover:not(.current){opacity:.8;background:rgba(255,255,255,0.02)}
 
+
+/* ── TIBETAN WORD TOOLTIPS ── */
+.tib-word{cursor:help;border-bottom:1px dotted rgba(180,160,120,0.2);transition:all .2s;position:relative;display:inline}
+.tib-word:hover{background:rgba(180,160,120,0.12);border-radius:3px;border-bottom-color:rgba(200,170,100,0.5)}
+.tib-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(20,20,30,0.95);border:1px solid rgba(180,160,120,0.3);border-radius:8px;padding:6px 12px;font-family:system-ui,sans-serif;font-size:12px;color:#d4c8a0;white-space:nowrap;z-index:50;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,0.4);line-height:1.4;max-width:280px;white-space:normal;text-align:center}
+.tib-tooltip .tt-tib{font-family:'Noto Serif Tibetan',serif;font-size:14px;color:#efe8d0;display:block;margin-bottom:2px}
+.tib-tooltip .tt-en{color:#c0b898;font-style:italic}
+.tib-word:hover .tib-tooltip{display:block}
+.tib-sep{opacity:0.3}
+/* word-by-word inline */
+.wbw-row{margin-top:4px;display:flex;flex-wrap:wrap;gap:8px;font-family:system-ui,sans-serif;font-size:11px;line-height:1.3}
+.wbw-item{display:flex;flex-direction:column;align-items:center;padding:3px 6px;border-radius:6px;background:rgba(180,160,120,0.05);border:1px solid rgba(180,160,120,0.08)}
+.wbw-item.current .wbw-tib{color:#efe8d0}
+.wbw-item.current .wbw-en{color:#c0b898}
+.wbw-tib{font-family:'Noto Serif Tibetan',serif;font-size:13px;color:rgba(180,160,120,0.6)}
+.wbw-en{font-size:10px;color:rgba(180,160,120,0.4);margin-top:1px}
+
 .line-tib{font-family:'Noto Serif Tibetan',serif;font-size:22px;line-height:1.8;transition:color .3s}
 .line-tib.active{color:#efe8d0} .line-tib.dim{color:#8a8275}
 .line-tr{font-family:'Crimson Pro',serif;font-size:15px;font-style:italic;letter-spacing:.8px;line-height:1.5;transition:color .3s}
@@ -155,6 +172,7 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
  </div>
  <div class="ctrl-row">
   <button class="pill off" id="togTs" onclick="toggleTimestamps()">○ ⏱ Timestamps</button>
+  <button class="pill off" id="togWbw" onclick="toggleWordByWord()">○ Word-by-word</button>
   <button class="pill on" id="togRepeats" onclick="toggleRepeats()">✓ Repeats</button>
   <span class="spacer"></span>
   <button class="action-btn" onclick="exportTimestamps()">↓ Timestamps</button>
@@ -1238,6 +1256,10 @@ const SK_REPS = 'kusali_chod_repeats';
 
 let flatLines=[], current=0, timestamps=[], elapsed=0, timerRunning=false, timerInterval=null, editingTs=-1;
 let show={tib:true,tr:true,en:true,de:false,ru:false,uk:false};
+let showWordByWord=false;
+const TIB_DICT = {"རྡོ་རྗེ": "vajra / diamond / indestructible", "རྡོ་རྗེ་ཕག་མོ": "Vajravarahi / Dorje Phagmo", "པདྨ་འབྱུང་གནས": "Padmasambhava / Lotus Born", "གུ་རུ": "guru / teacher", "སིདྡྷི": "siddhi / spiritual attainment", "མཁའ་འགྲོ": "dakini / sky-goer", "དཀོན་མཆོག": "jewel / precious one", "དཀོན་མཆོག་གསུམ": "Three Jewels", "རྩ་བ་གསུམ": "Three Roots", "སངས་རྒྱས": "Buddha / awakened one", "བྱང་ཆུབ": "enlightenment / bodhi", "བྱང་སེམས": "bodhisattva", "སེམས་དཔའ": "bodhisattva / courageous mind", "སེམས་བསྐྱེད": "generating bodhicitta", "བླ་མ": "lama / guru", "ཡི་དམ": "yidam / meditational deity", "ཆོས་སྐྱོང": "dharma protector", "ཆོས་སྐུ": "dharmakaya / truth body", "སྤྲུལ་སྐུ": "nirmanakaya / emanation body", "ཞིང་ཁམས": "buddha field / pure realm", "དུས་གསུམ": "three times (past, present, future)", "རྒྱལ་བ": "victorious one / buddha", "ཐུགས་རྗེ": "compassion", "ཐུགས་དམ": "sacred commitment / samaya", "གསོལ་བ་འདེབས": "I pray / supplication", "གསོལ་བ": "prayer / supplication", "བྱིན་གྱིས་བརླབ": "blessing / empowerment", "བྱིན་རླབས": "blessing", "དངོས་གྲུབ": "spiritual attainment / siddhi", "ངོ་བོ་ཉིད": "essential nature / essence", "ངོ་བོ": "essence / nature", "སྐྱབས་གནས": "source of refuge", "སྐྱབས་སུ་མཆི": "I take refuge", "རིན་པོ་ཆེ": "precious / jewel", "རིན་ཆེན": "precious / jewel", "ཤེས་རབ": "wisdom / prajna", "ཡེ་ཤེས": "primordial wisdom / jnana", "ཕ་རོལ་ཕྱིན": "paramita / perfection / gone beyond", "རང་རིག": "self-awareness / self-knowing", "ནམ་མཁའ": "sky / space", "རྫོགས་པ་ཆེ": "Great Perfection / Dzogchen", "ཀ་དག": "primordial purity", "རང་བཞིན": "natural state / nature", "གནས་ལུགས": "abiding nature / how things are", "མི་དམིགས": "objectless / without reference point", "སྣང་བ་མཐའ་ཡས": "Amitabha / Boundless Light", "བདེ་བ་ཅན": "Sukhavati / Dewachen / Great Bliss", "ཚེ་འཕོས": "consciousness transference / death", "སྨོན་ལམ": "aspiration prayer", "བསྔོ་བ": "dedication (of merit)", "དགེ་བ": "virtue / merit", "བསོད་ནམས": "merit", "ཚོགས་གཉིས": "two accumulations (merit & wisdom)", "སྒྲིབ་གཉིས": "two obscurations", "སྐུ་གཉིས": "two kayas / two bodies", "བག་ཆགས": "habitual patterns / karmic imprints", "ལན་ཆགས": "karmic debt", "བུ་ལོན": "debt / loan", "གནོད་བྱེད": "harmful entity / obstructer", "འགྲོ་བ": "beings / sentient beings", "རིགས་དྲུག": "six classes / six realms", "མི་མ་ཡིན": "non-human spirits", "འཇིག་རྟེན": "world / worldly", "སྤྱི་བོ": "crown of the head", "གྲི་གུག": "curved knife / kartika", "བེམ་པོ": "corpse / material body", "མགོ་བོ": "head", "ཤ་ལྔ": "five meats", "བདུད་རྩི": "nectar / amrita", "རྣམ་ལྔ": "five types", "གཡས": "right (side)", "གཡོན": "left (side)", "ཐུགས་ཀ": "heart (honorific)", "རང་འདྲ": "identical to oneself", "གྲངས་མེད": "countless / innumerable", "སྐྱོགས": "ladle", "གཏེར་སྟོན": "tertön / treasure revealer", "བཀའ": "kama / oral transmission", "གཏེར": "terma / treasure", "སྙན་བརྒྱུད": "aural lineage", "གནམ་ཆོས": "Namchö / Sky Dharma", "རྩ་གསུམ": "three roots", "ཞལ་གཟིགས": "had visions / face to face", "སྟོབས": "power / strength", "གཞན་ཕན": "benefiting others", "གཙུག་རྒྱན": "crown ornament", "པཎ་ཆེན": "great pandita", "བསྟན་པ": "doctrine / teaching", "སྙིང་པོ": "essence / heart", "ཟླ་བྲལ": "unequalled / without peer", "འོག་མིན": "Akanishta / highest realm", "དབྱིངས": "expanse / space / dhatu", "རང་སེམས": "one's own mind", "རྩ་བའི་བླ་མ": "root guru / root lama", "མཆོད་པ": "offering", "སྦྱིན་པ": "generosity / giving", "འཕེལ་བ": "increase / grow", "ཉམས་པ": "decline / degenerate", "མ་སྐྱེས": "unborn", "མི་འགག": "unceasing", "རོ་གཅིག": "one taste", "དབྱེར་མེད": "indivisible / inseparable", "ཐིག་ལེ": "bindu / essence drop", "རྣལ་འབྱོར": "yoga / union", "ཟབ་གསང": "profound and secret", "རོལ་པ": "display / play", "སྐུ": "body (honorific) / kaya", "སྣང་གྲགས་རིག": "appearance, sound & awareness", "ལྷ": "deity / god", "སྔགས": "mantra", "འབྱམས་ཀླས": "vast / boundless", "སྐྱེ་རྒ་ན་འཆི": "birth, old age, sickness & death", "སྲིད་པའི་མཚོ": "ocean of existence / samsara", "སྒྲོལ་བ": "liberate / free", "ཕམ་བྱས": "defeat / vanquish", "དགྲ": "enemy / foe", "ཉེས་པ": "negativity / wrongdoing", "འཁྲུགས་པ": "turbulent / disturbed", "རྦ་ཀློང": "waves", "གེགས་མེད": "without obstacle", "འགྲུབ་པ": "accomplish / achieve", "དཔག་མེད": "immeasurable / boundless", "ངོ་མཚར": "wonderful / astonishing", "བདེ་སྐྱིད": "happiness and bliss", "མཐུ་ཆེན": "great power", "ཇོ་བོ": "lord / master", "ཕྱོགས་བཅུ": "ten directions", "མ་རྒན": "elderly mothers (all beings)", "དམ་ཅན": "oath-bound protector", "འདོད་པ": "desire / wish", "ཚིམ": "satisfy / satiate", "སྐོང": "fulfill / replenish", "མཉེས": "please / delight", "མགུ": "rejoice / be pleased", "དག": "purify / pure", "བསྐང": "fulfill / replenish", "ཕཊ": "PHET (cutting syllable)", "ཧཱུྂ": "HUNG (seed syllable)", "ན་མོ": "homage / namo", "ཨོ་རྒྱན": "Uddiyana / Orgyen", "ཡུལ": "country / land", "ནུབ": "west", "བྱང": "north", "མཚམས": "border / boundary", "པདྨ": "lotus / Padma", "གེ་སར": "pollen / pistil", "སྡོང་པོ": "stem / stalk", "ཡ་མཚན": "wonderful / amazing", "མཆོག": "supreme / highest", "གྲགས": "renowned / famous", "འཁོར": "retinue / circle", "མང་པོ": "many", "བསྐོར": "surround", "ཁྱེད": "you (honorific)", "རྗེས་སུ": "following", "བདག": "self / I", "བསྒྲུབ": "practice / accomplish", "ཕྱིར": "for the purpose of", "གཤེགས": "come / go (honorific)", "ཀུན་བཟང": "Samantabhadra / All-Good", "སེམས": "mind", "དགའ་རབ": "Garab (Dorje) / Supreme Joy", "ཤྲཱི": "Shri / glorious", "སེང": "lion / Singha", "ཀ་ར": "kara (doer)", "འབངས": "disciples / subjects", "ཉི་ཤུ་ལྔ": "twenty-five", "སོ": "So (name)", "ཟུར": "Zur (name)", "གནུབས": "Nub (name)", "གཉགས": "Nyag (name)", "བརྒྱ་རྩ": "hundred", "སོགས": "and so forth / etc.", "རྣམས": "plural marker", "ཤུད་བུ": "Shupu (name)", "དཔལ": "glorious / splendid", "ངོམ": "Ngom (place)", "སྲིད་པ": "existence / samsara", "བཟུང": "taken / grasped", "མི་འགྱུར": "unchanging / Mingyur", "སླར་ཡང": "once again", "ཚུལ": "manner / way", "བསྟན": "show / teach", "ཅིང": "and / while", "ཞབས": "feet (honorific)", "འདེབས": "plant / pray", "ཀུན": "all", "ངོ": "face / essence", "དངོས": "directly / actual", "སྟོན": "show / reveal", "མཛད": "do / act (honorific)", "རང": "self / own", "གསུམ": "three", "དང": "and / with", "ལ": "to / at / in", "ཆེན་པོ": "great", "ཆེར": "greatly / large", "སོང": "went / gone", "མཛུབ": "finger", "གང": "which / full", "ཙམ": "size of / about", "ཁྲུ": "cubit", "གནམ": "sky / heaven", "ས": "earth", "ཕག་མོ": "sow / Phagmo", "གྱུར": "become / transform", "ཕྱག": "hand (honorific)", "ཚད": "mere / just", "བྲེག": "cut / sever", "ནས": "from / after", "ཀྱང": "also / even", "ཉིད": "itself / very", "བཞག": "place / put", "བྱས": "did / made", "ཤུན": "skin / peel", "བཤུས": "remove / peel off", "ནང": "inside", "གི": "(genitive particle)", "དེ": "that", "འདི": "this", "མཆོད": "offer / offering", "ཁྱད་པར": "especially / particular", "ཅན": "having / possessing", "གིས": "(instrumental particle)", "བདག་གིས": "by me", "མཆོད་སྦྱིན": "offering of generosity", "འབུལ": "offer / present", "བས": "by / because", "ཅིག": "(imperative particle) / may it be", "སྤྱན་དྲངས": "invited", "མགྲོན": "guest", "བཛྲ": "vajra", "མུ": "mu (seal)", "སྨྲ": "speech / express", "བསམ": "think / conceive", "བརྗོད་མེད": "inexpressible", "སོ་སོ": "individual / each", "སྤྱོད་ཡུལ": "sphere of activity / domain", "ཡུམ": "mother", "བཀྲིས": "auspicious", "ཤོག": "may it be so!", "རྒན": "old / elder", "དྲུག": "six", "བསྔོ": "dedicate", "མཉེས་གྱུར": "be pleased", "སྦྱང": "purify / train", "ཐོབ": "attain / obtain", "རྒྱ་ཆེན": "immense / vast", "མཐུས": "by power of", "རང་བྱུང": "self-arisen / spontaneous", "སྔོན": "before / past", "གྲོལ": "liberate / free", "འབྱུང་པོ": "spirit / elemental being", "ལྷགས": "arrive / come", "འོན་ཏེ": "or else / however", "བར་སྣང": "sky / atmosphere", "འཁོད": "dwell / abide", "རྟག་ཏུ": "always / constantly", "བྱམས": "love / loving-kindness", "ཉིན": "day", "མཚན": "night", "ཆོས": "dharma / teaching", "སྤྱོད": "practice / conduct", "ཨེ་མ་ཧོ": "How wonderful!", "དཔག་ཏུ་མེད": "immeasurable", "སྐྱེ་བ": "birth / rebirth", "གཞན": "other", "བར": "between / gap", "ཆོད": "interrupt / cut", "ཞལ": "face (honorific)", "མཐོང": "see / behold", "སྐད": "word / speech", "བཏབ": "made / established", "འགྲུབ": "accomplish", "པར": "(nominalizer)", "ཏུ": "to / in", "གོང": "higher / above", "དུ": "to / in", "པ": "(nominalizer / verbal suffix)", "བ": "(nominalizer / verbal suffix)", "སུ": "to / in / at (locative particle)", "མ": "not / mother", "བའི": "(genitive + nominalizer)", "གྱིས": "(instrumental particle) by/with", "ཀྱི": "(genitive particle) of", "པས": "(instrumental/causal) by/because", "གྱི": "(genitive particle) of", "ཀྱིས": "(instrumental particle) by/with", "ན": "in / when / if", "པོའི": "(genitive + nominalizer)", "ནི": "as for / (topic marker)", "ཡི": "(genitive particle) of", "ཞེས": "called / known as", "རྗེ": "lord / master", "ཝ": "(Sanskrit: va)", "རྣམ": "complete / type / form", "ལས": "from / than / action / karma", "ཏེ": "and then / (Skt: te/gate)", "སྐྱོང": "protect / sustain", "རུ": "to / into (locative)", "སྐྱེས": "born / arisen", "ཡ": "(Sanskrit syllable: ya)", "ནམ": "sky / when", "པོ": "man / person / (nominalizer)", "དགེ": "virtue / virtuous", "དམ": "sacred / holy / oath", "དོན": "meaning / purpose / benefit", "ཚོགས": "assembly / accumulation", "སྦྱིན": "give / generosity", "རྒ": "old age", "སྒྲོལ": "liberate / Tara", "རྒྱལ": "victorious / king / buddha", "མེད": "without / non-existent", "ཡང": "also / again / even", "ཆེན": "great / large", "རོལ": "play / display / enjoy", "ཉམས": "experience / practice", "ལེན": "take / practice", "ཐུགས": "mind (honorific) / heart", "ཐིག": "drop / bindu / line", "ལེར": "into (locative)", "འགྲོ": "go / beings / sentient beings", "སྐྱེ": "born / birth / arise", "ག": "(syllable: ga / Sanskrit: gate)", "ཐམས": "all (part of ཐམས་ཅད)", "ཅད": "all (part of ཐམས་ཅད)", "གསོལ": "pray / request / eat (hon.)", "སྤེལ": "spread / propagate", "མི": "person / human / not", "ཁྱབ": "pervade / fill", "ལྔ": "five", "བརྒྱའི": "of hundreds", "བི": "(Sanskrit: vi- / Vimala)", "སྙིང": "heart / essence", "ནོར": "jewel / wealth / Norbu", "བུའི": "of the jewel/son", "རྩ": "root / channel / verse", "བླ": "upper / lama (part of)", "མའི": "of the (genitive)", "རཱ": "(Sanskrit: rā)", "ཧི": "(Sanskrit: hi)", "འགོད": "establish / place", "དོ": "(sentence-final particle)", "ཤེས": "know / knowledge", "སྤྱི": "general / crown / top", "བོར": "crown (part of སྤྱི་བོར)", "འཕྲོ": "radiate / shoot out", "རྒྱ": "size / seal / vast", "སྲན": "bean / lentil", "ཕག": "pig / sow", "མོར": "into (feminine + locative)", "བེམ": "material / physical (corpse)", "མགོ": "head (part of མགོ་བོ)", "ལྔར": "into five", "འཛིན": "hold / grasp", "འཕྲོས": "radiated / emanated", "རྟེན": "support / basis", "ཡིན": "is / to be", "སྐོངས": "may be fulfilled", "གནས": "place / abode / dwell", "མཁའི": "of the sky / of space", "ཚིམས": "be satisfied", "ཤ": "flesh / meat", "མཁོན": "grudge / hostility", "ཡོངས": "completely / all", "རྫོགས": "complete / perfect", "བོའི": "of the (genitive)", "འདིར": "here / in this", "ཏམ": "or / whether", "སའམ": "earth or", "རུང": "even if / suitable", "དགུ": "nine / all", "བྱེད": "do / make / act", "ཡིས": "by (instrumental)", "གཟིགས": "see / behold (honorific)", "ཉེས": "fault / wrong / negative", "པའི": "of the (genitive + nominalizer)", "ཤིང༌": "and / while / tree", "འཆིའི": "of death", "བྱ": "do / bird", "དེར": "there / in that", "ཐག": "distance / cut", "སྣང": "appearance / light", "མཐའི": "of the limit / of the boundary", "ཕྱོགས": "direction / side", "བཅུའི": "of the ten", "འཕེལ": "increase / expand", "སྐུའི": "of the body (hon.)", "ངང༌": "state / within / nature", "མཚར": "wonderful / amazing", "ཧོ": "(exclamation particle)", "ཨེ": "(exclamation: E / how!)", "ཧཱུྃ": "HUNG (seed syllable)", "བྷནྡྷ": "bhanda / skull cup / kapala", "ཕཊ ཕཊ ཕཊ": "PHET PHET PHET", "ཐམས་ཅད": "all / everything", "མོ་དཀོན": "(conjunction: Vajravarahi + Jewels)", "མོ་བདག": "(conjunction: Vajravarahi + my)", "རྡོར": "vajra (abbrev. of རྡོ་རྗེ)", "སྙིང་པོའི": "of the essence / of the heart", "ནོར་བུའི": "of the jewel (Norbu)", "རྩ་བའི": "of the root", "བླ་མའི": "of the lama", "སྐྱེ་བོའི": "of the people / of beings", "སྐྱེ་དགུ": "all living beings / nine births", "ཏདྱཐཱ": "TADYATA (thus)", "ཨོཾ": "OM", "པཱ": "(Sanskrit: pā / pāra)", "སཾ": "(Sanskrit: sam)", "དྷི": "(Sanskrit: dhi / bodhi)", "དྷ": "(Sanskrit: dha)", "དྲི": "(Sanskrit: dri / driya)", "ཨ": "(Sanskrit: a)", "ཏདྱ": "(Sanskrit: tadya)", "པཉྩ": "(Sanskrit: pancha / five)", "ཨཱ": "AH (seed syllable)", "ཧཱུྂ་ཨོ": "HUNG (+ Orgyen)", "རྒྱན": "ornament / adornment", "བརྙེས": "obtained / attained", "མང": "many", "པོས": "(instrumental of མང་པོ)", "ཕཊ་དེ": "PHET — then/that", "ཕཊ་རང": "PHET — own/self", "ཕཊ་རྡོ": "PHET — vajra", "ཕཊ་གནམ": "PHET — sky", "ཕཊ་ཕཊ་རང": "PHET PHET — own/self", "ཕཊ་བླ": "PHET — lama", "ཕཊ་མཁའ": "PHET — sky/dakini", "ཕཊ་འཇིག": "PHET — world", "ཕཊ་མི": "PHET — non-/human", "ཕཊ་འགྲོ": "PHET — beings", "ཕཊ་ཁྱད": "PHET — especially", "ཕཊ་བདག": "PHET — self/I", "ཏདྱཐཱ  ཨོཾ": "TADYATA OM", "ཏདྱཐཱ ཨོཾ": "TADYATA OM", "ཏེ  པཱ": "(Skt: te pā / gate pāra)", "ཏེ པཱ": "(Skt: te pā / gate pāra)", "ཏེ  བོ": "(Skt: te bo / gate bodhi)", "ཏེ བོ": "(Skt: te bo / gate bodhi)", "ཐ  པཉྩ": "(Skt: tha pancha)", "ཐ པཉྩ": "(Skt: tha pancha)", "ཕཊ  ཁྱད": "PHET — especially", "ཕཊ  གནམ": "PHET — sky", "ཕཊ  དེ": "PHET — then/that", "ཕཊ  ཕཊ  རང": "PHET PHET — own/self", "ཕཊ  བདག": "PHET — self/I", "ཕཊ  བླ": "PHET — lama", "ཕཊ  མཁའ": "PHET — dakini/sky", "ཕཊ  མི": "PHET — non-/human", "ཕཊ  འགྲོ": "PHET — beings", "ཕཊ  འཇིག": "PHET — world/worldly", "ཕཊ  རང": "PHET — own/self", "ཕཊ  རྡོ": "PHET — vajra", "བོ": "call / (Skt: bo/bodhi)", "མོ  དཀོན": "(suffix + jewel)", "མོ  བདག": "(suffix + self)", "མོ དཀོན": "(suffix + jewel)", "མོ བདག": "(suffix + self)", "ར": "to / (locative suffix)", "སྭཱ": "(Sanskrit: svā / svaha)", "ཧཱ": "(Sanskrit: hā / svaha)", "ཧཱུྂ ཨོ": "HUNG (+ Orgyen)", "ཧོ  ངོ": "HO! (wonder) + amazing", "ཧོ ངོ": "HO! (wonder) + amazing", "ཨཱ ཧཱུྃ": "AH HUNG (seed syllables)", "ཨཱ་ཧཱུྃ": "AH HUNG (seed syllables)"};
+// sorted keys longest first for greedy matching
+const DICT_KEYS = Object.keys(TIB_DICT).sort((a,b)=>b.length-a.length);
 let showTs=false, mode='manual';
 let sectionRepeats=[];          // per-section repeat count
 let sectionCollapsed={};        // per-section collapsed state {sectionIdx: true=collapsed}
@@ -1410,10 +1432,21 @@ function renderLyrics(){
       block.className='line-block future';
       LAYERS.forEach(l=>{
         const div=document.createElement('div');div.className=`line-${l} dim`;div.id=`${l}-${i}`;
-        div.textContent=line[l]||'';if(!show[l])div.style.display='none';
+        if(l==='tib' && line[l]){
+          const content=renderTibWithTooltips(line[l],i);
+          div.appendChild(content);
+        } else {
+          div.textContent=line[l]||'';
+        }
+        if(!show[l])div.style.display='none';
         if(mode==='edit'&&show[l]){div.style.cursor='pointer';div.ondblclick=()=>startEditLine(i,l);}
         block.appendChild(div);
       });
+      // word-by-word inline display for current line
+      if(showWordByWord && show.tib && line.tib){
+        const wbw=renderWordByWord(line.tib);
+        if(wbw){wbw.id='wbw-'+i;wbw.style.display='none';block.appendChild(wbw);}
+      }
     }
 
     const tsB=document.createElement('button');tsB.className='ts-badge';tsB.id='tsbadge-'+i;
@@ -1440,6 +1473,9 @@ function updateHighlight(){
         const el=document.getElementById(`${l}-${i}`);
         if(el&&!el.querySelector('textarea'))el.className=`line-${l} ${isCur?'active':'dim'}`;
       });
+      // show word-by-word only for current line
+      const wbwEl=document.getElementById('wbw-'+i);
+      if(wbwEl) wbwEl.style.display=isCur?'':'none';
     }
   });
 }
@@ -1707,6 +1743,103 @@ function formatTime(s){if(s==null)return'--:--.0';const m=Math.floor(s/60);const
 function parseTime(str){if(!str)return null;str=str.trim();const dotParts=str.split('.');let decimals=0;let main=str;if(dotParts.length===2){main=dotParts[0];decimals=parseInt(dotParts[1])||0;if(dotParts[1].length===1)decimals*=0.1;else if(dotParts[1].length===2)decimals*=0.01;else if(dotParts[1].length===3)decimals*=0.001;else decimals*=0.1;}const p=main.split(':');if(p.length===2){const m=parseInt(p[0]),s=parseInt(p[1]);if(isNaN(m)||isNaN(s))return null;return m*60+s+decimals;}else if(p.length===1){const s=parseFloat(str);return isNaN(s)?null:s;}return null;}
 function formatSRT(s){const h=Math.floor(s/3600).toString().padStart(2,'0'),m=Math.floor((s%3600)/60).toString().padStart(2,'0'),sec=Math.floor(s%60).toString().padStart(2,'0'),ms=Math.round((s%1)*1000).toString().padStart(3,'0');return h+':'+m+':'+sec+','+ms;}
 function downloadFile(name,content,type){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
+
+
+/* ═══ TIBETAN WORD SEGMENTATION & TOOLTIPS ═══ */
+function segmentTibetan(text){
+  if(!text) return [];
+  const clean = text.replace(/[༈།༑]/g,' ').trim();
+  // Split by tsheg (་) and spaces, filter empty
+  const syllables = clean.split(/[་\s]+/).filter(s=>s.trim());
+  const result = [];
+  let i = 0;
+  while(i < syllables.length){
+    let matched = false;
+    for(let len = Math.min(5, syllables.length - i); len >= 1; len--){
+      // Try joining with tsheg
+      const withTsheg = syllables.slice(i, i+len).join('་');
+      // Try joining with space (for Sanskrit/PHET compounds)
+      const withSpace = syllables.slice(i, i+len).join(' ');
+      // Try joining with double space
+      const withDblSpace = syllables.slice(i, i+len).join('  ');
+      const found = TIB_DICT[withTsheg] || TIB_DICT[withSpace] || TIB_DICT[withDblSpace];
+      if(found){
+        result.push({tib: withTsheg, en: found});
+        i += len;
+        matched = true;
+        break;
+      }
+    }
+    if(!matched){
+      const syl = syllables[i];
+      result.push({tib: syl, en: TIB_DICT[syl] || null});
+      i++;
+    }
+  }
+  return result;
+}
+
+function renderTibWithTooltips(text, idx){
+  const words = segmentTibetan(text);
+  if(words.length === 0) return document.createTextNode(text);
+  const frag = document.createDocumentFragment();
+  words.forEach((w, wi) => {
+    if(w.en){
+      const span = document.createElement('span');
+      span.className = 'tib-word';
+      span.textContent = w.tib;
+      const tip = document.createElement('span');
+      tip.className = 'tib-tooltip';
+      tip.innerHTML = '<span class="tt-tib">' + w.tib + '</span><span class="tt-en">' + w.en + '</span>';
+      span.appendChild(tip);
+      frag.appendChild(span);
+    } else {
+      const span = document.createElement('span');
+      span.textContent = w.tib;
+      frag.appendChild(span);
+    }
+    // add tsheg between words
+    if(wi < words.length - 1){
+      const sep = document.createElement('span');
+      sep.className = 'tib-sep';
+      sep.textContent = '་';
+      frag.appendChild(sep);
+    }
+  });
+  return frag;
+}
+
+function renderWordByWord(text){
+  const words = segmentTibetan(text);
+  if(words.length === 0) return null;
+  const row = document.createElement('div');
+  row.className = 'wbw-row';
+  words.forEach(w => {
+    const item = document.createElement('div');
+    item.className = 'wbw-item';
+    const tibSpan = document.createElement('span');
+    tibSpan.className = 'wbw-tib';
+    tibSpan.textContent = w.tib;
+    item.appendChild(tibSpan);
+    if(w.en){
+      const enSpan = document.createElement('span');
+      enSpan.className = 'wbw-en';
+      enSpan.textContent = w.en;
+      item.appendChild(enSpan);
+    }
+    row.appendChild(item);
+  });
+  return row;
+}
+
+function toggleWordByWord(){
+  showWordByWord = !showWordByWord;
+  const el = document.getElementById('togWbw');
+  el.className = 'pill ' + (showWordByWord ? 'on' : 'off');
+  el.textContent = (showWordByWord ? '✓' : '○') + ' Word-by-word';
+  renderLyrics(); updateHighlight();
+  requestAnimationFrame(()=>scrollToCurrent());
+}
 
 init();
 
