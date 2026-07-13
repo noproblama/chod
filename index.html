@@ -11,7 +11,14 @@
 body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#0a0a12 100%);color:#e0dcd0;font-family:'Crimson Pro','Noto Serif Tibetan',Georgia,serif;overflow-x:hidden}
 
 /* ── CONTROL BAR ── */
-.ctrl-bar{position:sticky;top:0;z-index:100;background:rgba(10,10,18,0.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(180,160,120,0.15);padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ctrl-bar{position:sticky;top:0;z-index:100;background:rgba(10,10,18,0.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(180,160,120,0.15)}
+.ctrl-mini{display:flex;align-items:center;gap:8px;padding:6px 12px}
+.ctrl-mini-title{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:1.5px;color:rgba(180,160,120,0.5);text-transform:uppercase}
+.ctrl-collapse-btn{background:transparent;border:1px solid rgba(180,160,120,0.2);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(210,190,140,0.6);font-size:14px;transition:all .25s;padding:0}
+.ctrl-collapse-btn:hover{background:rgba(180,160,120,0.1);color:rgba(210,190,140,0.9)}
+.ctrl-collapse-btn.collapsed{transform:rotate(-90deg)}
+.ctrl-body{padding:4px 12px 8px;display:flex;flex-direction:column;gap:6px;overflow:hidden;transition:max-height .3s ease,opacity .2s ease,padding .3s ease;max-height:500px;opacity:1}
+.ctrl-body.hidden{max-height:0;opacity:0;padding:0 12px}
 .ctrl-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%}
 .pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:11px;font-family:system-ui,sans-serif;letter-spacing:.4px;cursor:pointer;transition:all .2s;border:1px solid rgba(180,160,120,0.25);user-select:none;background:transparent;white-space:nowrap}
 .pill.on{background:rgba(180,160,120,0.2);color:#d4c8a0;border-color:rgba(180,160,120,0.5)}
@@ -76,7 +83,7 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 /* ── TIBETAN WORD TOOLTIPS ── */
 .tib-word{cursor:help;border-bottom:1px dotted rgba(180,160,120,0.2);transition:all .2s;position:relative;display:inline}
 .tib-word:hover{background:rgba(180,160,120,0.12);border-radius:3px;border-bottom-color:rgba(200,170,100,0.5)}
-.tib-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(20,20,30,0.95);border:1px solid rgba(180,160,120,0.3);border-radius:8px;padding:6px 12px;font-family:system-ui,sans-serif;font-size:12px;color:#d4c8a0;white-space:nowrap;z-index:50;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,0.4);line-height:1.4;max-width:280px;white-space:normal;text-align:center}
+.tib-tooltip{display:none;position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);background:rgba(15,15,25,0.97);border:1px solid rgba(180,160,120,0.35);border-radius:10px;padding:8px 16px;font-family:system-ui,sans-serif;font-size:13px;color:#d4c8a0;z-index:50;pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,0.5);line-height:1.5;min-width:180px;max-width:320px;white-space:normal;text-align:center;word-break:break-word}
 .tib-tooltip .tt-tib{font-family:'Noto Serif Tibetan',serif;font-size:14px;color:#efe8d0;display:block;margin-bottom:2px}
 .tib-tooltip .tt-en{color:#c0b898;font-style:italic}
 .tib-tooltip .tt-uk{color:#a0c0b0;font-size:11px}
@@ -153,8 +160,14 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
 <body>
 
 <div class="ctrl-bar" id="ctrlBar">
- <div class="ctrl-row">
+ <div class="ctrl-mini" id="ctrlMini">
   <button class="pill on" id="tocBtn" onclick="openTOC()" style="border-color:rgba(200,170,100,0.4);color:#d4c8a0;font-size:13px;padding:4px 10px">☰</button>
+  <span class="ctrl-mini-title" id="ctrlMiniTitle">Nam Chö Kusali Chöd</span>
+  <span class="spacer"></span>
+  <button class="ctrl-collapse-btn" id="ctrlCollapseBtn" onclick="toggleCtrlBar()">▾</button>
+ </div>
+ <div class="ctrl-body" id="ctrlBody">
+ <div class="ctrl-row">
   <button class="pill on" id="togTib" onclick="toggleLayer('tib')">✓ བོད</button>
   <button class="pill on" id="togTr" onclick="toggleLayer('tr')">✓ Translit</button>
   <button class="pill on" id="togEn" onclick="toggleLayer('en')">✓ English</button>
@@ -186,6 +199,7 @@ body{min-height:100vh;background:linear-gradient(180deg,#0a0a12 0%,#12121f 50%,#
   <button class="action-btn" onclick="document.getElementById('importTextFile').click()">↑ Text JSON</button>
   <input type="file" id="importFile" accept=".json" onchange="importTimestamps(event)">
   <input type="file" id="importTextFile" accept=".json" onchange="importText(event)">
+ </div>
  </div>
 </div>
 
@@ -1922,6 +1936,15 @@ function editDictEntry(tib){
   };
   enInput.addEventListener('keydown', keyHandler);
   ukInput.addEventListener('keydown', keyHandler);
+}
+
+/* ═══ COLLAPSIBLE CONTROL BAR ═══ */
+let ctrlBarCollapsed = false;
+function toggleCtrlBar(){
+  ctrlBarCollapsed = !ctrlBarCollapsed;
+  document.getElementById('ctrlBody').className = 'ctrl-body' + (ctrlBarCollapsed ? ' hidden' : '');
+  document.getElementById('ctrlCollapseBtn').className = 'ctrl-collapse-btn' + (ctrlBarCollapsed ? ' collapsed' : '');
+  setTimeout(updateStickyTop, 350); // after animation
 }
 
 init();
